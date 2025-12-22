@@ -4,294 +4,322 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
   Bot, 
-  CheckCircle, 
+  CheckCircle2, 
   UploadCloud, 
-  LayoutDashboard, 
-  AlertTriangle, 
-  BarChart3, 
-  UserCheck, 
-  GraduationCap, 
-  FileText,
+  FileWarning, // 복잡한 서류 아이콘
+  PenTool,     // 자필 작성 아이콘
+  MonitorCheck, // 디지털 심사 아이콘
+  XCircle,
   ArrowRight,
-  ShieldCheck,
-  ChevronRight
+  School,
+  FileSpreadsheet,
+  MessageSquare
 } from 'lucide-react';
 
 export default function ABEEKLandingPage() {
   const SEJONG_RED = "#c3002f";
-  const [activeTab, setActiveTab] = useState<'student' | 'admin' | 'professor'>('student');
+  const [activeTab, setActiveTab] = useState<'student' | 'professor' | 'admin'>('student');
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800">
-      {/* --- 네비게이션 바 --- */}
-      <nav className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      {/* --- 네비게이션 --- */}
+      <nav className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2 font-bold text-xl tracking-tighter">
             <Bot color={SEJONG_RED} className="h-6 w-6" />
             <span className="text-slate-900">SJ AI HELPER <span className="text-xs font-normal text-slate-500 ml-1">for ABEEK</span></span>
           </div>
           <div className="hidden md:flex gap-6 text-sm font-medium text-slate-600">
-            <Link href="#features" className="hover:text-[#c3002f] transition-colors">주요 기능</Link>
-            <Link href="#process" className="hover:text-[#c3002f] transition-colors">진행 절차</Link>
-            <Link href="#contact" className="hover:text-[#c3002f] transition-colors">문의하기</Link>
+            <Link href="#pain-point" className="hover:text-[#c3002f]">Why SJ AI?</Link>
+            <Link href="#features" className="hover:text-[#c3002f]">주요 기능</Link>
+            <Link href="#process" className="hover:text-[#c3002f]">이용 절차</Link>
           </div>
-          <div className="flex items-center gap-4">
-            <Link 
-              href="/login" 
-              className="text-sm font-medium hover:text-[#c3002f]"
-            >
-              로그인
-            </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-sm font-medium hover:text-[#c3002f]">로그인</Link>
             <Link
               href="/dashboard"
               style={{ backgroundColor: SEJONG_RED }}
-              className="rounded-md px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+              className="rounded-md px-4 py-2 text-sm font-medium text-white hover:brightness-110 transition-all"
             >
-              심사 시작하기
+              내 졸업요건 조회
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* --- 히어로 섹션 --- */}
-      <section className="relative overflow-hidden pt-20 pb-28 md:pt-32 md:pb-48 bg-slate-50">
-        <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
-          <div className="inline-flex items-center rounded-full border px-3 py-1 text-sm bg-white text-slate-600 mb-6 shadow-sm">
-            <span style={{ color: SEJONG_RED }} className="font-bold mr-1">New</span>
-            복잡한 공학인증 엑셀 계산은 이제 그만
+      {/* --- Hero Section --- */}
+      <section className="relative pt-20 pb-32 overflow-hidden bg-slate-50">
+        <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
+          <div className="inline-block mb-6 px-4 py-1.5 rounded-full bg-red-50 border border-red-100 text-[#c3002f] font-bold text-sm">
+            🚨 2026년 2월 졸업예정자 필독
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-tight mb-6">
-            공학인증 졸업 심사,<br />
-            <span style={{ color: SEJONG_RED }}>AI 자동화 플랫폼</span>으로 완벽하게.
+          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 leading-[1.2] mb-6">
+            출력하고, 자필로 쓰고, 방문 제출...&quot;<br />
+            아직도 <span className="relative inline-block">
+              <span className="relative z-10" style={{ color: SEJONG_RED }}>졸업 심사 서류</span>
+              <span className="absolute bottom-1 left-0 w-full h-3 bg-red-200/50 -z-0"></span>
+            </span>와 싸우시나요?
           </h1>
-          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10">
-            학점 입력 한 번으로 BSM, 전문교양, 설계학점 충족 여부를 자동 판별합니다.<br className="hidden md:block"/>
-            학생, 조교, 담당 교수님 모두를 위한 통합 관리 솔루션입니다.
+          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+            표준이수체계표 작성부터 후수과목이수능력확인서 교수님 서명까지.<br className="hidden md:block" />
+            SJ AI HELPER가 복잡한 공학인증 심사를 <strong>단 3분 만에 디지털로 해결</strong>해 드립니다.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
-              href="/student/check"
+              href="/start"
               style={{ backgroundColor: SEJONG_RED }}
-              className="inline-flex h-12 items-center justify-center rounded-md px-8 text-base font-medium text-white shadow-lg transition-transform hover:-translate-y-1"
+              className="inline-flex h-14 items-center justify-center rounded-lg px-8 text-lg font-bold text-white shadow-lg hover:translate-y-[-2px] transition-transform"
             >
-              <GraduationCap className="mr-2 h-5 w-5" />
-              내 졸업요건 확인하기
+              원클릭 졸업 자가진단
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
-              href="/admin/demo"
-              className="inline-flex h-12 items-center justify-center rounded-md border border-slate-300 bg-white px-8 text-base font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50 hover:text-[#c3002f]"
+              href="/manual"
+              className="inline-flex h-14 items-center justify-center rounded-lg border border-slate-300 bg-white px-8 text-lg font-medium text-slate-700 hover:bg-slate-50 transition-colors"
             >
-              관리자 데모 보기
+              소프트웨어학과/컴공과 가이드
             </Link>
           </div>
+          <p className="mt-6 text-xs text-slate-400">
+            * 세종대학교 포털 계정 연동 / 개인정보 보호를 위해 암호화 처리됩니다.
+          </p>
         </div>
-        {/* 배경 장식 */}
-        <div className="absolute top-0 w-full h-full -z-10 overflow-hidden">
-           <div className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] rounded-full bg-red-50 blur-3xl opacity-60"></div>
-           <div className="absolute top-[40%] -left-[10%] w-[500px] h-[500px] rounded-full bg-slate-200 blur-3xl opacity-50"></div>
+        
+        {/* Background Elements */}
+        <div className="absolute top-1/2 left-0 w-64 h-64 bg-slate-200 rounded-full blur-3xl opacity-30 -translate-y-1/2 -translate-x-1/2"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-100 rounded-full blur-3xl opacity-40 translate-y-1/3 translate-x-1/3"></div>
+      </section>
+
+      {/* --- Pain Point Solution (Before & After) --- */}
+      <section id="pain-point" className="py-24 bg-white">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">왜 SJ AI HELPER인가요?</h2>
+            <p className="text-slate-600">여러분의 메일함에 도착한 그 복잡한 안내문, 이렇게 바뀝니다.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-center">
+            {/* Before: 기존 방식 */}
+            <div className="relative group rounded-2xl border border-slate-200 bg-slate-50 p-8">
+              <div className="absolute -top-4 -left-4 bg-slate-600 text-white px-4 py-1 rounded-full font-bold text-sm shadow-md">
+                기존 방식 (Before)
+              </div>
+              <div className="space-y-6 opacity-70 group-hover:opacity-100 transition-opacity">
+                <div className="flex gap-4 items-start">
+                  <div className="bg-slate-200 p-2 rounded-lg">
+                    <FileWarning className="h-6 w-6 text-slate-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-800">끝없는 서류 작업</h3>
+                    <p className="text-sm text-slate-600 mt-1">졸업심사서, 선후수준수확인표, 표준이수체계표... <br/>학번별 엑셀 시트 찾아서 일일이 기입.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <div className="bg-slate-200 p-2 rounded-lg">
+                    <PenTool className="h-6 w-6 text-slate-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-800">아날로그 제출</h3>
+                    <p className="text-sm text-slate-600 mt-1">&quot;출력 후 자필 작성&quot;, &quot;스테이플러 금지&quot;, &quot;충무관 407C 방문&quot;.<br/>하나라도 틀리면 다시 출력.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <div className="bg-slate-200 p-2 rounded-lg">
+                    <School className="h-6 w-6 text-slate-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-800">교수님 서명 받기</h3>
+                    <p className="text-sm text-slate-600 mt-1">&apos;후수과목이수능력확인서&apos; 들고 교수님 연구실 노크.<br/>교수님 안 계시면 무한 대기.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* After: SJ AI 방식 */}
+            <div className="relative rounded-2xl border-2 border-[#c3002f] bg-white p-8 shadow-2xl scale-105 z-10">
+              <div className="absolute -top-4 -left-4 bg-[#c3002f] text-white px-4 py-1 rounded-full font-bold text-sm shadow-md">
+                SJ AI HELPER (After)
+              </div>
+              <div className="space-y-6">
+                <div className="flex gap-4 items-start">
+                  <div className="bg-red-50 p-2 rounded-lg">
+                    <Bot color={SEJONG_RED} className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900">서류 자동 생성</h3>
+                    <p className="text-sm text-slate-600 mt-1">성적증명서 PDF만 올리면, <strong className="text-[#c3002f]">AI가 모든 서류를 자동 완성</strong>합니다.<br/>빈칸 채우기 고민 끝!</p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <div className="bg-red-50 p-2 rounded-lg">
+                    <UploadCloud color={SEJONG_RED} className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900">온라인 원클릭 제출</h3>
+                    <p className="text-sm text-slate-600 mt-1">충무관 방문 필요 없음. 완성된 서류 패키지를 <strong className="text-[#c3002f]">클릭 한 번으로 학과 사무실 전송.</strong></p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <div className="bg-red-50 p-2 rounded-lg">
+                    <MonitorCheck color={SEJONG_RED} className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900">교수님 전자 결재</h3>
+                    <p className="text-sm text-slate-600 mt-1">시스템에서 요청 버튼만 누르세요. <strong className="text-[#c3002f]">교수님이 온라인으로 승인</strong>하면 서명 완료.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* --- 사용자별 기능 (탭 인터페이스) --- */}
-      <section id="features" className="py-24 bg-white">
+      {/* --- Detailed Features (Tabs) --- */}
+      <section id="features" className="py-20 bg-slate-50">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
+          <div className="text-center mb-10">
             <h2 className="text-3xl font-bold tracking-tight text-slate-900">
               사용자별 맞춤 기능
             </h2>
-            <p className="mt-4 text-slate-600">
-              학생, 관리자, 교수님 각각에게 꼭 필요한 기능을 제공합니다.
-            </p>
           </div>
 
-          {/* 탭 버튼 */}
-          <div className="flex justify-center mb-12">
-            <div className="inline-flex rounded-lg bg-slate-100 p-1">
-              {(['student', 'admin', 'professor'] as const).map((tab) => (
+          <div className="flex justify-center mb-10">
+            <div className="inline-flex bg-slate-200 p-1 rounded-lg">
+              {(['student', 'professor', 'admin'] as const).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`
-                    px-6 py-3 rounded-md text-sm font-bold transition-all duration-200
-                    ${activeTab === tab 
+                  className={`px-6 py-2 rounded-md text-sm font-bold transition-all ${
+                    activeTab === tab 
                       ? 'bg-white text-[#c3002f] shadow-sm' 
-                      : 'text-slate-500 hover:text-slate-700'}
-                  `}
+                      : 'text-slate-500 hover:text-slate-700'
+                  }`}
                 >
                   {tab === 'student' && '학생 (졸업예정자)'}
-                  {tab === 'admin' && '행정 관리자'}
                   {tab === 'professor' && '담당 교수'}
+                  {tab === 'admin' && '학과 조교/관리자'}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* 탭 컨텐츠 영역 */}
-          <div className="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-100 shadow-sm min-h-[400px]">
-            
-            {/* 1. 학생 기능 */}
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 md:p-12 min-h-[400px]">
             {activeTab === 'student' && (
-              <div className="grid md:grid-cols-2 gap-12 items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="grid md:grid-cols-2 gap-10 items-center animate-in fade-in slide-in-from-bottom-2">
                 <div className="space-y-6">
-                  <div className="inline-flex items-center gap-2 text-[#c3002f] font-bold">
-                    <GraduationCap className="h-5 w-5" /> Student Feature
-                  </div>
-                  <h3 className="text-3xl font-bold text-slate-900">클릭 한 번으로<br/>복잡한 졸업 요건 정복</h3>
-                  <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-[#c3002f] flex-shrink-0" />
-                      <div>
-                        <span className="font-bold text-slate-900">졸업요건 자동 체크</span>
-                        <p className="text-sm text-slate-600">BSM(기초과학), 전문교양, 설계학점 등 복잡한 이수 구분을 자동으로 계산합니다.</p>
-                      </div>
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    &quot;BSM 학점이 부족한가요?&quot;<br/>
+                    <span style={{ color: SEJONG_RED }}>미충족 사유</span>를 즉시 알려줍니다.
+                  </h3>
+                  <ul className="space-y-4 text-slate-600">
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>자동 계산:</strong> 전문교양 14학점, BSM 18학점, 설계학점 10학점 등 필수 요건 달성 현황 시각화.</span>
                     </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-[#c3002f] flex-shrink-0" />
-                      <div>
-                        <span className="font-bold text-slate-900">선·후수 체계 검증</span>
-                        <p className="text-sm text-slate-600">선수 과목을 듣지 않고 후수 과목을 수강했는지 AI가 즉시 판별하여 알려줍니다.</p>
-                      </div>
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>선후수 체계 검증:</strong> &apos;선수과목 미이수&apos; 시 발생하는 &apos;후수과목이수능력확인서&apos;를 자동 생성.</span>
                     </li>
-                    <li className="flex items-start gap-3">
-                      <UploadCloud className="h-6 w-6 text-[#c3002f] flex-shrink-0" />
-                      <div>
-                        <span className="font-bold text-slate-900">간편한 서류 제출</span>
-                        <p className="text-sm text-slate-600">성적증명서 및 포트폴리오 업로드 시 누락된 항목이 없는지 체크리스트를 제공합니다.</p>
-                      </div>
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>서류 패키징:</strong> 성적증명서, 종합설계 보고서 등 필요 서류를 누락 없이 묶어서 관리.</span>
                     </li>
                   </ul>
                 </div>
-                {/* UI Mockup Placeholder */}
-                <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 aspect-[4/3] flex flex-col gap-4">
-                  <div className="flex justify-between items-center border-b pb-4">
-                    <span className="font-bold">졸업 요건 달성률</span>
-                    <span className="text-[#c3002f] font-bold">85%</span>
+                {/* Mockup UI */}
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 relative">
+                  <div className="absolute top-4 right-4 bg-red-100 text-[#c3002f] text-xs font-bold px-2 py-1 rounded">미충족 감지</div>
+                  <div className="text-sm text-slate-500 mb-2">학번: 19011*** | 이름: 김세종</div>
+                  <div className="w-full bg-slate-200 h-2 rounded-full mb-4">
+                    <div className="bg-[#c3002f] h-2 rounded-full" style={{ width: '88%' }}></div>
                   </div>
-                  <div className="space-y-3">
-                    <div className="w-full bg-slate-100 rounded-full h-2.5">
-                      <div className="bg-[#c3002f] h-2.5 rounded-full" style={{ width: '85%' }}></div>
+                  <div className="space-y-3 bg-white p-4 rounded-lg border border-slate-100">
+                    <div className="flex justify-between text-sm">
+                      <span>전문교양 (14학점)</span>
+                      <span className="text-green-600 font-bold">충족</span>
                     </div>
-                    <div className="text-xs text-slate-500 flex justify-between">
-                       <span>전문교양: 충족</span>
-                       <span className="text-red-500">설계학점: 2학점 부족</span>
+                    <div className="flex justify-between text-sm">
+                      <span>설계학점 (10학점)</span>
+                      <span className="text-[#c3002f] font-bold">2학점 부족 ⚠️</span>
                     </div>
-                  </div>
-                  <div className="mt-auto bg-blue-50 p-4 rounded-lg text-sm text-blue-800">
-                    💡 <strong>Tip:</strong> &apos;종합설계&apos; 과목을 수강하면 졸업 요건이 충족됩니다.
+                    <p className="text-xs text-slate-400 mt-2 pt-2 border-t">
+                      * &apos;종합설계&apos; 미수강 상태입니다. 사유서를 작성하시겠습니까?
+                    </p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* 2. 관리자 기능 */}
-            {activeTab === 'admin' && (
-              <div className="grid md:grid-cols-2 gap-12 items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {activeTab === 'professor' && (
+              <div className="grid md:grid-cols-2 gap-10 items-center animate-in fade-in slide-in-from-bottom-2">
                 <div className="space-y-6">
-                  <div className="inline-flex items-center gap-2 text-[#c3002f] font-bold">
-                    <LayoutDashboard className="h-5 w-5" /> Admin Feature
-                  </div>
-                  <h3 className="text-3xl font-bold text-slate-900">수백 명의 학생 심사,<br/>대시보드 하나로 끝.</h3>
-                  <ul className="space-y-4">
-                     <li className="flex items-start gap-3">
-                      <BarChart3 className="h-6 w-6 text-[#c3002f] flex-shrink-0" />
-                      <div>
-                        <span className="font-bold text-slate-900">실시간 현황 대시보드</span>
-                        <p className="text-sm text-slate-600">제출 완료, 검토 중, 미제출 학생 현황을 한눈에 파악하고 엑셀로 내보냅니다.</p>
-                      </div>
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    학생 면담과 서명 요청,<br/>
+                    <span style={{ color: SEJONG_RED }}>대시보드</span>에서 한 번에 처리하세요.
+                  </h3>
+                  <ul className="space-y-4 text-slate-600">
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>전자 결재:</strong> 학생들이 요청한 &apos;후수과목이수능력확인서&apos;, &apos;졸업심사서&apos;를 온라인으로 검토하고 승인합니다.</span>
                     </li>
-                    <li className="flex items-start gap-3">
-                      <AlertTriangle className="h-6 w-6 text-[#c3002f] flex-shrink-0" />
-                      <div>
-                        <span className="font-bold text-slate-900">자동 알림 발송</span>
-                        <p className="text-sm text-slate-600">서류 누락자나 미제출자에게 클릭 한 번으로 독촉 알림(카톡/메일)을 발송합니다.</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <UserCheck className="h-6 w-6 text-[#c3002f] flex-shrink-0" />
-                      <div>
-                        <span className="font-bold text-slate-900">미충족자 자동 분류</span>
-                        <p className="text-sm text-slate-600">학번별, 미충족 사유별(설계학점 부족 등)로 학생을 자동 그룹화하여 통계를 제공합니다.</p>
-                      </div>
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>종합설계 평가:</strong> 캡스톤 디자인 최종보고서를 열람하고 바로 평가 점수를 입력할 수 있습니다.</span>
                     </li>
                   </ul>
                 </div>
-                 {/* UI Mockup Placeholder */}
-                 <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 aspect-[4/3] relative overflow-hidden">
-                    <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="bg-slate-50 p-3 rounded-lg border">
-                            <div className="text-xs text-slate-500">심사 완료</div>
-                            <div className="text-xl font-bold text-slate-800">124명</div>
-                        </div>
-                        <div className="bg-red-50 p-3 rounded-lg border border-red-100">
-                            <div className="text-xs text-red-500">요건 미충족</div>
-                            <div className="text-xl font-bold text-[#c3002f]">12명</div>
-                        </div>
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex flex-col justify-center items-center text-center">
+                   <MessageSquare className="w-12 h-12 text-[#c3002f] mb-4" />
+                   <p className="font-bold text-lg mb-2">승인 대기 문서 (5건)</p>
+                   <p className="text-sm text-slate-500 mb-6">
+                     김세종 학생의 &apos;후수과목이수능력확인서&apos; 외 4건의<br/>
+                     전자 서명 요청이 도착했습니다.
+                   </p>
+                   <button className="bg-slate-900 text-white text-sm px-6 py-2 rounded hover:bg-slate-800">
+                     검토하러 가기
+                   </button>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'admin' && (
+              <div className="grid md:grid-cols-2 gap-10 items-center animate-in fade-in slide-in-from-bottom-2">
+                <div className="space-y-6">
+                   <h3 className="text-2xl font-bold text-slate-900">
+                    심사 기간의 폭주하는 메일,<br/>
+                    <span style={{ color: SEJONG_RED }}>AI 자동 분류</span>로 해방되세요.
+                  </h3>
+                  <ul className="space-y-4 text-slate-600">
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>제출 현황 모니터링:</strong> 전체 대상자 중 제출/미제출/누락자를 실시간으로 파악합니다.</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>자동 피드백 발송:</strong> 서류 누락(성적표 미첨부 등) 발생 시 학생에게 보완 요청 알림을 자동 발송합니다.</span>
+                    </li>
+                     <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>데이터 엑셀 변환:</strong> 최종 심사 결과를 학교 제출 양식에 맞게 엑셀로 자동 변환합니다.</span>
+                    </li>
+                  </ul>
+                </div>
+                 <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
+                    <div className="flex items-center gap-2 mb-4 border-b pb-4">
+                        <FileSpreadsheet className="text-green-600" size={20}/>
+                        <span className="font-bold text-sm">2026-02 졸업심사_최종.xlsx</span>
                     </div>
                     <div className="space-y-2">
-                        <div className="flex justify-between text-xs font-bold text-slate-400 uppercase">
-                            <span>학번</span>
-                            <span>이름</span>
-                            <span>상태</span>
+                        <div className="flex justify-between text-xs text-slate-500">
+                            <span>총원: 120명</span>
+                            <span>처리완료: 98명</span>
                         </div>
-                        <div className="flex justify-between text-sm py-2 border-b">
-                            <span>19010001</span>
-                            <span>김세종</span>
-                            <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded text-xs">통과</span>
+                        <div className="w-full bg-slate-200 h-1.5 rounded-full">
+                            <div className="bg-green-500 h-1.5 rounded-full" style={{width: '82%'}}></div>
                         </div>
-                        <div className="flex justify-between text-sm py-2 border-b">
-                            <span>20010234</span>
-                            <span>이공학</span>
-                            <span className="text-red-600 bg-red-50 px-2 py-0.5 rounded text-xs">미충족</span>
+                        <div className="mt-4 p-3 bg-red-50 rounded text-xs text-red-600 font-medium">
+                            ⚠️ 미제출 22명에게 리마인드 알림이 발송되었습니다.
                         </div>
-                    </div>
-                    {/* Floating Alert */}
-                    <div className="absolute bottom-4 right-4 bg-slate-800 text-white text-xs px-3 py-2 rounded-lg shadow-xl flex items-center gap-2">
-                        <AlertTriangle size={14} className="text-yellow-400"/>
-                        미제출자 5명에게 알림 발송됨
-                    </div>
-                 </div>
-              </div>
-            )}
-
-            {/* 3. 교수 기능 */}
-            {activeTab === 'professor' && (
-              <div className="grid md:grid-cols-2 gap-12 items-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div className="space-y-6">
-                  <div className="inline-flex items-center gap-2 text-[#c3002f] font-bold">
-                    <FileText className="h-5 w-5" /> Professor Feature
-                  </div>
-                  <h3 className="text-3xl font-bold text-slate-900">페이퍼리스 심사,<br/>정확하고 빠르게.</h3>
-                  <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-[#c3002f] flex-shrink-0" />
-                      <div>
-                        <span className="font-bold text-slate-900">원클릭 서류 심사</span>
-                        <p className="text-sm text-slate-600">학생들이 제출한 포트폴리오와 성적표를 온라인에서 바로 열람하고 승인/반려할 수 있습니다.</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <ShieldCheck className="h-6 w-6 text-[#c3002f] flex-shrink-0" />
-                      <div>
-                        <span className="font-bold text-slate-900">최종 승인 권한</span>
-                        <p className="text-sm text-slate-600">AI가 1차 검증한 데이터를 바탕으로, 교수님은 최종 승인만 하시면 됩니다.</p>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                 {/* UI Mockup Placeholder */}
-                 <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8 aspect-[4/3] flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                        <div className="h-16 w-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
-                            <CheckCircle size={32} />
-                        </div>
-                        <h4 className="text-lg font-bold">심사 승인 완료</h4>
-                        <p className="text-slate-500 text-sm">
-                            2024학년도 전기 졸업심사 대상자<br/>
-                            전원 검토가 완료되었습니다.
-                        </p>
-                        <button className="text-[#c3002f] text-sm font-bold hover:underline">
-                            심사 결과 보고서 다운로드 &rarr;
-                        </button>
                     </div>
                  </div>
               </div>
@@ -300,67 +328,42 @@ export default function ABEEKLandingPage() {
         </div>
       </section>
 
-      {/* --- 프로세스 (How it works) --- */}
-      <section className="py-20 bg-slate-900 text-white">
-        <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-bold text-center mb-16">
-            졸업 심사 프로세스 혁신
-          </h2>
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: "01", title: "학생 데이터 연동", desc: "학사정보시스템의 성적 데이터를 안전하게 불러옵니다." },
-              { step: "02", title: "AI 요건 분석", desc: "공학인증 기준(KEC)에 맞춰 이수 학점을 정밀 분석합니다." },
-              { step: "03", title: "부족 요건 알림", desc: "요건 미달 시 학생에게 구체적인 사유와 함께 알림을 보냅니다." },
-              { step: "04", title: "교수 최종 승인", desc: "충족된 건에 대해 담당 교수님의 전자 서명으로 심사가 종료됩니다." }
-            ].map((item, idx) => (
-              <div key={idx} className="relative p-6 border border-slate-700 rounded-xl bg-slate-800/50 hover:bg-slate-800 transition-colors">
-                <div className="text-4xl font-extrabold text-[#c3002f]/50 mb-4">{item.step}</div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
-                {idx !== 3 && (
-                    <ChevronRight className="hidden md:block absolute -right-6 top-1/2 -translate-y-1/2 text-slate-600" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* --- CTA --- */}
-      <section className="py-24 text-center bg-white">
+      {/* --- CTA Section --- */}
+      <section className="py-24 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-bold text-slate-900 mb-6">
-            이번 학기 졸업 심사, <br/>
-            SJ AI HELPER와 함께 스마트하게 시작하세요.
+            이번 학기 공학인증 심사,<br />
+            스트레스 없이 <span style={{ color: SEJONG_RED }}>3분 만에 끝내세요.</span>
           </h2>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-            <Link
+          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
+            자필 서명, 방문 제출의 번거로움은 이제 그만.<br/>
+            SJ AI HELPER가 여러분의 졸업 준비를 가장 스마트하게 도와드립니다.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+             <Link
               href="/login"
               style={{ backgroundColor: SEJONG_RED }}
-              className="inline-flex h-14 items-center justify-center rounded-md px-10 text-lg font-bold text-white shadow-lg hover:brightness-110 transition-all"
+              className="inline-flex h-14 items-center justify-center rounded-lg px-10 text-lg font-bold text-white shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1"
             >
-              지금 바로 로그인
+              로그인하고 심사 시작하기
             </Link>
           </div>
-          <p className="mt-6 text-sm text-slate-500">
-            * 본 서비스는 세종대학교 포털 계정(Sejong Portal ID)으로 이용 가능합니다.
-          </p>
         </div>
       </section>
 
-      {/* --- 푸터 --- */}
-      <footer className="bg-slate-50 py-10 border-t border-slate-200">
-        <div className="container mx-auto px-4 text-center">
-            <div className="flex items-center justify-center gap-2 font-bold text-xl mb-4">
-            <Bot color={SEJONG_RED} className="h-6 w-6" />
-            <span className="text-slate-800">SJ AI HELPER</span>
+      {/* --- Footer --- */}
+      <footer className="bg-slate-50 py-12 border-t border-slate-200 text-sm text-slate-500">
+        <div className="container mx-auto px-4 text-center space-y-4">
+          <div className="font-bold text-slate-700 flex justify-center items-center gap-2">
+             <Bot className="w-5 h-5" color={SEJONG_RED}/> SJ AI HELPER
           </div>
-          <p className="text-sm text-slate-500 mb-4">
-            세종대학교 공학인증센터 공식 지원 플랫폼
+          <p>
+            세종대학교 공학교육센터 공식 지원 플랫폼<br/>
+            (05006) 서울시 광진구 능동로 209 충무관 407C호
           </p>
-          <div className="text-xs text-slate-400">
+          <p className="text-xs text-slate-400 mt-8">
             © {new Date().getFullYear()} Sejong University. All rights reserved.
-          </div>
+          </p>
         </div>
       </footer>
     </div>
