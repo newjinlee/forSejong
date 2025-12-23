@@ -76,7 +76,6 @@ export default function RoadmapLandingPage() {
             </Link>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium hover:text-[#c3002f]">로그인</Link>
             <Link
               href="/login"
               style={{ backgroundColor: SEJONG_RED }}

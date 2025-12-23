@@ -18,6 +18,7 @@ import {
   GraduationCap, Loader2, ListChecks, AlertTriangle 
 } from 'lucide-react';
 import { useCareerStore } from '../../../src/store/useCareerStore';
+import { downloadRoadmapAsExcel } from '../../../src/lib/downloadRoadmap';
 
 // --- 1. Custom Node Components ---
 const SubjectNode = ({ data }: { data: any }) => {
@@ -46,7 +47,7 @@ const SubjectNode = ({ data }: { data: any }) => {
           {data.label}
         </h3>
         <p className="text-[10px] text-slate-500 flex items-center gap-1">
-          {isCompleted ? <span className="text-slate-500">✅ 이수 완료</span> : <span className="text-[#c3002f] font-bold">🔥 AI 추천</span>}
+          {isCompleted ? <span className="text-slate-500">이수 완료</span> : <span className="text-[#c3002f] font-bold">🔥 AI 추천</span>}
         </p>
         {isRecommended && data.reason && (
           <div className="mt-2 text-[10px] bg-red-50 text-[#c3002f] p-1 rounded border border-red-100">
@@ -158,12 +159,28 @@ export default function RoadmapGeneratePage() {
   const { selectedCareer, studentInfo, completedCourses } = useCareerStore();
   const [loading, setLoading] = useState(true);
   const [showCourseList, setShowCourseList] = useState(false);
+  const [showInsightPanel, setShowInsightPanel] = useState(true);
   
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
   // 현재 진로에 맞는 추천 데이터
   const recommendations = getRecommendations(selectedCareer?.id);
+
+  // 로드맵 엑셀 다운로드 핸들러
+  const handleDownloadRoadmap = () => {
+    if (!studentInfo || !selectedCareer) return;
+
+    downloadRoadmapAsExcel({
+      studentName: studentInfo.name,
+      studentId: studentInfo.id,
+      department: studentInfo.department,
+      careerTitle: selectedCareer.title,
+      completedCourses,
+      recommendedCourses: recommendations.courses,
+      insights: recommendations.insights,
+    });
+  };
 
   // 기이수 과목을 학기별로 그룹화
   const completedCoursesForGraph = completedCourses.map((course, index) => ({
@@ -268,7 +285,7 @@ export default function RoadmapGeneratePage() {
       <div className="min-h-screen flex flex-col items-center justify-center bg-white">
         <Loader2 className="w-16 h-16 text-[#c3002f] animate-spin mb-6" />
         <h2 className="text-2xl font-bold text-slate-900 mb-2">
-          {studentInfo?.name || '학생'}님의 데이터를 불러오는 중...
+          데이터를 불러오는 중...
         </h2>
         <div className="flex flex-col gap-2 text-slate-500 text-sm text-center">
           <p className="animate-pulse">학사 정보 시스템 연동 중...</p>
@@ -296,7 +313,7 @@ export default function RoadmapGeneratePage() {
           </div>
           <div>
             <h1 className="font-bold text-xl text-slate-900 leading-none mb-1">
-              {studentInfo?.name || '학생'}님의 커리어 로드맵
+              커리어 로드맵
             </h1>
             <p className="text-xs text-slate-500">
               목표: <span className="font-bold text-[#c3002f]">{selectedCareer?.title || '미선택'}</span>
@@ -308,13 +325,28 @@ export default function RoadmapGeneratePage() {
         
         <div className="flex items-center gap-3">
           <button 
+            onClick={() => setShowInsightPanel(!showInsightPanel)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
+              showInsightPanel 
+                ? 'bg-red-50 text-[#c3002f] hover:bg-red-100' 
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+            }`}
+          >
+            <AlertTriangle size={18} />
+            분석 리포트
+          </button>
+          <button 
             onClick={() => setShowCourseList(!showCourseList)}
             className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-bold transition-colors"
           >
             <ListChecks size={18} />
-            기이수 목록 확인
+            기이수 목록
           </button>
-          <button className="px-5 py-2 bg-[#c3002f] hover:bg-[#a00026] text-white rounded-lg text-sm font-bold shadow-md transition-all">
+          <button 
+            onClick={handleDownloadRoadmap}
+            className="px-5 py-2 bg-[#c3002f] hover:bg-[#a00026] text-white rounded-lg text-sm font-bold shadow-md transition-all flex items-center gap-2"
+          >
+            <GraduationCap size={18} />
             로드맵 저장하기
           </button>
         </div>
@@ -353,35 +385,45 @@ export default function RoadmapGeneratePage() {
           </div>
         </div>
 
-        {/* Recommendation Insight Panel - 동적 내용 */}
-        <div className="absolute top-6 right-6 w-80 bg-white/95 backdrop-blur border border-red-100 p-5 rounded-xl shadow-xl z-10 animate-in slide-in-from-right-10">
-          <div className="flex items-center gap-2 mb-3 border-b border-red-50 pb-2">
-            <AlertTriangle className="w-5 h-5 text-[#c3002f]" />
-            <h3 className="font-bold text-slate-900">로드맵 분석 리포트</h3>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <p className="text-xs text-slate-400 font-bold mb-1">전공 필수 미충족 감지</p>
-              <p className="text-sm text-slate-700 leading-snug">
-                <strong className="text-[#c3002f]">{recommendations.insights.missing}</strong> {recommendations.insights.missingDescription}
-              </p>
+        {/* Recommendation Insight Panel - 토글 가능 */}
+        {showInsightPanel && (
+          <div className="absolute top-6 right-6 w-80 bg-white/95 backdrop-blur border border-red-100 p-5 rounded-xl shadow-xl z-10 animate-in slide-in-from-right-10">
+            <div className="flex items-center justify-between mb-3 border-b border-red-50 pb-2">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-[#c3002f]" />
+                <h3 className="font-bold text-slate-900">로드맵 분석 리포트</h3>
+              </div>
+              <button 
+                onClick={() => setShowInsightPanel(false)}
+                className="text-slate-400 hover:text-slate-600 text-sm"
+              >
+                ✕
+              </button>
             </div>
-            <div>
-              <p className="text-xs text-slate-400 font-bold mb-1">{recommendations.insights.strategy}</p>
-              <p className="text-sm text-slate-700 leading-snug">
-                {recommendations.insights.strategyDescription}
-              </p>
+            <div className="space-y-4">
+              <div>
+                <p className="text-xs text-slate-400 font-bold mb-1">전공 필수 미충족 감지</p>
+                <p className="text-sm text-slate-700 leading-snug">
+                  <strong className="text-[#c3002f]">{recommendations.insights.missing}</strong> {recommendations.insights.missingDescription}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-400 font-bold mb-1">{recommendations.insights.strategy}</p>
+                <p className="text-sm text-slate-700 leading-snug">
+                  {recommendations.insights.strategyDescription}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Course List Modal - 실제 데이터 사용 */}
       {showCourseList && (
         <div className="absolute inset-y-0 right-0 w-[400px] bg-white shadow-2xl z-30 border-l animate-in slide-in-from-right duration-300 flex flex-col">
           <div className="p-5 border-b flex justify-between items-center bg-slate-50">
-            <h3 className="font-bold text-lg flex items-center gap-2 text-black">
-              <ListChecks className="text-black" /> 
+            <h3 className="font-bold text-lg flex items-center gap-2 text-slate-900">
+              <ListChecks className="text-[#c3002f]" /> 
               기이수 과목 목록 ({completedCourses.length}과목)
             </h3>
             <button 
