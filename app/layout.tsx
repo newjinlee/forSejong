@@ -23,20 +23,19 @@ export const metadata: Metadata = {
     template: "%s | SEJONG ROADMAP",
   },
   description:
-    "세종대학교 컴퓨터공학과 학생을 위한 AI 기반 커리큘럼 추천 서비스. DAG 알고리즘과 위상정렬을 활용해 선수과목 의존성을 분석하고, 진로에 맞는 최적의 수강 로드맵을 자동으로 생성합니다.",
+    "세종대학교 학생을 위한 AI 기반 커리큘럼 추천 서비스. 학생의 진로 목표를 분석하고 기이수 과목을 바탕으로 최적의 수강 로드맵을 자동으로 생성합니다.",
   keywords: [
     "세종대학교",
     "커리큘럼 추천",
     "수강신청",
     "로드맵",
     "AI 추천",
-    "컴퓨터공학",
-    "선수과목",
-    "위상정렬",
-    "DAG",
     "진로 설계",
+    "역량 분석",
     "학점 관리",
     "수강 계획",
+    "GPT",
+    "React Flow",
   ],
   authors: [{ name: "SEJONG ROADMAP Team" }],
   creator: "세종대학교 컴퓨터공학과 캡스톤 Team 6",
@@ -59,14 +58,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ko_KR",
-    url: "https://sejong-roadmap.vercel.app", // 실제 배포 URL로 변경
+    url: "https://sejong-roadmap.vercel.app",
     siteName: "SEJONG ROADMAP",
     title: "SEJONG ROADMAP | AI 기반 맞춤형 커리큘럼 추천",
     description:
-      "복잡한 선수과목 의존성, DAG 알고리즘으로 완벽하게 풀어냅니다. AI가 진로를 분석하고 최적의 수강 순서를 제안합니다.",
+      "AI가 진로를 분석하고 기이수 과목 기반으로 최적의 수강 순서를 제안합니다. React Flow로 시각화된 인터랙티브 로드맵을 경험하세요.",
     images: [
       {
-        url: "/og-image.png", // public/og-image.png 준비 필요 (1200x630 권장)
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "SEJONG ROADMAP - AI 기반 커리큘럼 추천 서비스",
@@ -79,7 +78,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "SEJONG ROADMAP | AI 기반 맞춤형 커리큘럼 추천",
     description:
-      "복잡한 선수과목 의존성, DAG 알고리즘으로 완벽하게 풀어냅니다.",
+      "AI가 진로를 분석하고 기이수 과목 기반으로 최적의 수강 순서를 제안합니다.",
     images: ["/og-image.png"],
     creator: "@sejong_roadmap",
   },
@@ -109,8 +108,7 @@ export const metadata: Metadata = {
 
   // 검증 (필요시 실제 값으로 교체)
   verification: {
-    google: "google-site-verification-code", // Google Search Console
-    // naver: "naver-site-verification-code", // 네이버 서치어드바이저
+    google: "google-site-verification-code",
   },
 };
 
@@ -120,7 +118,7 @@ const jsonLd = {
   "@type": "WebApplication",
   name: "SEJONG ROADMAP",
   description:
-    "세종대학교 컴퓨터공학과 학생을 위한 AI 기반 커리큘럼 추천 서비스",
+    "세종대학교 학생을 위한 AI 기반 커리큘럼 추천 서비스",
   url: "https://sejong-roadmap.vercel.app",
   applicationCategory: "EducationalApplication",
   operatingSystem: "Web",
@@ -134,10 +132,12 @@ const jsonLd = {
     name: "세종대학교 컴퓨터공학과 캡스톤 Team 6",
   },
   featureList: [
-    "AI 기반 진로 분석",
-    "DAG 알고리즘 선수과목 시각화",
-    "위상정렬 기반 최적 스케줄링",
+    "AI 기반 진로 역량 분석",
+    "GPT를 활용한 커스텀 진로 분석",
+    "선이수 관계 시각화",
     "React Flow 인터랙티브 로드맵",
+    "학기별 추천 과목 생성",
+    "엑셀 로드맵 다운로드",
   ],
 };
 
@@ -154,8 +154,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {/* 네이버 서치어드바이저 (필요시) */}
-        {/* <meta name="naver-site-verification" content="verification-code" /> */}
       </head>
       <body className={`${notoSansKR.variable} font-sans antialiased`}>
         {children}

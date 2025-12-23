@@ -32,48 +32,63 @@ function isRegularSemester(smt_cd: string): boolean {
 
 /**
  * 수강 과목 데이터에서 학년과 현재 학기를 계산
+ * - 유니크한 학기 개수 기준으로 학년 계산 (휴학 고려)
  */
 function calculateGradeAndSemester(courses: CourseResponseDto[]): {
   grade: number;
   semester: string;
   department: string;
+  completedSemesterCount: number;
 } {
   if (courses.length === 0) {
-    return { grade: 1, semester: `${new Date().getFullYear()}-1`, department: '컴퓨터공학과' };
+    return { 
+      grade: 1, 
+      semester: `${new Date().getFullYear()}-1`, 
+      department: '컴퓨터공학과',
+      completedSemesterCount: 0
+    };
   }
 
   // 정규학기만 필터링 (1학기, 2학기)
   const regularCourses = courses.filter(c => isRegularSemester(c.smt_cd));
   const targetCourses = regularCourses.length > 0 ? regularCourses : courses;
 
-  // 년도와 학기를 숫자로 변환하여 정렬
-  const sortedByTime = [...targetCourses].sort((a, b) => {
-    const timeA = parseInt(a.year) * 10 + parseSemesterNumber(a.smt_cd);
-    const timeB = parseInt(b.year) * 10 + parseSemesterNumber(b.smt_cd);
-    return timeA - timeB;
+  // 유니크한 학기 추출 (년도-학기 조합)
+  const uniqueSemesters = new Set(
+    targetCourses.map(c => `${c.year}-${parseSemesterNumber(c.smt_cd)}`)
+  );
+  const completedSemesterCount = uniqueSemesters.size;
+
+  // 정렬된 학기 목록
+  const sortedSemesters = [...uniqueSemesters].sort((a, b) => {
+    const [yearA, semA] = a.split('-').map(Number);
+    const [yearB, semB] = b.split('-').map(Number);
+    if (yearA !== yearB) return yearA - yearB;
+    return semA - semB;
   });
 
-  // 가장 오래된 (입학) 년도/학기
-  const oldest = sortedByTime[0];
-  const entryYear = parseInt(oldest.year);
-  const entrySemester = parseSemesterNumber(oldest.smt_cd);
+  console.log('📊 이수 학기 목록:', sortedSemesters);
+  console.log('📊 총 이수 학기 수:', completedSemesterCount);
 
-  // 가장 최근 년도/학기
-  const latest = sortedByTime[sortedByTime.length - 1];
-  const latestYear = parseInt(latest.year);
-  const latestSemester = parseSemesterNumber(latest.smt_cd);
+  // 가장 최근 학기
+  const latestSemester = sortedSemesters[sortedSemesters.length - 1];
+  const [latestYear, latestSemNum] = latestSemester.split('-').map(Number);
 
   // 학과 (첫 번째 과목에서 추출)
+  const oldest = targetCourses[0];
   const department = oldest.dept_m_alias || '컴퓨터공학과';
 
-  // 학년 계산: (최근년도 - 입학년도) * 2 + 학기 차이 + 1
-  const totalSemesters = (latestYear - entryYear) * 2 + (latestSemester - entrySemester) + 1;
-  const grade = Math.min(Math.ceil(totalSemesters / 2), 4); // 최대 4학년
+  // 학년 계산 (유니크한 학기 수 기준!)
+  // 1~2학기: 1학년, 3~4학기: 2학년, 5~6학기: 3학년, 7~8학기: 4학년
+  const grade = Math.min(Math.ceil(completedSemesterCount / 2), 4);
+
+  console.log('📊 계산된 학년:', grade);
 
   return {
     grade,
-    semester: `${latestYear}-${latestSemester}`,
+    semester: `${latestYear}-${latestSemNum}`,
     department,
+    completedSemesterCount,
   };
 }
 

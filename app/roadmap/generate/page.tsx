@@ -22,7 +22,6 @@ import { downloadRoadmapAsExcel } from '../../../src/lib/downloadRoadmap';
 import { 
   getAllRemainingRecommendations, 
   PREREQUISITES, 
-  type RecommendedCourse,
   type SemesterRecommendation 
 } from '../../../src/data/semesterCourses';
 
@@ -138,7 +137,13 @@ export default function RoadmapGeneratePage() {
     [completedCourses]
   );
 
-  // 남은 학기 전체 추천 과목 생성
+  // 기이수 과목 학기 정보 목록 (추가!)
+  const completedCourseSemesters = useMemo(() => 
+    completedCourses.map(c => c.semester).filter((s): s is string => !!s),
+    [completedCourses]
+  );
+
+  // 남은 학기 전체 추천 과목 생성 (학기 정보도 전달!)
   const allRecommendations = useMemo(() => {
     if (!studentInfo) return [];
     return getAllRemainingRecommendations(
@@ -146,9 +151,10 @@ export default function RoadmapGeneratePage() {
       studentInfo.grade,
       currentSemesterInfo.semNum,
       currentSemesterInfo.year,
-      completedCourseNames
+      completedCourseNames,
+      completedCourseSemesters  // 학기 정보 추가!
     );
-  }, [studentInfo, currentSemesterInfo, completedCourseNames]);
+  }, [studentInfo, currentSemesterInfo, completedCourseNames, completedCourseSemesters]);
 
   // 모든 추천 과목 평탄화 (엑셀 다운로드용)
   const allRecommendedCourses = useMemo(() => 

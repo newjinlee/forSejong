@@ -527,40 +527,109 @@ export type SemesterRecommendation = {
 /**
  * 현재 학년/학기부터 졸업까지 남은 모든 학기 추천 과목 생성
  * @param department 학과
- * @param currentGrade 현재 학년
- * @param currentSemesterNum 현재 학기 (1 or 2)
+ * @param currentGrade 현재 학년 (참고용)
+ * @param currentSemesterNum 현재 학기 (1 or 2) (참고용)
  * @param currentYear 현재 연도
  * @param completedCourseNames 기이수 과목명 목록
+ * @param completedCourseSemesters 기이수 과목의 학기 정보 배열 (예: ["2022-1", "2023-2", ...])
  * @returns 학기별 추천 과목 배열
  */
 export function getAllRemainingRecommendations(
   department: string,
   currentGrade: number,
-  currentSemesterNum: number, // 현재 학기 (1 or 2)
+  currentSemesterNum: number,
   currentYear: number,
-  completedCourseNames: string[]
+  completedCourseNames: string[],
+  completedCourseSemesters?: string[]
 ): SemesterRecommendation[] {
   const result: SemesterRecommendation[] = [];
   
   // 누적 이수 과목 (추천 과목도 이수한 것으로 처리)
   let accumulatedCompleted = [...completedCourseNames];
   
-  // 현재 상태에서 시작
-  let year = currentYear;
-  let grade = currentGrade;
-  let semNum = currentSemesterNum;
+  // ===================================
+  // 실제 이수 학기 수 계산 (유니크한 학기 개수)
+  // ===================================
+  let completedSemesters: number;
+  let lastCompletedYear = currentYear;
+  let lastCompletedSemNum = currentSemesterNum;
   
-  // 다음 학기부터 시작
-  if (semNum === 1) {
-    semNum = 2;
+  if (completedCourseSemesters && completedCourseSemesters.length > 0) {
+    // 유니크한 학기 추출 (여름/겨울학기 제외)
+    const uniqueSemesters = [...new Set(
+      completedCourseSemesters.filter(s => s && s.includes('-') && !s.includes('여름') && !s.includes('겨울'))
+    )];
+    completedSemesters = uniqueSemesters.length;
+    
+    // 가장 최근 학기 찾기
+    const sortedSemesters = uniqueSemesters
+      .map(s => {
+        const [year, sem] = s.split('-').map(Number);
+        return { year, sem, str: s };
+      })
+      .sort((a, b) => {
+        if (a.year !== b.year) return b.year - a.year;
+        return b.sem - a.sem;
+      });
+    
+    if (sortedSemesters.length > 0) {
+      lastCompletedYear = sortedSemesters[0].year;
+      lastCompletedSemNum = sortedSemesters[0].sem;
+    }
+    
+    console.log('📊 이수 학기 목록:', uniqueSemesters.sort());
   } else {
-    semNum = 1;
-    year += 1;
-    grade += 1;
+    // 학기 정보 없으면 과목 수로 추정
+    completedSemesters = Math.ceil(completedCourseNames.length / 7) || 1;
   }
   
-  // 4학년 2학기까지 반복 (최대 8학기)
-  while (grade <= 4) {
+  // 이수 학기로 현재 학년 계산
+  // 5학기 이수 → 3학년 1학기까지 완료
+  const calculatedGrade = Math.min(4, Math.ceil(completedSemesters / 2));
+  const lastSemNumByCount = completedSemesters % 2 === 1 ? 1 : 2;
+  
+  console.log('📊 로드맵 생성 정보:', {
+    department,
+    inputGrade: currentGrade,
+    currentYear,
+    completedCount: completedCourseNames.length,
+    completedSemesters,
+    calculatedGrade,
+    lastCompletedSemester: `${lastCompletedYear}-${lastCompletedSemNum}`
+  });
+  
+  // 다음 학기 계산
+  let year = lastCompletedYear;
+  let semNum: number;
+  let grade: number;
+  
+  if (lastCompletedSemNum === 1) {
+    // 1학기까지 이수 → 다음은 같은 해 2학기
+    semNum = 2;
+    grade = calculatedGrade;
+  } else {
+    // 2학기까지 이수 → 다음은 다음 해 1학기
+    semNum = 1;
+    year += 1;
+    grade = Math.min(4, calculatedGrade + 1);
+  }
+  
+  // 남은 학기 수 계산 (8학기 - 이수 학기)
+  const remainingSemesters = Math.max(0, 8 - completedSemesters);
+  
+  console.log('📅 추천 시작 학기:', { 
+    year, 
+    grade, 
+    semNum, 
+    remainingSemesters,
+    message: `${completedSemesters}학기 이수 완료 → ${remainingSemesters}개 학기 남음`
+  });
+  
+  // 4학년 2학기까지 반복
+  let loopCount = 0;
+  while (grade <= 4 && loopCount < remainingSemesters + 1) {
+    loopCount++;
+    
     // 해당 학기 과목 데이터 선택
     const semesterData = semNum === 1 ? SEMESTER_1_COURSES : SEMESTER_2_COURSES;
     const deptData = semesterData[department] || semesterData['컴퓨터공학과'];
@@ -613,6 +682,8 @@ export function getAllRemainingRecommendations(
       reason: getReasonByGrade(grade, course.type),
     }));
     
+    console.log(`📚 ${semesterStr} (${grade}학년 ${semNum}학기): ${recommendedCourses.length}개 추천`);
+    
     // 결과에 추가 (과목이 있을 때만)
     if (recommendedCourses.length > 0) {
       result.push({
@@ -638,6 +709,8 @@ export function getAllRemainingRecommendations(
       grade += 1;
     }
   }
+  
+  console.log('✅ 총 추천 학기 수:', result.length);
   
   return result;
 }
