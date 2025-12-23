@@ -87,7 +87,7 @@ export default function LoginPage() {
                 type="text"
                 value={id}
                 onChange={(e) => setId(e.target.value)}
-                placeholder="학번을 입력하세요"
+                placeholder="학번"
                 className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#c3002f] focus:border-transparent transition-all text-slate-900 placeholder:text-slate-400"
                 disabled={isLoading}
                 required
@@ -144,30 +144,11 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* 구분선 */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-3 bg-white text-slate-400">또는</span>
-            </div>
-          </div>
-
-          {/* 데모 버튼 */}
-          <button
-            type="button"
-            onClick={handleDemoLogin}
-            className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium transition-colors"
-          >
-            🎓 데모 계정으로 체험하기
-          </button>
         </div>
 
         {/* 하단 안내 */}
         <p className="text-center text-xs text-slate-400 mt-6">
-          세종대학교 포털 계정으로 로그인됩니다.<br />
+          세종대학교 포털 계정으로 로그인됩니다.
           비밀번호는 서버에 저장되지 않습니다.
         </p>
       </div>

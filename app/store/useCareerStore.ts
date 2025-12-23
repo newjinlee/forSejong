@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 // 역량 데이터 타입
 export type Competency = {
@@ -18,7 +19,7 @@ export type Career = {
 };
 
 // 학생 정보 타입
-type StudentInfo = {
+export type StudentInfo = {
   name: string;
   department: string; // 예: "컴퓨터공학과", "소프트웨어학과"
   grade: number;
@@ -30,16 +31,20 @@ interface CareerState {
   selectedCareer: Career | null;
   setStudentInfo: (info: StudentInfo) => void;
   setSelectedCareer: (career: Career) => void;
+  reset: () => void; // 로그아웃용
 }
 
-export const useCareerStore = create<CareerState>((set) => ({
-  studentInfo: {
-    name: '이유진', // 로그인에서 받아왔다고 가정
-    department: '컴퓨터공학과',
-    grade: 3,
-    semester: '2024-1',
-  },
-  selectedCareer: null,
-  setStudentInfo: (info) => set({ studentInfo: info }),
-  setSelectedCareer: (career) => set({ selectedCareer: career }),
-}));
+export const useCareerStore = create<CareerState>()(
+  persist(
+    (set) => ({
+      studentInfo: null, // 초기값 null (로그인 전)
+      selectedCareer: null,
+      setStudentInfo: (info) => set({ studentInfo: info }),
+      setSelectedCareer: (career) => set({ selectedCareer: career }),
+      reset: () => set({ studentInfo: null, selectedCareer: null }),
+    }),
+    {
+      name: 'career-storage', // localStorage 키 이름
+    }
+  )
+);

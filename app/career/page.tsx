@@ -126,7 +126,7 @@ export default function CareerSelectPage() {
   const handleNext = () => {
     if (activeCareer) {
       setSelectedCareer(activeCareer);
-      router.push('/roadmap/generate');
+      router.push('/competency');
     }
   };
 
@@ -310,7 +310,7 @@ export default function CareerSelectPage() {
             disabled={!activeCareer}
             className="w-full mt-6 py-4 bg-[#c3002f] hover:bg-[#a00026] disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold text-lg shadow-lg transition-all flex items-center justify-center gap-2"
           >
-            {activeCareer ? `${activeCareer.title} 로드맵 생성하기` : '진로를 선택해주세요'}
+            {activeCareer ? `${activeCareer.title} 역량 분석하기` : '진로를 선택해주세요'}
             <ArrowRight />
           </button>
         </div>
