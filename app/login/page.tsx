@@ -6,18 +6,32 @@ import { Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useCareerStore } from '../../src/store/useCareerStore';
 import type { CourseResponseDto } from '../../src/types/api';
 
-// API URL (Next.js 프록시 사용 - CORS 우회)
-// 프록시: /api/login → 백엔드 /api/login
-// 프록시: /api/users/{id}/courses → 백엔드 /api/users/{id}/courses
+// API URL
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://54.180.100.83:8080';
 
 // ===================================
-// 학년/학기 계산 유틸리티 함수
+// 유틸리티 함수
 // ===================================
 
 /**
+ * 학기 문자열에서 숫자 추출
+ * "1학기" -> 1, "2학기" -> 2, "여름학기" -> 1, "겨울학기" -> 2
+ */
+function parseSemesterNumber(smt_cd: string): number {
+  if (smt_cd.includes('1') || smt_cd.includes('여름')) return 1;
+  if (smt_cd.includes('2') || smt_cd.includes('겨울')) return 2;
+  return 1;
+}
+
+/**
+ * 정규학기 여부 확인 (여름/겨울학기 제외)
+ */
+function isRegularSemester(smt_cd: string): boolean {
+  return smt_cd === '1학기' || smt_cd === '2학기';
+}
+
+/**
  * 수강 과목 데이터에서 학년과 현재 학기를 계산
- * @param courses 수강 과목 배열
- * @returns { grade: 학년, semester: "YYYY-S" 형식 }
  */
 function calculateGradeAndSemester(courses: CourseResponseDto[]): {
   grade: number;
@@ -28,45 +42,53 @@ function calculateGradeAndSemester(courses: CourseResponseDto[]): {
     return { grade: 1, semester: `${new Date().getFullYear()}-1`, department: '컴퓨터공학과' };
   }
 
+  // 정규학기만 필터링 (1학기, 2학기)
+  const regularCourses = courses.filter(c => isRegularSemester(c.smt_cd));
+  const targetCourses = regularCourses.length > 0 ? regularCourses : courses;
+
   // 년도와 학기를 숫자로 변환하여 정렬
-  const sortedByTime = [...courses].sort((a, b) => {
-    const timeA = parseInt(a.year) * 10 + parseInt(a.smtCd);
-    const timeB = parseInt(b.year) * 10 + parseInt(b.smtCd);
+  const sortedByTime = [...targetCourses].sort((a, b) => {
+    const timeA = parseInt(a.year) * 10 + parseSemesterNumber(a.smt_cd);
+    const timeB = parseInt(b.year) * 10 + parseSemesterNumber(b.smt_cd);
     return timeA - timeB;
   });
 
   // 가장 오래된 (입학) 년도/학기
   const oldest = sortedByTime[0];
   const entryYear = parseInt(oldest.year);
-  const entrySemester = parseInt(oldest.smtCd);
+  const entrySemester = parseSemesterNumber(oldest.smt_cd);
 
   // 가장 최근 년도/학기
   const latest = sortedByTime[sortedByTime.length - 1];
   const latestYear = parseInt(latest.year);
-  const latestSemester = parseInt(latest.smtCd);
+  const latestSemester = parseSemesterNumber(latest.smt_cd);
 
   // 학과 (첫 번째 과목에서 추출)
-  const department = oldest.deptMAlias || '컴퓨터공학과';
+  const department = oldest.dept_m_alias || '컴퓨터공학과';
 
   // 학년 계산: (최근년도 - 입학년도) * 2 + 학기 차이 + 1
-  // 예: 2021년 1학기 입학 → 2024년 2학기 = (2024-2021)*2 + (2-1) + 1 = 6+1+1 = 8학기 = 4학년
   const totalSemesters = (latestYear - entryYear) * 2 + (latestSemester - entrySemester) + 1;
   const grade = Math.min(Math.ceil(totalSemesters / 2), 4); // 최대 4학년
 
-  // 현재 학기 표시 (최근 데이터 + 1학기 = 다음 학기로 가정)
-  let nextYear = latestYear;
-  let nextSemester = latestSemester + 1;
-  if (nextSemester > 2) {
-    nextSemester = 1;
-    nextYear += 1;
-  }
-
   return {
     grade,
-    semester: `${nextYear}-${nextSemester}`,
+    semester: `${latestYear}-${latestSemester}`,
     department,
   };
 }
+
+/**
+ * 이수구분 변환 함수
+ */
+function convertCourseType(type_name: string): '전필' | '전선' | '교양' {
+  if (type_name.includes('전필') || type_name.includes('전공필수')) return '전필';
+  if (type_name.includes('전선') || type_name.includes('전공선택')) return '전선';
+  return '교양';
+}
+
+// ===================================
+// 메인 컴포넌트
+// ===================================
 
 export default function LoginPage() {
   const router = useRouter();
@@ -87,12 +109,10 @@ export default function LoginPage() {
     try {
       // ===================================
       // 1단계: 로그인 API 호출
-      // POST /api/login
-      // 응답: 200 → "LOGIN_SUCCESS" (텍스트)
       // ===================================
       setLoadingMessage('로그인 중...');
       
-      const loginResponse = await fetch(`/api/login`, {
+      const loginResponse = await fetch(`${BACKEND_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, password }),
@@ -101,17 +121,15 @@ export default function LoginPage() {
       const loginText = await loginResponse.text();
 
       if (!loginResponse.ok || loginText !== 'LOGIN_SUCCESS') {
-        // 실패 시 에러 메시지 처리
         throw new Error(loginText || '로그인에 실패했습니다.');
       }
       
       // ===================================
       // 2단계: 수강 과목 조회 API 호출
-      // GET /api/users/{studentId}/courses
       // ===================================
       setLoadingMessage('수강 정보 불러오는 중...');
       
-      const coursesResponse = await fetch(`/api/users/${id}/courses`, {
+      const coursesResponse = await fetch(`${BACKEND_URL}/api/users/${id}/courses`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -121,7 +139,6 @@ export default function LoginPage() {
       if (coursesResponse.ok) {
         courses = await coursesResponse.json();
       } else {
-        // 수강 과목 조회 실패해도 로그인은 성공으로 처리
         console.warn('수강 과목 조회 실패:', await coursesResponse.text());
       }
 
@@ -133,11 +150,9 @@ export default function LoginPage() {
       // ===================================
       // 4단계: 스토어에 저장
       // ===================================
-      
-      // 학생 정보 저장 (수강과목에서 계산된 값 사용)
       setStudentInfo({
         id: id,
-        name: '세종학생', // 추후 API 추가 시 변경
+        name: '세종학생',
         department: department,
         grade: grade,
         semester: semester,
@@ -145,17 +160,17 @@ export default function LoginPage() {
 
       // 수강 과목 변환 및 저장
       const convertedCourses = courses.map((course) => ({
-        id: course.curiNo,
-        name: course.curiNm,
-        type: convertCourseType(course.typeName),
+        id: course.curi_no,
+        name: course.curi_nm,
+        type: convertCourseType(course.type_name),
         credits: course.cdt,
-        semester: `${course.year}-${course.smtCd}`,
+        semester: `${course.year}-${parseSemesterNumber(course.smt_cd)}`,
       }));
       
       setCompletedCourses(convertedCourses);
 
       // 진로 선택 페이지로 이동
-      router.push('/career');
+      router.push('/career-select');
 
     } catch (err) {
       if (err instanceof Error) {
@@ -169,30 +184,28 @@ export default function LoginPage() {
     }
   };
 
-  // 이수구분 변환 함수
-  const convertCourseType = (typeName: string): '전필' | '전선' | '교양' => {
-    if (typeName.includes('전필') || typeName.includes('전공필수')) return '전필';
-    if (typeName.includes('전선') || typeName.includes('전공선택')) return '전선';
-    return '교양';
-  };
-
   // 데모 모드 - 실제 로그인 없이 테스트
   const handleDemoLogin = () => {
     setStudentInfo({
       id: '21011578',
       name: '이유진',
       department: '컴퓨터공학과',
-      grade: 3,
-      semester: '2024-2',
+      grade: 4,
+      semester: '2025-1',
     });
     setCompletedCourses([
-      { id: 'c-1', name: '디지털시스템', type: '전필', credits: 3, semester: '2-1' },
-      { id: 'c-2', name: '이산수학및프로그래밍', type: '전선', credits: 3, semester: '2-2' },
-      { id: 'c-3', name: '고급C프로그래밍', type: '전선', credits: 3, semester: '2-2' },
-      { id: 'c-4', name: '컴퓨터구조', type: '전필', credits: 3, semester: '2-2' },
-      { id: 'c-5', name: '컴퓨터네트워크', type: '전필', credits: 3, semester: '2-2' },
+      { id: '004118', name: '디지털시스템', type: '전필', credits: 3, semester: '2022-1' },
+      { id: '009955', name: '이산수학및프로그래밍', type: '전선', credits: 3, semester: '2022-2' },
+      { id: '009913', name: '고급C프로그래밍및실습', type: '전필', credits: 3, semester: '2021-2' },
+      { id: '003278', name: '컴퓨터구조', type: '전필', credits: 3, semester: '2023-2' },
+      { id: '003284', name: '컴퓨터네트워크', type: '전필', credits: 3, semester: '2023-2' },
+      { id: '004310', name: '운영체제', type: '전필', credits: 3, semester: '2023-1' },
+      { id: '009954', name: '알고리즘및실습', type: '전필', credits: 3, semester: '2022-2' },
+      { id: '006135', name: '정보보호개론', type: '전선', credits: 3, semester: '2025-1' },
+      { id: '006237', name: '웹프로그래밍', type: '전선', credits: 3, semester: '2025-1' },
+      { id: '009960', name: 'Capstone디자인(산학협력프로젝트)', type: '전필', credits: 6, semester: '2025-1' },
     ]);
-    router.push('/career');
+    router.push('/career-select');
   };
 
   return (

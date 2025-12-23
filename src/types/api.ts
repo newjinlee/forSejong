@@ -8,18 +8,18 @@ export type Course = {
   name: string;
   type: '전필' | '전선' | '교양';
   credits: number;
-  semester: string; // "2-1", "3-2" 형식
+  semester: string; // "2021-1", "2023-2" 형식
 };
 
-// 백엔드 수강과목 응답 타입
+// 백엔드 수강과목 응답 타입 (snake_case)
 export type CourseResponseDto = {
-  curiNo: string;      // 학수번호
-  curiNm: string;      // 과목명
-  typeName: string;    // 이수구분
-  cdt: number;         // 학점
-  deptMAlias: string;  // 학과
-  year: string;        // 년도 (예: "2023")
-  smtCd: string;       // 학기 (예: "1", "2")
+  curi_no: string;      // 학수번호
+  curi_nm: string;      // 과목명
+  type_name: string;    // 이수구분 (전필, 전선, 교선1 등)
+  cdt: number;          // 학점
+  dept_m_alias: string; // 학과
+  year: string;         // 년도 (예: "2023")
+  smt_cd: string;       // 학기 (예: "1학기", "2학기", "여름학기")
 };
 
 export type RecommendedCourse = Course & {

@@ -1,22 +1,100 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer 
 } from 'recharts';
 import { 
-  CheckCircle2, ArrowRight, Sparkles, User, RefreshCw, Plus, AlertCircle 
+  CheckCircle2, ArrowRight, Sparkles, User, RefreshCw, Plus, AlertCircle, Briefcase
 } from 'lucide-react';
 import { useCareerStore, toCareerWithChart, toChartCompetencies, type CareerWithChart } from '@/src/store/useCareerStore';
 import { useCareers, useCareerCompetencies, useCustomCareerAnalysis } from '@/src/hooks';
 import type { CareerInput } from '@/src/lib/careerData';
 
+// ===================================
+// 초기 로딩 컴포넌트
+// ===================================
+function InitialLoadingScreen({ progress }: { progress: number }) {
+  const loadingMessages = [
+    { threshold: 0, message: '채용 사이트에서 관련 직무를 가져오고 있어요...' },
+    { threshold: 30, message: '최신 채용 트렌드를 분석하고 있어요...' },
+    { threshold: 60, message: '맞춤 진로 데이터를 준비하고 있어요...' },
+    { threshold: 85, message: '거의 다 됐어요!' },
+  ];
+
+  const currentMessage = [...loadingMessages]
+    .reverse()
+    .find(m => progress >= m.threshold)?.message || loadingMessages[0].message;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-md text-center">
+        {/* 아이콘 */}
+        <div className="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl mb-6 shadow-lg border border-red-100">
+          <Briefcase className="w-10 h-10 text-[#c3002f] animate-pulse" />
+        </div>
+
+        {/* 메시지 */}
+        <h2 className="text-xl font-bold text-slate-800 mb-2">
+          진로 정보를 불러오는 중...
+        </h2>
+        <p className="text-slate-500 mb-8 transition-all duration-300">
+          {currentMessage}
+        </p>
+
+        {/* 프로그레스 바 */}
+        <div className="w-full bg-slate-200 rounded-full h-2 mb-4 overflow-hidden">
+          <div 
+            className="bg-[#c3002f] h-2 rounded-full transition-all duration-300 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        {/* 퍼센트 */}
+        <p className="text-sm text-slate-400">{Math.round(progress)}%</p>
+      </div>
+    </div>
+  );
+}
+
+// ===================================
+// 메인 컴포넌트
+// ===================================
 export default function CareerSelectPage() {
   const router = useRouter();
   const { studentInfo, setSelectedCareer } = useCareerStore();
   
+  // ===================================
+  // 초기 로딩 상태
+  // ===================================
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+
+  // 5초 동안 프로그레스바 애니메이션
+  useEffect(() => {
+    if (!isInitialLoading) return;
+
+    const duration = 5000; // 5초
+    const interval = 50; // 50ms마다 업데이트
+    const increment = 100 / (duration / interval);
+
+    const timer = setInterval(() => {
+      setLoadingProgress(prev => {
+        const next = prev + increment;
+        if (next >= 100) {
+          clearInterval(timer);
+          setTimeout(() => setIsInitialLoading(false), 300);
+          return 100;
+        }
+        return next;
+      });
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [isInitialLoading]);
+
   // ===================================
   // 훅 사용
   // ===================================
@@ -80,12 +158,12 @@ export default function CareerSelectPage() {
     }
   };
 
-  // 초기 진입 시 첫 번째 직업 자동 선택
+  // 초기 로딩 완료 후 첫 번째 직업 자동 선택
   useEffect(() => {
-    if (!activeCareer && careerList.length > 0 && !isCustomMode && !isCompetencyLoading) {
+    if (!isInitialLoading && !activeCareer && careerList.length > 0 && !isCustomMode && !isCompetencyLoading) {
       handleCareerClick(careerList[0]);
     }
-  }, [careerList]);
+  }, [isInitialLoading, careerList]);
 
   // 커스텀 진로 분석 완료 시 activeCareer 업데이트
   useEffect(() => {
@@ -124,9 +202,15 @@ export default function CareerSelectPage() {
   };
 
   // ===================================
-  // 렌더링
+  // 초기 로딩 화면
   // ===================================
-  
+  if (isInitialLoading) {
+    return <InitialLoadingScreen progress={loadingProgress} />;
+  }
+
+  // ===================================
+  // 로그인 필요 화면
+  // ===================================
   if (!studentInfo) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
@@ -144,6 +228,9 @@ export default function CareerSelectPage() {
     );
   }
 
+  // ===================================
+  // 메인 화면
+  // ===================================
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Header */}
@@ -155,7 +242,7 @@ export default function CareerSelectPage() {
           <div>
             <h1 className="font-bold text-slate-800">어떤 진로를 꿈꾸시나요?</h1>
             <p className="text-xs text-slate-500">
-              {studentInfo.department} {studentInfo.grade}학년 | {studentInfo.semester}학기
+              {studentInfo.department} {studentInfo.grade}학년 | 기이수 최종학기: {studentInfo.semester}학기
             </p>
           </div>
         </div>
@@ -332,7 +419,7 @@ export default function CareerSelectPage() {
                      <p className="text-sm text-slate-600 leading-relaxed">
                        {activeCareer.isCustom 
                          ? `'${activeCareer.title}' 직무는 최신 기술 트렌드에 민감합니다. 기초 전공 지식 위에 최신 프레임워크 활용 능력을 쌓는 로드맵을 설계해드리겠습니다.`
-                         : `이 진로를 위해서는 '${activeCareer.competencies[0]?.subject || '전공기초'}' 역량이 가장 중요합니다. 4학년 2학기에 관련 심화 과목 수강을 추천합니다.`
+                         : `이 진로를 위해서는 '${activeCareer.competencies[0]?.subject || '전공기초'}' 역량이 가장 중요합니다. 추후 학기에 관련 심화 과목 수강을 추천합니다.`
                        }
                      </p>
                    </div>

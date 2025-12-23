@@ -47,7 +47,7 @@ const SubjectNode = ({ data }: { data: any }) => {
           {data.label}
         </h3>
         <p className="text-[10px] text-slate-500 flex items-center gap-1">
-          {isCompleted ? <span className="text-slate-500">이수 완료</span> : <span className="text-[#c3002f] font-bold">🔥 AI 추천</span>}
+          {isCompleted ? <span className="text-slate-500">✅ 이수 완료</span> : <span className="text-[#c3002f] font-bold">🔥 AI 추천</span>}
         </p>
         {isRecommended && data.reason && (
           <div className="mt-2 text-[10px] bg-red-50 text-[#c3002f] p-1 rounded border border-red-100">
@@ -191,6 +191,32 @@ export default function RoadmapGeneratePage() {
     semester: course.semester || '기타',
   }));
 
+  // 가장 최근 학기 계산 (추천 과목 학기 결정용)
+  const getNextSemester = (): string => {
+    if (completedCourses.length === 0) return '2025-2';
+    
+    const semesters = completedCourses
+      .map(c => c.semester)
+      .filter(s => s && s.includes('-'))
+      .sort();
+    
+    if (semesters.length === 0) return '2025-2';
+    
+    const latest = semesters[semesters.length - 1];
+    const [year, sem] = latest.split('-').map(Number);
+    
+    if (sem === 1) return `${year}-2`;
+    return `${year + 1}-1`;
+  };
+
+  const nextSemester = getNextSemester();
+
+  // 추천 과목에 실제 학기 적용
+  const recommendedCoursesWithSemester = recommendations.courses.map(course => ({
+    ...course,
+    semester: nextSemester, // 다음 학기로 통일
+  }));
+
   const generateGraph = useCallback(() => {
     const newNodes: Node[] = [];
     const newEdges: Edge[] = [];
@@ -201,10 +227,16 @@ export default function RoadmapGeneratePage() {
     
     // 기이수 과목에서 학기 목록 추출 + 추천 과목 학기 추가
     const completedSemesters = [...new Set(completedCoursesForGraph.map(c => c.semester))];
-    const recommendedSemesters = [...new Set(recommendations.courses.map(c => c.semester))];
+    const recommendedSemesters = [...new Set(recommendedCoursesWithSemester.map(c => c.semester))];
     const allSemesters = [...new Set([...completedSemesters, ...recommendedSemesters])]
       .filter(s => s !== '기타')
-      .sort();
+      .sort((a, b) => {
+        // "2021-1", "2023-2" 형식 정렬
+        const [yearA, semA] = a.split('-').map(Number);
+        const [yearB, semB] = b.split('-').map(Number);
+        if (yearA !== yearB) return yearA - yearB;
+        return semA - semB;
+      });
     
     allSemesters.forEach((sem, colIndex) => {
       const xPos = START_X + colIndex * X_GAP;
@@ -213,7 +245,7 @@ export default function RoadmapGeneratePage() {
       newNodes.push({
         id: `header-${sem}`,
         type: 'default',
-        data: { label: `${sem}학기` },
+        data: { label: sem },
         position: { x: xPos, y: -60 },
         style: { 
           width: 180, fontWeight: 'bold', border: 'none', background: 'transparent',
@@ -224,7 +256,7 @@ export default function RoadmapGeneratePage() {
       });
 
       const completed = completedCoursesForGraph.filter(c => c.semester === sem);
-      const recommended = recommendations.courses.filter(c => c.semester === sem);
+      const recommended = recommendedCoursesWithSemester.filter(c => c.semester === sem);
       const allCourses = [...completed, ...recommended];
 
       allCourses.forEach((course, idx) => {
@@ -242,22 +274,23 @@ export default function RoadmapGeneratePage() {
           position: { x: xPos, y: idx * Y_GAP },
         });
 
-        if (colIndex > 0) {
+        // 추천 과목만 이전 학기와 연결 (기이수 과목끼리는 연결 안 함)
+        if (isRec && colIndex > 0) {
           const prevSem = allSemesters[colIndex - 1];
-          const prevCourses = [...completedCoursesForGraph, ...recommendations.courses].filter(c => c.semester === prevSem);
+          const prevCourses = [...completedCoursesForGraph, ...recommendedCoursesWithSemester].filter(c => c.semester === prevSem);
           
           if (prevCourses.length > 0) {
-            const targetPrev = prevCourses[idx] || prevCourses[prevCourses.length - 1];
+            const targetPrev = prevCourses[Math.min(idx, prevCourses.length - 1)];
             newEdges.push({
               id: `e-${targetPrev.id}-${course.id}`,
               source: targetPrev.id,
               target: course.id,
               type: 'smoothstep',
-              animated: isRec,
+              animated: true,
               style: { 
-                stroke: isRec ? '#c3002f' : '#cbd5e1', 
-                strokeWidth: isRec ? 2 : 1,
-                opacity: isRec ? 1 : 0.5 
+                stroke: '#c3002f', 
+                strokeWidth: 2,
+                opacity: 1 
               },
             });
           }
@@ -267,7 +300,7 @@ export default function RoadmapGeneratePage() {
 
     setNodes(newNodes);
     setEdges(newEdges);
-  }, [completedCoursesForGraph, recommendations.courses, setNodes, setEdges]);
+  }, [completedCoursesForGraph, recommendedCoursesWithSemester, setNodes, setEdges]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -285,7 +318,7 @@ export default function RoadmapGeneratePage() {
       <div className="min-h-screen flex flex-col items-center justify-center bg-white">
         <Loader2 className="w-16 h-16 text-[#c3002f] animate-spin mb-6" />
         <h2 className="text-2xl font-bold text-slate-900 mb-2">
-          데이터를 불러오는 중...
+          {studentInfo?.name || '학생'}님의 데이터를 불러오는 중...
         </h2>
         <div className="flex flex-col gap-2 text-slate-500 text-sm text-center">
           <p className="animate-pulse">학사 정보 시스템 연동 중...</p>
@@ -313,7 +346,7 @@ export default function RoadmapGeneratePage() {
           </div>
           <div>
             <h1 className="font-bold text-xl text-slate-900 leading-none mb-1">
-              커리어 로드맵
+              {studentInfo?.name || '학생'}님의 커리어 로드맵
             </h1>
             <p className="text-xs text-slate-500">
               목표: <span className="font-bold text-[#c3002f]">{selectedCareer?.title || '미선택'}</span>
@@ -422,7 +455,7 @@ export default function RoadmapGeneratePage() {
       {showCourseList && (
         <div className="absolute inset-y-0 right-0 w-[400px] bg-white shadow-2xl z-30 border-l animate-in slide-in-from-right duration-300 flex flex-col">
           <div className="p-5 border-b flex justify-between items-center bg-slate-50">
-            <h3 className="font-bold text-lg flex items-center gap-2 text-slate-900">
+            <h3 className="font-bold text-lg flex items-center gap-2">
               <ListChecks className="text-[#c3002f]" /> 
               기이수 과목 목록 ({completedCourses.length}과목)
             </h3>

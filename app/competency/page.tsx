@@ -346,7 +346,7 @@ export default function CompetencyAnalysisPage() {
                         ? 'bg-orange-500 text-white'
                         : 'bg-slate-400 text-white'
                     }`}>
-                      {gap.priority === 'high' ? '긴급' : gap.priority === 'medium' ? '권장' : '참고'}
+                      {gap.priority === 'high' ? '중요' : gap.priority === 'medium' ? '권장' : '참고'}
                     </span>
                     <span className="font-bold text-slate-800">{gap.subject}</span>
                   </div>
