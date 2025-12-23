@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ReactFlow, { 
   Background, 
   Controls, 
@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useCareerStore } from '../../../src/store/useCareerStore';
 import { downloadRoadmapAsExcel } from '../../../src/lib/downloadRoadmap';
+import { getRecommendedCourses, PREREQUISITES, type RecommendedCourse } from '../../../src/data/semesterCourses';
 
 // --- 1. Custom Node Components ---
 const SubjectNode = ({ data }: { data: any }) => {
@@ -63,97 +64,31 @@ const SubjectNode = ({ data }: { data: any }) => {
 
 const nodeTypes = { subject: SubjectNode };
 
-// --- 2. 진로별 추천 과목 데이터 ---
-type RecommendedCourse = {
-  id: string;
-  name: string;
-  type: string;
-  credits: number;
-  semester: string;
-  reason: string;
+// --- 2. Insights 생성 함수 ---
+type Insights = {
+  missing: string;
+  missingDescription: string;
+  strategy: string;
+  strategyDescription: string;
 };
 
-type CareerRecommendations = {
-  courses: RecommendedCourse[];
-  insights: {
-    missing: string;
-    missingDescription: string;
-    strategy: string;
-    strategyDescription: string;
+function generateInsights(recommendedCourses: RecommendedCourse[], careerTitle: string): Insights {
+  const requiredCourses = recommendedCourses.filter(c => c.type === '전필');
+  const electiveCourses = recommendedCourses.filter(c => c.type === '전선');
+  
+  const missingNames = requiredCourses.map(c => c.name).join(', ') || '없음';
+  
+  return {
+    missing: missingNames,
+    missingDescription: requiredCourses.length > 0 
+      ? '해당 과목 이력이 확인되지 않습니다. 졸업 및 취업을 위해 다음 학기 1순위 수강을 권장합니다.'
+      : '전공필수 과목은 모두 이수하셨습니다. 전공선택 과목으로 역량을 강화하세요.',
+    strategy: `${careerTitle} 직무 경쟁력`,
+    strategyDescription: electiveCourses.length > 0
+      ? `${electiveCourses.map(c => c.name).join(', ')} 과목을 통해 실무 역량을 강화합니다.`
+      : '추천 과목을 수강하여 전공 역량을 높이세요.',
   };
-};
-
-const CAREER_RECOMMENDATIONS: Record<string, CareerRecommendations> = {
-  // 프론트엔드 개발자
-  'frontend': {
-    courses: [
-      { id: 'r-1', name: '알고리즘', type: '전필', credits: 3, semester: '4-2', reason: '코딩테스트 필수 역량' },
-      { id: 'r-2', name: '운영체제', type: '전필', credits: 3, semester: '4-2', reason: '프로세스/스레드 이해' },
-      { id: 'r-3', name: 'HCI개론', type: '전선', credits: 3, semester: '4-2', reason: 'UX/UI 사용자 경험 설계' },
-      { id: 'r-4', name: '모바일프로그래밍', type: '전선', credits: 3, semester: '4-2', reason: 'App 개발로 스펙 확장' },
-    ],
-    insights: {
-      missing: '알고리즘, 운영체제',
-      missingDescription: '과목 이력이 확인되지 않습니다. 졸업 및 취업을 위해 다음 학기 1순위 수강을 권장합니다.',
-      strategy: '프론트엔드 직무 경쟁력',
-      strategyDescription: 'HCI개론(UX)과 모바일프로그래밍을 추가 배치했습니다.',
-    }
-  },
-  
-  // 백엔드 개발자
-  'backend': {
-    courses: [
-      { id: 'r-1', name: '알고리즘', type: '전필', credits: 3, semester: '4-2', reason: '대규모 데이터 처리 최적화' },
-      { id: 'r-2', name: '운영체제', type: '전필', credits: 3, semester: '4-2', reason: '서버 리소스 관리 이해' },
-      { id: 'r-3', name: '데이터베이스', type: '전필', credits: 3, semester: '4-2', reason: 'SQL 최적화 및 설계' },
-      { id: 'r-4', name: '분산시스템', type: '전선', credits: 3, semester: '4-2', reason: 'MSA 아키텍처 기반' },
-    ],
-    insights: {
-      missing: '알고리즘, 운영체제, 데이터베이스',
-      missingDescription: '백엔드 핵심 과목이 부족합니다. 서버 개발자로서 필수적인 CS 지식을 쌓아야 합니다.',
-      strategy: '백엔드 직무 경쟁력',
-      strategyDescription: '데이터베이스와 분산시스템으로 대용량 트래픽 처리 역량을 강화합니다.',
-    }
-  },
-  
-  // AI 연구원
-  'ai-researcher': {
-    courses: [
-      { id: 'r-1', name: '알고리즘', type: '전필', credits: 3, semester: '4-2', reason: '최적화 알고리즘 이해' },
-      { id: 'r-2', name: '기계학습', type: '전선', credits: 3, semester: '4-2', reason: 'ML 핵심 이론 학습' },
-      { id: 'r-3', name: '딥러닝', type: '전선', credits: 3, semester: '4-2', reason: '신경망 모델 구현' },
-      { id: 'r-4', name: '선형대수학', type: '전선', credits: 3, semester: '4-2', reason: '텐서 연산 수학적 기반' },
-    ],
-    insights: {
-      missing: '기계학습, 딥러닝',
-      missingDescription: 'AI 연구에 필수적인 ML/DL 과목이 없습니다. 논문 이해와 모델 구현을 위해 필수입니다.',
-      strategy: 'AI 연구원 역량 강화',
-      strategyDescription: '선형대수학으로 수학적 기반을 다지고 기계학습/딥러닝 실습을 권장합니다.',
-    }
-  },
-
-  // 기본값 (커스텀 진로 등)
-  'default': {
-    courses: [
-      { id: 'r-1', name: '알고리즘', type: '전필', credits: 3, semester: '4-2', reason: '모든 개발 직군 필수' },
-      { id: 'r-2', name: '운영체제', type: '전필', credits: 3, semester: '4-2', reason: 'CS 기초 역량' },
-      { id: 'r-3', name: '소프트웨어공학', type: '전선', credits: 3, semester: '4-2', reason: '협업 및 프로젝트 관리' },
-      { id: 'r-4', name: '데이터베이스', type: '전필', credits: 3, semester: '4-2', reason: '데이터 관리 기초' },
-    ],
-    insights: {
-      missing: '알고리즘, 운영체제',
-      missingDescription: '전공 필수 과목이 부족합니다. 졸업 요건 충족을 위해 수강이 필요합니다.',
-      strategy: '종합적 역량 강화',
-      strategyDescription: '소프트웨어공학과 데이터베이스로 실무 역량을 높입니다.',
-    }
-  }
-};
-
-// 진로 ID로 추천 데이터 가져오기
-const getRecommendations = (careerId: string | undefined): CareerRecommendations => {
-  if (!careerId) return CAREER_RECOMMENDATIONS['default'];
-  return CAREER_RECOMMENDATIONS[careerId] || CAREER_RECOMMENDATIONS['default'];
-};
+}
 
 export default function RoadmapGeneratePage() {
   const { selectedCareer, studentInfo, completedCourses } = useCareerStore();
@@ -164,8 +99,35 @@ export default function RoadmapGeneratePage() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-  // 현재 진로에 맞는 추천 데이터
-  const recommendations = getRecommendations(selectedCareer?.id);
+  // 다음 학기 계산 (1 or 2)
+  const nextSemesterNum = useMemo(() => {
+    if (!studentInfo?.semester) return 1;
+    const [, sem] = studentInfo.semester.split('-').map(Number);
+    return sem === 1 ? 2 : 1;
+  }, [studentInfo?.semester]);
+
+  // 기이수 과목명 목록
+  const completedCourseNames = useMemo(() => 
+    completedCourses.map(c => c.name),
+    [completedCourses]
+  );
+
+  // 추천 과목 생성 (학과 + 학년 + 학기 기반)
+  const recommendedCourses = useMemo(() => {
+    if (!studentInfo) return [];
+    return getRecommendedCourses(
+      studentInfo.department,
+      studentInfo.grade,
+      nextSemesterNum,
+      completedCourseNames
+    );
+  }, [studentInfo, nextSemesterNum, completedCourseNames]);
+
+  // Insights 생성
+  const insights = useMemo(() => 
+    generateInsights(recommendedCourses, selectedCareer?.title || '선택한 진로'),
+    [recommendedCourses, selectedCareer?.title]
+  );
 
   // 로드맵 엑셀 다운로드 핸들러
   const handleDownloadRoadmap = () => {
@@ -177,8 +139,8 @@ export default function RoadmapGeneratePage() {
       department: studentInfo.department,
       careerTitle: selectedCareer.title,
       completedCourses,
-      recommendedCourses: recommendations.courses,
-      insights: recommendations.insights,
+      recommendedCourses,
+      insights,
     });
   };
 
@@ -212,7 +174,7 @@ export default function RoadmapGeneratePage() {
   const nextSemester = getNextSemester();
 
   // 추천 과목에 실제 학기 적용
-  const recommendedCoursesWithSemester = recommendations.courses.map(course => ({
+  const recommendedCoursesWithSemester = recommendedCourses.map(course => ({
     ...course,
     semester: nextSemester, // 다음 학기로 통일
   }));
@@ -238,6 +200,13 @@ export default function RoadmapGeneratePage() {
         return semA - semB;
       });
     
+    // 모든 과목 (노드 ID → 과목명 매핑)
+    const allCoursesFlat = [...completedCoursesForGraph, ...recommendedCoursesWithSemester];
+    const courseNameToId: Record<string, string> = {};
+    allCoursesFlat.forEach(c => {
+      courseNameToId[c.name] = c.id;
+    });
+
     allSemesters.forEach((sem, colIndex) => {
       const xPos = START_X + colIndex * X_GAP;
       const isRecommendedSemester = recommendedSemesters.includes(sem);
@@ -273,29 +242,36 @@ export default function RoadmapGeneratePage() {
           },
           position: { x: xPos, y: idx * Y_GAP },
         });
+      });
+    });
 
-        // 추천 과목만 이전 학기와 연결 (기이수 과목끼리는 연결 안 함)
-        if (isRec && colIndex > 0) {
-          const prevSem = allSemesters[colIndex - 1];
-          const prevCourses = [...completedCoursesForGraph, ...recommendedCoursesWithSemester].filter(c => c.semester === prevSem);
-          
-          if (prevCourses.length > 0) {
-            const targetPrev = prevCourses[Math.min(idx, prevCourses.length - 1)];
+    // 선이수 관계 기반 엣지 생성
+    allCoursesFlat.forEach(course => {
+      const prereqs = PREREQUISITES[course.name];
+      if (prereqs && prereqs.length > 0) {
+        prereqs.forEach(prereqName => {
+          const prereqId = courseNameToId[prereqName];
+          if (prereqId) {
+            // 선이수 과목이 그래프에 있을 때만 연결
+            const isRecommended = 'reason' in course;
             newEdges.push({
-              id: `e-${targetPrev.id}-${course.id}`,
-              source: targetPrev.id,
+              id: `prereq-${prereqId}-${course.id}`,
+              source: prereqId,
               target: course.id,
               type: 'smoothstep',
-              animated: true,
+              animated: isRecommended,
               style: { 
-                stroke: '#c3002f', 
-                strokeWidth: 2,
-                opacity: 1 
+                stroke: isRecommended ? '#c3002f' : '#94a3b8',
+                strokeWidth: isRecommended ? 2 : 1.5,
+                opacity: isRecommended ? 1 : 0.7,
               },
+              label: isRecommended ? '' : '선이수',
+              labelStyle: { fontSize: 10, fill: '#94a3b8' },
+              labelBgStyle: { fill: 'white', fillOpacity: 0.8 },
             });
           }
-        }
-      });
+        });
+      }
     });
 
     setNodes(newNodes);
@@ -437,13 +413,13 @@ export default function RoadmapGeneratePage() {
               <div>
                 <p className="text-xs text-slate-400 font-bold mb-1">전공 필수 미충족 감지</p>
                 <p className="text-sm text-slate-700 leading-snug">
-                  <strong className="text-[#c3002f]">{recommendations.insights.missing}</strong> {recommendations.insights.missingDescription}
+                  <strong className="text-[#c3002f]">{insights.missing}</strong> {insights.missingDescription}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-400 font-bold mb-1">{recommendations.insights.strategy}</p>
+                <p className="text-xs text-slate-400 font-bold mb-1">{insights.strategy}</p>
                 <p className="text-sm text-slate-700 leading-snug">
-                  {recommendations.insights.strategyDescription}
+                  {insights.strategyDescription}
                 </p>
               </div>
             </div>
