@@ -59,7 +59,7 @@ const SubjectNode = ({ data }: { data: any }) => {
         </h3>
         <p className="text-[10px] text-slate-500 flex items-center gap-1">
           {isCompleted ? (
-            <span className="text-slate-500">✅ 이수 완료</span>
+            <span className="text-slate-500">이수 완료</span>
           ) : (
             <span className="text-[#c3002f] font-bold">🔥 {data.gradeLabel || 'AI 추천'}</span>
           )}
