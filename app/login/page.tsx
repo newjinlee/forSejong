@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { GraduationCap, Loader2, AlertCircle, Eye, EyeOff, Icon } from 'lucide-react';
-import { useCareerStore } from '../store/useCareerStore';
+import { useCareerStore } from '../../src/store/useCareerStore';
 
 export default function LoginPage() {
   const router = useRouter();

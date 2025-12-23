@@ -9,7 +9,7 @@ import {
   ArrowRight, User, Target, TrendingUp, AlertTriangle, CheckCircle2,
   ArrowLeft
 } from 'lucide-react';
-import { useCareerStore } from '../store/useCareerStore';
+import { useCareerStore } from '../../src/store/useCareerStore';
 
 // --- Mock Data: 현재 역량 (기이수 과목 기반으로 계산되었다고 가정) ---
 const CURRENT_COMPETENCY_MOCK = [

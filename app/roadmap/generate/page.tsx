@@ -17,7 +17,7 @@ import 'reactflow/dist/style.css';
 import { 
   GraduationCap, Loader2, ListChecks, AlertTriangle 
 } from 'lucide-react';
-import { useCareerStore } from '../../store/useCareerStore';
+import { useCareerStore } from '../../../src/store/useCareerStore';
 
 // --- 1. Custom Node Components ---
 const SubjectNode = ({ data }: { data: any }) => {

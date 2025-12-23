@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import React, { useState, useEffect, useMemo } from 'react';
@@ -7,122 +7,86 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer 
 } from 'recharts';
 import { 
-  Briefcase, CheckCircle2, ArrowRight, Sparkles, User, RefreshCw, Plus 
+  CheckCircle2, ArrowRight, Sparkles, User, RefreshCw, Plus, AlertCircle 
 } from 'lucide-react';
-import { useCareerStore, Career } from '../store/useCareerStore';
-
-// --- Mock Data ---
-const CAREER_DB: Record<string, Career[]> = {
-  '컴퓨터공학과': [
-    {
-      id: 'backend',
-      title: '백엔드 개발자',
-      description: '대용량 트래픽 처리 및 서버 아키텍처 설계',
-      tags: ['Java', 'Spring', 'AWS'],
-      competencies: [
-        { subject: 'DB', A: 90, fullMark: 100 },
-        { subject: '알고리즘', A: 85, fullMark: 100 },
-        { subject: '네트워크', A: 80, fullMark: 100 },
-        { subject: 'OS', A: 70, fullMark: 100 },
-        { subject: '보안', A: 60, fullMark: 100 },
-        { subject: '협업', A: 75, fullMark: 100 },
-      ]
-    },
-    {
-      id: 'ai-researcher',
-      title: 'AI 연구원',
-      description: '최신 논문 분석 및 딥러닝 모델링',
-      tags: ['Python', 'Pytorch', 'Math'],
-      competencies: [
-        { subject: '수학', A: 95, fullMark: 100 },
-        { subject: '알고리즘', A: 90, fullMark: 100 },
-        { subject: '데이터', A: 85, fullMark: 100 },
-        { subject: '모델링', A: 95, fullMark: 100 },
-        { subject: '논문', A: 90, fullMark: 100 },
-        { subject: '구현', A: 70, fullMark: 100 },
-      ]
-    },
-  ],
-  '소프트웨어학과': [
-    {
-      id: 'frontend',
-      title: '프론트엔드 개발자',
-      description: '웹/앱 사용자 인터페이스 구현 및 UX 최적화',
-      tags: ['React', 'Next.js', 'UX'],
-      competencies: [
-        { subject: 'UI구현', A: 95, fullMark: 100 },
-        { subject: '알고리즘', A: 60, fullMark: 100 },
-        { subject: '네트워크', A: 70, fullMark: 100 },
-        { subject: '디자인', A: 85, fullMark: 100 },
-        { subject: '최적화', A: 80, fullMark: 100 },
-        { subject: '협업', A: 90, fullMark: 100 },
-      ]
-    }
-  ]
-};
-
-const generateMockCompetencies = () => [
-  { subject: '전공기초', A: Math.floor(Math.random() * 30) + 70, fullMark: 100 },
-  { subject: '설계능력', A: Math.floor(Math.random() * 30) + 70, fullMark: 100 },
-  { subject: '구현능력', A: Math.floor(Math.random() * 30) + 70, fullMark: 100 },
-  { subject: '문제해결', A: Math.floor(Math.random() * 30) + 70, fullMark: 100 },
-  { subject: '협업', A: Math.floor(Math.random() * 30) + 70, fullMark: 100 },
-  { subject: '창의성', A: Math.floor(Math.random() * 30) + 70, fullMark: 100 },
-];
+import { useCareerStore, toCareerWithChart, type CareerWithChart } from '@/src/store/useCareerStore';
+import { useCareers, useCustomCareerAnalysis } from '@/src/hooks';
 
 export default function CareerSelectPage() {
   const router = useRouter();
   const { studentInfo, setSelectedCareer } = useCareerStore();
   
-  const availableCareers = useMemo(() => {
-    if (!studentInfo) return [];
-    return CAREER_DB[studentInfo.department] || CAREER_DB['컴퓨터공학과'];
-  }, [studentInfo]);
+  // ===================================
+  // API 훅 사용
+  // ===================================
+  const { 
+    careers: apiCareers, 
+    isLoading: isCareersLoading, 
+    error: careersError,
+    refetch: refetchCareers 
+  } = useCareers(studentInfo?.department);
 
-  const [activeCareer, setActiveCareer] = useState<Career | null>(null);
+  const { 
+    isAnalyzing, 
+    error: analyzeError,
+    analyzedCareer,
+    analyze: analyzeCustomCareer,
+    reset: resetAnalysis 
+  } = useCustomCareerAnalysis();
+
+  // ===================================
+  // 로컬 상태
+  // ===================================
+  const [activeCareer, setActiveCareer] = useState<CareerWithChart | null>(null);
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [customInput, setCustomInput] = useState('');
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  // API Career를 Chart용으로 변환
+  const availableCareers = useMemo(() => {
+    return apiCareers.map(toCareerWithChart);
+  }, [apiCareers]);
 
   // 초기 진입 시 첫 번째 추천 진로 자동 선택
   useEffect(() => {
-    if (!activeCareer && availableCareers.length > 0 && !isCustomMode) {
+    if (!activeCareer && availableCareers.length > 0 && !isCustomMode && !isCareersLoading) {
       setActiveCareer(availableCareers[0]);
     }
-  }, [availableCareers, activeCareer, isCustomMode]);
+  }, [availableCareers, activeCareer, isCustomMode, isCareersLoading]);
 
+  // 커스텀 진로 분석 완료 시 activeCareer 업데이트
+  useEffect(() => {
+    if (analyzedCareer) {
+      const chartCareer = toCareerWithChart(analyzedCareer);
+      setActiveCareer(chartCareer);
+    }
+  }, [analyzedCareer]);
+
+  // ===================================
+  // 이벤트 핸들러
+  // ===================================
+  
   // "직접 입력하기" 카드 클릭 핸들러
   const handleCustomModeClick = () => {
     setIsCustomMode(true);
-    setActiveCareer(null); // 기존 선택 해제 -> 입력 폼 표시 트리거
-    setCustomInput('');    // 입력창 초기화
+    setActiveCareer(null);
+    setCustomInput('');
+    resetAnalysis();
   };
 
   // 기존 목록 클릭 핸들러
-  const handleCareerClick = (career: Career) => {
+  const handleCareerClick = (career: CareerWithChart) => {
     setIsCustomMode(false);
     setActiveCareer(career);
+    resetAnalysis();
   };
 
   // 분석 시작 핸들러
-  const handleCustomAnalyze = () => {
+  const handleCustomAnalyze = async () => {
     if (!customInput.trim()) return;
-    setIsAnalyzing(true);
-    
-    setTimeout(() => {
-      const newCustomCareer: Career = {
-        id: `custom-${Date.now()}`,
-        title: customInput,
-        description: '사용자가 직접 입력한 커리어 패스입니다.',
-        tags: ['Custom', 'Specialist'],
-        competencies: generateMockCompetencies(),
-        isCustom: true
-      };
-      setActiveCareer(newCustomCareer); // 분석 완료 후 결과 보여주기
-      setIsAnalyzing(false);
-    }, 1500);
+    await analyzeCustomCareer(customInput);
   };
 
+  // 다음 단계 핸들러
   const handleNext = () => {
     if (activeCareer) {
       setSelectedCareer(activeCareer);
@@ -130,7 +94,26 @@ export default function CareerSelectPage() {
     }
   };
 
-  if (!studentInfo) return <div className="p-10">로그인 정보가 없습니다.</div>;
+  // ===================================
+  // 렌더링
+  // ===================================
+  
+  if (!studentInfo) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <p className="text-lg text-slate-700">로그인 정보가 없습니다.</p>
+          <button 
+            onClick={() => router.push('/')}
+            className="mt-4 px-6 py-2 bg-[#c3002f] text-white rounded-lg hover:bg-[#a00026]"
+          >
+            로그인하기
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
@@ -158,7 +141,30 @@ export default function CareerSelectPage() {
             {studentInfo.department} 추천 진로
           </p>
           
-          {availableCareers.map((career) => (
+          {/* 로딩 상태 */}
+          {isCareersLoading && (
+            <div className="flex items-center justify-center py-8">
+              <RefreshCw className="w-6 h-6 text-[#c3002f] animate-spin" />
+              <span className="ml-2 text-slate-500">진로 목록 불러오는 중...</span>
+            </div>
+          )}
+
+          {/* 에러 상태 */}
+          {careersError && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+              <AlertCircle className="w-6 h-6 text-red-500 mx-auto mb-2" />
+              <p className="text-red-600 text-sm">{careersError}</p>
+              <button 
+                onClick={() => refetchCareers(studentInfo.department)}
+                className="mt-2 text-sm text-[#c3002f] underline"
+              >
+                다시 시도
+              </button>
+            </div>
+          )}
+          
+          {/* 진로 목록 */}
+          {!isCareersLoading && !careersError && availableCareers.map((career) => (
             <div
               key={career.id}
               onClick={() => handleCareerClick(career)}
@@ -215,6 +221,9 @@ export default function CareerSelectPage() {
                 </div>
                 
                 <div className="w-full max-w-md space-y-3">
+                  {analyzeError && (
+                    <p className="text-red-500 text-sm">{analyzeError}</p>
+                  )}
                   <div className="flex gap-2">
                     <input 
                       type="text" 
@@ -223,7 +232,7 @@ export default function CareerSelectPage() {
                       placeholder="예: 블록체인 개발자, 데이터 엔지니어..." 
                       className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c3002f] focus:border-transparent text-slate-900"
                       onKeyDown={(e) => e.key === 'Enter' && handleCustomAnalyze()}
-                      autoFocus // 폼 나타나면 자동 포커스
+                      autoFocus
                     />
                     <button 
                       onClick={handleCustomAnalyze}
@@ -295,7 +304,7 @@ export default function CareerSelectPage() {
                      <p className="text-sm text-slate-600 leading-relaxed">
                        {activeCareer.isCustom 
                          ? `'${activeCareer.title}' 직무는 최신 기술 트렌드에 민감합니다. 기초 전공 지식 위에 최신 프레임워크 활용 능력을 쌓는 로드맵을 설계해드리겠습니다.`
-                         : `이 진로를 위해서는 '${activeCareer.competencies[0].subject}' 역량이 가장 중요합니다. 3학년 2학기에 관련 심화 과목 수강을 추천합니다.`
+                         : `이 진로를 위해서는 '${activeCareer.competencies[0]?.subject || '전공기초'}' 역량이 가장 중요합니다. 3학년 2학기에 관련 심화 과목 수강을 추천합니다.`
                        }
                      </p>
                    </div>
