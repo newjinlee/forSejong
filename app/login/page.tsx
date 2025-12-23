@@ -34,6 +34,7 @@ export default function LoginPage() {
         // TODO: 실제로는 서버에서 학생 정보를 파싱해서 내려줘야 함
         // 현재는 Mock 데이터로 처리
         setStudentInfo({
+          id: data.user?.id, 
           name: data.user?.name || '세종학생',
           department: data.user?.department || '컴퓨터공학과',
           grade: data.user?.grade || 3,
@@ -56,6 +57,7 @@ export default function LoginPage() {
   // 데모 모드 - 실제 로그인 없이 테스트
   const handleDemoLogin = () => {
     setStudentInfo({
+      id: '21011578',
       name: '이유진',
       department: '컴퓨터공학과',
       grade: 3,
