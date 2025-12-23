@@ -1,78 +1,132 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend
 } from 'recharts';
 import { 
-  ArrowRight, User, Target, TrendingUp, AlertTriangle, CheckCircle2,
+  ArrowRight, User, Target, TrendingUp, AlertTriangle,
   ArrowLeft
 } from 'lucide-react';
 import { useCareerStore } from '../../src/store/useCareerStore';
+import type { Competency } from '../../src/types/api';
 
-// --- Mock Data: 현재 역량 (기이수 과목 기반으로 계산되었다고 가정) ---
-const CURRENT_COMPETENCY_MOCK = [
-  { subject: 'DB', current: 45, target: 90, fullMark: 100 },
-  { subject: '알고리즘', current: 30, target: 85, fullMark: 100 },
-  { subject: '네트워크', current: 70, target: 80, fullMark: 100 },
-  { subject: 'OS', current: 25, target: 70, fullMark: 100 },
-  { subject: '보안', current: 55, target: 60, fullMark: 100 },
-  { subject: '협업', current: 60, target: 75, fullMark: 100 },
+// ===================================
+// Mock Data (나중에 API로 교체)
+// ===================================
+const CURRENT_COMPETENCY_MOCK: Competency[] = [
+  { subject: 'DB', score: 45, fullMark: 100 },
+  { subject: '알고리즘', score: 30, fullMark: 100 },
+  { subject: '네트워크', score: 70, fullMark: 100 },
+  { subject: 'OS', score: 25, fullMark: 100 },
+  { subject: '보안', score: 55, fullMark: 100 },
+  { subject: '협업', score: 60, fullMark: 100 },
 ];
 
-// --- Mock Data: 부족한 역량 분석 ---
-const GAP_ANALYSIS_MOCK = [
-  { 
-    subject: '알고리즘', 
-    gap: 55, 
-    priority: 'high',
-    recommendation: '알고리즘, 자료구조 과목 수강 필요',
-  },
-  { 
-    subject: 'DB', 
-    gap: 45, 
-    priority: 'high',
-    recommendation: '데이터베이스, DB설계 과목 수강 필요',
-  },
-  { 
-    subject: 'OS', 
-    gap: 45, 
-    priority: 'medium',
-    recommendation: '운영체제 과목 수강 필요',
-  },
-  { 
-    subject: '협업', 
-    gap: 15, 
-    priority: 'low',
-    recommendation: '캡스톤, 팀프로젝트 경험 권장',
-  },
+const TARGET_COMPETENCY_MOCK: Competency[] = [
+  { subject: 'DB', score: 90, fullMark: 100 },
+  { subject: '알고리즘', score: 85, fullMark: 100 },
+  { subject: '네트워크', score: 80, fullMark: 100 },
+  { subject: 'OS', score: 70, fullMark: 100 },
+  { subject: '보안', score: 60, fullMark: 100 },
+  { subject: '협업', score: 75, fullMark: 100 },
 ];
 
+// ===================================
+// 메인 컴포넌트
+// ===================================
 export default function CompetencyAnalysisPage() {
   const router = useRouter();
   const { studentInfo, selectedCareer } = useCareerStore();
 
+  // ===================================
+  // 역량 데이터 (TODO: API 연동 시 교체)
+  // ===================================
+  const { currentCompetency, targetCompetency } = useMemo(() => {
+    // TODO: API 연동 시 이 부분을 useQuery 또는 fetch로 교체
+    // const { data } = useCompetencyAnalysis(studentInfo?.id, selectedCareer?.id);
+    // return { currentCompetency: data.currentCompetency, targetCompetency: data.targetCompetency };
+    
+    return {
+      currentCompetency: CURRENT_COMPETENCY_MOCK,
+      targetCompetency: TARGET_COMPETENCY_MOCK,
+    };
+  }, []);
+
+  // ===================================
+  // 차트용 데이터 변환
+  // ===================================
+  const chartData = useMemo(() => {
+    return targetCompetency.map((target, index) => ({
+      subject: target.subject,
+      current: currentCompetency[index]?.score || 0,
+      target: target.score,
+      fullMark: 100,
+    }));
+  }, [currentCompetency, targetCompetency]);
+
+  // ===================================
+  // 달성률 계산: 현재 총합 / 목표 총합 × 100
+  // ===================================
+  const achievementRate = useMemo(() => {
+    const totalCurrent = currentCompetency.reduce((sum, c) => sum + c.score, 0);
+    const totalTarget = targetCompetency.reduce((sum, c) => sum + c.score, 0);
+    if (totalTarget === 0) return 0;
+    return Math.round((totalCurrent / totalTarget) * 100);
+  }, [currentCompetency, targetCompetency]);
+
+  // ===================================
+  // 보완 필요 역량: target > current 인 항목
+  // ===================================
+  const gapAnalysis = useMemo(() => {
+    return targetCompetency
+      .map((target, index) => {
+        const current = currentCompetency[index]?.score || 0;
+        const gap = target.score - current;
+        
+        let priority: 'high' | 'medium' | 'low';
+        if (gap >= 40) priority = 'high';
+        else if (gap >= 20) priority = 'medium';
+        else priority = 'low';
+
+        return {
+          subject: target.subject,
+          current,
+          target: target.score,
+          gap,
+          priority,
+        };
+      })
+      .filter(item => item.gap > 0) // 부족한 것만
+      .sort((a, b) => b.gap - a.gap); // gap 큰 순으로 정렬
+  }, [currentCompetency, targetCompetency]);
+
+  // 보완 필요 역량 수
+  const needImprovementCount = gapAnalysis.length;
+  const highPriorityCount = gapAnalysis.filter(g => g.priority === 'high').length;
+
+  // ===================================
+  // 네비게이션
+  // ===================================
   const handleNext = () => {
     router.push('/roadmap/generate');
   };
 
   const handleBack = () => {
-    router.push('/career');
+    router.push('/career-select');
   };
 
-  // 전체 역량 달성률 계산
-  const totalCurrent = CURRENT_COMPETENCY_MOCK.reduce((sum, c) => sum + c.current, 0);
-  const totalTarget = CURRENT_COMPETENCY_MOCK.reduce((sum, c) => sum + c.target, 0);
-  const achievementRate = Math.round((totalCurrent / totalTarget) * 100);
-
+  // ===================================
+  // 진로 미선택 시
+  // ===================================
   if (!studentInfo || !selectedCareer) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-slate-600 mb-4">진로 선택이 필요합니다.</p>
           <button 
-            onClick={() => router.push('/career')}
+            onClick={() => router.push('/career-select')}
             className="px-6 py-2 bg-[#c3002f] text-white rounded-lg"
           >
             진로 선택하러 가기
@@ -92,7 +146,7 @@ export default function CompetencyAnalysisPage() {
           </div>
           <div>
             <h1 className="font-bold text-slate-800">
-              {studentInfo.name}님의 역량 분석 결과
+              역량 분석 결과
             </h1>
             <p className="text-xs text-slate-500">
               목표 진로: <span className="font-bold text-[#c3002f]">{selectedCareer.title}</span>
@@ -105,6 +159,7 @@ export default function CompetencyAnalysisPage() {
       <main className="flex-1 max-w-7xl mx-auto w-full p-6">
         {/* 상단 요약 카드 */}
         <div className="grid md:grid-cols-3 gap-4 mb-8">
+          {/* 현재 역량 수준 */}
           <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
             <div className="flex items-center gap-3 mb-2">
               <div className="bg-blue-50 p-2 rounded-lg">
@@ -116,6 +171,7 @@ export default function CompetencyAnalysisPage() {
             <p className="text-xs text-slate-400 mt-1">목표 대비 달성률</p>
           </div>
 
+          {/* 목표 진로 */}
           <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
             <div className="flex items-center gap-3 mb-2">
               <div className="bg-red-50 p-2 rounded-lg">
@@ -127,6 +183,7 @@ export default function CompetencyAnalysisPage() {
             <p className="text-xs text-slate-400 mt-1">{selectedCareer.tags.join(', ')}</p>
           </div>
 
+          {/* 보완 필요 역량 */}
           <div className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
             <div className="flex items-center gap-3 mb-2">
               <div className="bg-orange-50 p-2 rounded-lg">
@@ -135,9 +192,11 @@ export default function CompetencyAnalysisPage() {
               <span className="text-sm font-medium text-slate-500">보완 필요 역량</span>
             </div>
             <p className="text-3xl font-bold text-slate-900">
-              {GAP_ANALYSIS_MOCK.filter(g => g.priority === 'high').length}개
+              {needImprovementCount}개
             </p>
-            <p className="text-xs text-slate-400 mt-1">우선 보완 필요</p>
+            <p className="text-xs text-slate-400 mt-1">
+              {needImprovementCount === 0 ? '모든 역량 충족!' : '우선 보완 필요'}
+            </p>
           </div>
         </div>
 
@@ -156,7 +215,7 @@ export default function CompetencyAnalysisPage() {
             </div>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={CURRENT_COMPETENCY_MOCK}>
+                <RadarChart data={chartData}>
                   <PolarGrid stroke="#e2e8f0" />
                   <PolarAngleAxis 
                     dataKey="subject" 
@@ -189,7 +248,7 @@ export default function CompetencyAnalysisPage() {
             </div>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={CURRENT_COMPETENCY_MOCK}>
+                <RadarChart data={chartData}>
                   <PolarGrid stroke="#e2e8f0" />
                   <PolarAngleAxis 
                     dataKey="subject" 
@@ -223,7 +282,7 @@ export default function CompetencyAnalysisPage() {
           </div>
           <div className="h-[350px]">
             <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={CURRENT_COMPETENCY_MOCK}>
+              <RadarChart data={chartData}>
                 <PolarGrid stroke="#e2e8f0" />
                 <PolarAngleAxis 
                   dataKey="subject" 
@@ -255,6 +314,54 @@ export default function CompetencyAnalysisPage() {
           </div>
         </div>
 
+        {/* GAP 분석 상세 */}
+        {gapAnalysis.length > 0 && (
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-orange-100 p-2 rounded-lg">
+                <AlertTriangle className="w-5 h-5 text-orange-500" />
+              </div>
+              <div>
+                <h2 className="font-bold text-lg text-slate-900">보완 필요 역량</h2>
+                <p className="text-xs text-slate-500">부족분이 큰 순으로 정렬</p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {gapAnalysis.map((gap) => (
+                <div 
+                  key={gap.subject}
+                  className={`flex items-center justify-between p-4 rounded-xl border ${
+                    gap.priority === 'high' 
+                      ? 'bg-red-50 border-red-200' 
+                      : gap.priority === 'medium'
+                      ? 'bg-orange-50 border-orange-200'
+                      : 'bg-slate-50 border-slate-200'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={`text-xs font-bold px-2 py-1 rounded ${
+                      gap.priority === 'high' 
+                        ? 'bg-red-500 text-white' 
+                        : gap.priority === 'medium'
+                        ? 'bg-orange-500 text-white'
+                        : 'bg-slate-400 text-white'
+                    }`}>
+                      {gap.priority === 'high' ? '긴급' : gap.priority === 'medium' ? '권장' : '참고'}
+                    </span>
+                    <span className="font-bold text-slate-800">{gap.subject}</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm">
+                      <span className="text-blue-600 font-bold">{gap.current}</span>
+                      <span className="text-slate-400 mx-1">→</span>
+                      <span className="text-[#c3002f] font-bold">{gap.target}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* 하단 버튼 */}
         <div className="flex gap-4">

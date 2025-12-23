@@ -1,48 +1,96 @@
 // ===================================
-// 진로 목록 조회 훅
+// 진로 목록 및 역량 조회 훅
 // ===================================
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { getCareers, analyzeCustomCareer } from '../lib/api';
-import type { Career, CareersResponse, CustomCareerAnalyzeResponse } from '../types/api';
+import { useState, useCallback, useMemo } from 'react';
+import { getCareerCompetencies, analyzeCustomCareer } from '../lib/api';
+import { getCareersByDepartment, type CareerInput } from '../lib/careerData';
+import type { CustomCareerAnalyzeResponse, Competency } from '../types/api';
 
+// ===================================
+// 타입 정의
+// ===================================
+
+// 프론트엔드에서 사용하는 Career 타입 (competencies 포함)
+export type CareerWithCompetencies = CareerInput & {
+  competencies?: Competency[];
+  isCustom?: boolean;
+};
+
+// ===================================
+// 학과별 하드코딩된 직업 목록 조회 훅
+// ===================================
 type UseCareersReturn = {
-  careers: Career[];
+  careers: CareerInput[];
   isLoading: boolean;
   error: string | null;
-  refetch: (department?: string) => Promise<void>;
 };
 
 export function useCareers(department?: string): UseCareersReturn {
-  const [careers, setCareers] = useState<Career[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // 하드코딩된 데이터에서 직접 가져옴 (API 호출 없음)
+  const careers = useMemo(() => {
+    if (!department) return [];
+    return getCareersByDepartment(department);
+  }, [department]);
 
-  const fetchCareers = useCallback(async (dept?: string) => {
+  return {
+    careers,
+    isLoading: false,
+    error: null,
+  };
+}
+
+// ===================================
+// 직업 역량 분석 훅 (API 호출)
+// ===================================
+type UseCareerCompetenciesReturn = {
+  isLoading: boolean;
+  error: string | null;
+  competencies: Competency[] | null;
+  fetchCompetencies: (title: string) => Promise<Competency[] | null>;
+  reset: () => void;
+};
+
+export function useCareerCompetencies(): UseCareerCompetenciesReturn {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [competencies, setCompetencies] = useState<Competency[] | null>(null);
+
+  const fetchCompetencies = useCallback(async (title: string) => {
+    if (!title.trim()) {
+      setError('직업명을 입력해주세요.');
+      return null;
+    }
+
     setIsLoading(true);
     setError(null);
 
     try {
-      const response: CareersResponse = await getCareers(dept);
-      setCareers(response.careers);
+      const response = await getCareerCompetencies({ title });
+      setCompetencies(response.competencies);
+      return response.competencies;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : '진로 목록을 불러오는데 실패했습니다.';
+      const errorMessage = err instanceof Error ? err.message : '역량 분석에 실패했습니다.';
       setError(errorMessage);
+      return null;
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    fetchCareers(department);
-  }, [department, fetchCareers]);
+  const reset = useCallback(() => {
+    setIsLoading(false);
+    setError(null);
+    setCompetencies(null);
+  }, []);
 
   return {
-    careers,
     isLoading,
     error,
-    refetch: fetchCareers,
+    competencies,
+    fetchCompetencies,
+    reset,
   };
 }
 

@@ -9,23 +9,30 @@ import {
 import { 
   CheckCircle2, ArrowRight, Sparkles, User, RefreshCw, Plus, AlertCircle 
 } from 'lucide-react';
-import { useCareerStore, toCareerWithChart, type CareerWithChart } from '@/src/store/useCareerStore';
-import { useCareers, useCustomCareerAnalysis } from '@/src/hooks';
+import { useCareerStore, toCareerWithChart, toChartCompetencies, type CareerWithChart } from '@/src/store/useCareerStore';
+import { useCareers, useCareerCompetencies, useCustomCareerAnalysis } from '@/src/hooks';
+import type { CareerInput } from '@/src/lib/careerData';
 
 export default function CareerSelectPage() {
   const router = useRouter();
   const { studentInfo, setSelectedCareer } = useCareerStore();
   
   // ===================================
-  // API 훅 사용
+  // 훅 사용
   // ===================================
-  const { 
-    careers: apiCareers, 
-    isLoading: isCareersLoading, 
-    error: careersError,
-    refetch: refetchCareers 
-  } = useCareers(studentInfo?.department);
+  
+  // 하드코딩된 직업 목록 (competencies 없음)
+  const { careers: careerList } = useCareers(studentInfo?.department);
 
+  // 선택한 직업의 competencies를 API로 받아오는 훅
+  const { 
+    isLoading: isCompetencyLoading, 
+    error: competencyError,
+    fetchCompetencies,
+    reset: resetCompetencies 
+  } = useCareerCompetencies();
+
+  // 커스텀 진로 분석 훅
   const { 
     isAnalyzing, 
     error: analyzeError,
@@ -37,21 +44,48 @@ export default function CareerSelectPage() {
   // ===================================
   // 로컬 상태
   // ===================================
+  
+  // 현재 선택된 직업 (하드코딩 데이터)
+  const [selectedCareerInput, setSelectedCareerInput] = useState<CareerInput | null>(null);
+  
+  // 차트에 표시할 최종 Career (competencies 포함)
   const [activeCareer, setActiveCareer] = useState<CareerWithChart | null>(null);
+  
+  // 커스텀 모드
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [customInput, setCustomInput] = useState('');
 
-  // API Career를 Chart용으로 변환
-  const availableCareers = useMemo(() => {
-    return apiCareers.map(toCareerWithChart);
-  }, [apiCareers]);
-
-  // 초기 진입 시 첫 번째 추천 진로 자동 선택
-  useEffect(() => {
-    if (!activeCareer && availableCareers.length > 0 && !isCustomMode && !isCareersLoading) {
-      setActiveCareer(availableCareers[0]);
+  // ===================================
+  // 직업 클릭 핸들러 (API 호출)
+  // ===================================
+  const handleCareerClick = async (career: CareerInput) => {
+    setIsCustomMode(false);
+    setSelectedCareerInput(career);
+    resetAnalysis();
+    
+    // API 호출하여 competencies 받아오기
+    const competencies = await fetchCompetencies(career.title);
+    
+    if (competencies) {
+      // CareerInput + competencies -> CareerWithChart
+      const careerWithChart: CareerWithChart = {
+        id: career.id,
+        title: career.title,
+        description: career.description,
+        tags: career.tags,
+        competencies: toChartCompetencies(competencies),
+        isCustom: false,
+      };
+      setActiveCareer(careerWithChart);
     }
-  }, [availableCareers, activeCareer, isCustomMode, isCareersLoading]);
+  };
+
+  // 초기 진입 시 첫 번째 직업 자동 선택
+  useEffect(() => {
+    if (!activeCareer && careerList.length > 0 && !isCustomMode && !isCompetencyLoading) {
+      handleCareerClick(careerList[0]);
+    }
+  }, [careerList]);
 
   // 커스텀 진로 분석 완료 시 activeCareer 업데이트
   useEffect(() => {
@@ -68,16 +102,11 @@ export default function CareerSelectPage() {
   // "직접 입력하기" 카드 클릭 핸들러
   const handleCustomModeClick = () => {
     setIsCustomMode(true);
+    setSelectedCareerInput(null);
     setActiveCareer(null);
     setCustomInput('');
     resetAnalysis();
-  };
-
-  // 기존 목록 클릭 핸들러
-  const handleCareerClick = (career: CareerWithChart) => {
-    setIsCustomMode(false);
-    setActiveCareer(career);
-    resetAnalysis();
+    resetCompetencies();
   };
 
   // 분석 시작 핸들러
@@ -124,7 +153,7 @@ export default function CareerSelectPage() {
             <User size={20} />
           </div>
           <div>
-            <h1 className="font-bold text-slate-800">{studentInfo.name}님, 어떤 진로를 꿈꾸시나요?</h1>
+            <h1 className="font-bold text-slate-800">어떤 진로를 꿈꾸시나요?</h1>
             <p className="text-xs text-slate-500">
               {studentInfo.department} {studentInfo.grade}학년 | {studentInfo.semester}학기
             </p>
@@ -141,35 +170,13 @@ export default function CareerSelectPage() {
             {studentInfo.department} 추천 진로
           </p>
           
-          {/* 로딩 상태 */}
-          {isCareersLoading && (
-            <div className="flex items-center justify-center py-8">
-              <RefreshCw className="w-6 h-6 text-[#c3002f] animate-spin" />
-              <span className="ml-2 text-slate-500">진로 목록 불러오는 중...</span>
-            </div>
-          )}
-
-          {/* 에러 상태 */}
-          {careersError && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
-              <AlertCircle className="w-6 h-6 text-red-500 mx-auto mb-2" />
-              <p className="text-red-600 text-sm">{careersError}</p>
-              <button 
-                onClick={() => refetchCareers(studentInfo.department)}
-                className="mt-2 text-sm text-[#c3002f] underline"
-              >
-                다시 시도
-              </button>
-            </div>
-          )}
-          
           {/* 진로 목록 */}
-          {!isCareersLoading && !careersError && availableCareers.map((career) => (
+          {careerList.map((career) => (
             <div
               key={career.id}
               onClick={() => handleCareerClick(career)}
               className={`p-5 rounded-xl border-2 cursor-pointer transition-all hover:shadow-md relative group ${
-                !isCustomMode && activeCareer?.id === career.id
+                !isCustomMode && selectedCareerInput?.id === career.id
                   ? 'border-[#c3002f] bg-white ring-1 ring-red-100'
                   : 'border-white bg-white hover:border-red-50'
               }`}
@@ -178,7 +185,7 @@ export default function CareerSelectPage() {
                 <div className="flex items-center gap-3">
                   <h3 className="font-bold text-lg text-slate-800">{career.title}</h3>
                 </div>
-                {!isCustomMode && activeCareer?.id === career.id && <CheckCircle2 className="text-[#c3002f] w-6 h-6" />}
+                {!isCustomMode && selectedCareerInput?.id === career.id && <CheckCircle2 className="text-[#c3002f] w-6 h-6" />}
               </div>
               <p className="text-slate-600 text-sm mb-3">{career.description}</p>
               <div className="flex gap-2">
@@ -249,19 +256,40 @@ export default function CareerSelectPage() {
               </div>
             )}
 
-            {/* 2️⃣ 로딩 중 화면 */}
-            {isAnalyzing && (
+            {/* 2️⃣ 로딩 중 화면 (커스텀 분석 또는 역량 조회) */}
+            {(isAnalyzing || isCompetencyLoading) && (
               <div className="flex flex-col items-center justify-center h-full space-y-4 animate-in fade-in">
                 <RefreshCw className="w-10 h-10 text-[#c3002f] animate-spin" />
                 <div className="text-center">
-                  <p className="text-lg font-bold text-slate-700">AI가 &lsquo;{customInput}&rsquo; 직무를 분석 중입니다...</p>
-                  <p className="text-sm text-slate-400 mt-1">채용 공고 데이터 스캐닝 중... (1/3)</p>
+                  <p className="text-lg font-bold text-slate-700">
+                    {isAnalyzing 
+                      ? `AI가 '${customInput}' 직무를 분석 중입니다...`
+                      : `'${selectedCareerInput?.title}' 역량 데이터 로딩 중...`
+                    }
+                  </p>
+                  <p className="text-sm text-slate-400 mt-1">
+                    {isAnalyzing ? '채용 공고 데이터 스캐닝 중... (1/3)' : '잠시만 기다려주세요...'}
+                  </p>
                 </div>
               </div>
             )}
 
+            {/* 에러 표시 */}
+            {competencyError && !isCompetencyLoading && (
+              <div className="flex flex-col items-center justify-center h-full space-y-4">
+                <AlertCircle className="w-10 h-10 text-red-500" />
+                <p className="text-red-600">{competencyError}</p>
+                <button 
+                  onClick={() => selectedCareerInput && handleCareerClick(selectedCareerInput)}
+                  className="text-sm text-[#c3002f] underline"
+                >
+                  다시 시도
+                </button>
+              </div>
+            )}
+
             {/* 3️⃣ 결과 차트 화면 (기본 선택 or 분석 완료) */}
-            {activeCareer && (
+            {activeCareer && !isCompetencyLoading && !isAnalyzing && (
               <div className="flex flex-col h-full animate-in zoom-in-95 duration-300">
                 <div className="mb-6">
                   <div className="flex items-center gap-3 mb-1">
@@ -304,7 +332,7 @@ export default function CareerSelectPage() {
                      <p className="text-sm text-slate-600 leading-relaxed">
                        {activeCareer.isCustom 
                          ? `'${activeCareer.title}' 직무는 최신 기술 트렌드에 민감합니다. 기초 전공 지식 위에 최신 프레임워크 활용 능력을 쌓는 로드맵을 설계해드리겠습니다.`
-                         : `이 진로를 위해서는 '${activeCareer.competencies[0]?.subject || '전공기초'}' 역량이 가장 중요합니다. 3학년 2학기에 관련 심화 과목 수강을 추천합니다.`
+                         : `이 진로를 위해서는 '${activeCareer.competencies[0]?.subject || '전공기초'}' 역량이 가장 중요합니다. 4학년 2학기에 관련 심화 과목 수강을 추천합니다.`
                        }
                      </p>
                    </div>
@@ -316,7 +344,7 @@ export default function CareerSelectPage() {
           {/* Next Button */}
           <button 
             onClick={handleNext}
-            disabled={!activeCareer}
+            disabled={!activeCareer || isCompetencyLoading || isAnalyzing}
             className="w-full mt-6 py-4 bg-[#c3002f] hover:bg-[#a00026] disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl font-bold text-lg shadow-lg transition-all flex items-center justify-center gap-2"
           >
             {activeCareer ? `${activeCareer.title} 역량 분석하기` : '진로를 선택해주세요'}

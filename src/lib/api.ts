@@ -9,7 +9,8 @@
 import type {
   LoginRequest,
   LoginResponse,
-  CareersResponse,
+  CareerCompetenciesRequest,
+  CareerCompetenciesResponse,
   CustomCareerAnalyzeRequest,
   CustomCareerAnalyzeResponse,
   CompetencyAnalyzeRequest,
@@ -21,7 +22,7 @@ import type {
 
 import {
   MOCK_LOGIN_RESPONSE,
-  MOCK_CAREERS_RESPONSE,
+  createMockCareerCompetencies,
   createMockCustomCareerResponse,
   MOCK_COMPETENCY_RESPONSE,
   MOCK_ROADMAP_RESPONSE,
@@ -88,19 +89,25 @@ export async function login(data: LoginRequest): Promise<LoginResponse> {
 }
 
 // ===================================
-// 2. 진로 목록 조회 API
-// GET /api/careers
+// 2. 진로 역량 분석 API (NEW!)
+// POST /api/careers
+// - 프론트: { title: "백엔드 개발자" }
+// - 백: { title: "백엔드 개발자", competencies: [...] }
 // ===================================
-export async function getCareers(department?: string): Promise<CareersResponse> {
+export async function getCareerCompetencies(
+  data: CareerCompetenciesRequest
+): Promise<CareerCompetenciesResponse> {
   // 🔧 목데이터 사용 시
   if (USE_MOCK_DATA) {
-    await simulateDelay(500);
-    return MOCK_CAREERS_RESPONSE;
+    await simulateDelay(800);
+    return createMockCareerCompetencies(data.title);
   }
 
   // 🔧 실제 API 호출
-  const queryParams = department ? `?department=${encodeURIComponent(department)}` : '';
-  return apiRequest<CareersResponse>(`/careers${queryParams}`);
+  return apiRequest<CareerCompetenciesResponse>('/careers', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
 }
 
 // ===================================

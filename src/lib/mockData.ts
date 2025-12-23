@@ -5,11 +5,11 @@
 
 import type {
   LoginResponse,
-  CareersResponse,
+  CareerCompetenciesResponse,
   CustomCareerAnalyzeResponse,
   CompetencyAnalyzeResponse,
   RoadmapResponse,
-  Career,
+  Competency,
 } from '../types/api';
 
 // ===================================
@@ -34,74 +34,114 @@ export const MOCK_LOGIN_RESPONSE: LoginResponse = {
 };
 
 // ===================================
-// 2. 진로 목록 목데이터
+// 2. 진로 역량 분석 목데이터
+// title -> competencies 매핑
 // ===================================
-export const MOCK_CAREERS_RESPONSE: CareersResponse = {
-  careers: [
-    {
-      id: 'backend',
-      title: '백엔드 개발자',
-      description: '대용량 트래픽 처리 및 서버 아키텍처 설계',
-      tags: ['Java', 'Spring', 'AWS'],
-      competencies: [
-        { subject: 'DB', score: 90, fullMark: 100 },
-        { subject: '알고리즘', score: 85, fullMark: 100 },
-        { subject: '네트워크', score: 80, fullMark: 100 },
-        { subject: 'OS', score: 70, fullMark: 100 },
-        { subject: '보안', score: 60, fullMark: 100 },
-        { subject: '협업', score: 75, fullMark: 100 },
-      ],
-    },
-    {
-      id: 'frontend',
-      title: '프론트엔드 개발자',
-      description: '웹/앱 사용자 인터페이스 구현 및 UX 최적화',
-      tags: ['React', 'Next.js', 'TypeScript'],
-      competencies: [
-        { subject: 'UI구현', score: 95, fullMark: 100 },
-        { subject: '알고리즘', score: 60, fullMark: 100 },
-        { subject: '네트워크', score: 70, fullMark: 100 },
-        { subject: '디자인', score: 85, fullMark: 100 },
-        { subject: '최적화', score: 80, fullMark: 100 },
-        { subject: '협업', score: 90, fullMark: 100 },
-      ],
-    },
-    {
-      id: 'ai-researcher',
-      title: 'AI 연구원',
-      description: '최신 논문 분석 및 딥러닝 모델링',
-      tags: ['Python', 'PyTorch', 'Math'],
-      competencies: [
-        { subject: '수학', score: 95, fullMark: 100 },
-        { subject: '알고리즘', score: 90, fullMark: 100 },
-        { subject: '데이터', score: 85, fullMark: 100 },
-        { subject: '모델링', score: 95, fullMark: 100 },
-        { subject: '논문', score: 90, fullMark: 100 },
-        { subject: '구현', score: 70, fullMark: 100 },
-      ],
-    },
+const CAREER_COMPETENCIES_MAP: Record<string, Competency[]> = {
+  '인공지능 엔지니어': [
+    { subject: '수학', score: 95, fullMark: 100 },
+    { subject: '알고리즘', score: 90, fullMark: 100 },
+    { subject: '데이터', score: 90, fullMark: 100 },
+    { subject: '프로그래밍', score: 85, fullMark: 100 },
+    { subject: '논문분석', score: 80, fullMark: 100 },
+    { subject: '협업', score: 70, fullMark: 100 },
+  ],
+  '백엔드 개발자': [
+    { subject: 'DB', score: 90, fullMark: 100 },
+    { subject: '알고리즘', score: 85, fullMark: 100 },
+    { subject: '네트워크', score: 80, fullMark: 100 },
+    { subject: 'OS', score: 70, fullMark: 100 },
+    { subject: '보안', score: 60, fullMark: 100 },
+    { subject: '협업', score: 75, fullMark: 100 },
+  ],
+  '클라우드 컴퓨팅 엔지니어': [
+    { subject: '네트워크', score: 90, fullMark: 100 },
+    { subject: 'OS', score: 85, fullMark: 100 },
+    { subject: '보안', score: 80, fullMark: 100 },
+    { subject: '자동화', score: 85, fullMark: 100 },
+    { subject: 'DB', score: 70, fullMark: 100 },
+    { subject: '협업', score: 75, fullMark: 100 },
+  ],
+  '빅데이터 분석가': [
+    { subject: '통계', score: 90, fullMark: 100 },
+    { subject: 'DB', score: 85, fullMark: 100 },
+    { subject: '시각화', score: 80, fullMark: 100 },
+    { subject: '프로그래밍', score: 75, fullMark: 100 },
+    { subject: '도메인지식', score: 70, fullMark: 100 },
+    { subject: '커뮤니케이션', score: 80, fullMark: 100 },
+  ],
+  '정보보안 엔지니어': [
+    { subject: '보안', score: 95, fullMark: 100 },
+    { subject: '네트워크', score: 90, fullMark: 100 },
+    { subject: 'OS', score: 85, fullMark: 100 },
+    { subject: '프로그래밍', score: 70, fullMark: 100 },
+    { subject: '암호학', score: 80, fullMark: 100 },
+    { subject: '분석력', score: 85, fullMark: 100 },
+  ],
+  '소프트웨어 개발자': [
+    { subject: '프로그래밍', score: 90, fullMark: 100 },
+    { subject: '알고리즘', score: 80, fullMark: 100 },
+    { subject: 'DB', score: 75, fullMark: 100 },
+    { subject: '설계', score: 80, fullMark: 100 },
+    { subject: '테스트', score: 70, fullMark: 100 },
+    { subject: '협업', score: 85, fullMark: 100 },
+  ],
+  '프론트엔드 개발자': [
+    { subject: 'UI구현', score: 95, fullMark: 100 },
+    { subject: '알고리즘', score: 60, fullMark: 100 },
+    { subject: '네트워크', score: 70, fullMark: 100 },
+    { subject: '디자인', score: 85, fullMark: 100 },
+    { subject: '최적화', score: 80, fullMark: 100 },
+    { subject: '협업', score: 90, fullMark: 100 },
+  ],
+  '시스템 엔지니어': [
+    { subject: 'OS', score: 95, fullMark: 100 },
+    { subject: '네트워크', score: 85, fullMark: 100 },
+    { subject: '보안', score: 75, fullMark: 100 },
+    { subject: '자동화', score: 80, fullMark: 100 },
+    { subject: '모니터링', score: 85, fullMark: 100 },
+    { subject: '문제해결', score: 90, fullMark: 100 },
+  ],
+  '데이터베이스 관리자': [
+    { subject: 'DB', score: 95, fullMark: 100 },
+    { subject: '쿼리최적화', score: 90, fullMark: 100 },
+    { subject: '보안', score: 80, fullMark: 100 },
+    { subject: '백업/복구', score: 85, fullMark: 100 },
+    { subject: 'OS', score: 70, fullMark: 100 },
+    { subject: '모니터링', score: 80, fullMark: 100 },
+  ],
+  '네트워크 설계 엔지니어': [
+    { subject: '네트워크', score: 95, fullMark: 100 },
+    { subject: '보안', score: 85, fullMark: 100 },
+    { subject: '프로토콜', score: 90, fullMark: 100 },
+    { subject: '트러블슈팅', score: 85, fullMark: 100 },
+    { subject: '설계', score: 80, fullMark: 100 },
+    { subject: '문서화', score: 70, fullMark: 100 },
   ],
 };
 
-// 학과별 진로 목록 (프론트엔드 호환용)
-export const MOCK_CAREER_DB: Record<string, Career[]> = {
-  '컴퓨터공학과': MOCK_CAREERS_RESPONSE.careers,
-  '소프트웨어학과': [
-    {
-      id: 'frontend',
-      title: '프론트엔드 개발자',
-      description: '웹/앱 사용자 인터페이스 구현 및 UX 최적화',
-      tags: ['React', 'Next.js', 'UX'],
-      competencies: [
-        { subject: 'UI구현', score: 95, fullMark: 100 },
-        { subject: '알고리즘', score: 60, fullMark: 100 },
-        { subject: '네트워크', score: 70, fullMark: 100 },
-        { subject: '디자인', score: 85, fullMark: 100 },
-        { subject: '최적화', score: 80, fullMark: 100 },
-        { subject: '협업', score: 90, fullMark: 100 },
-      ],
-    },
-  ],
+// 기본 competencies (매핑에 없는 직업용)
+const DEFAULT_COMPETENCIES: Competency[] = [
+  { subject: '전공기초', score: 80, fullMark: 100 },
+  { subject: '설계능력', score: 75, fullMark: 100 },
+  { subject: '구현능력', score: 85, fullMark: 100 },
+  { subject: '문제해결', score: 80, fullMark: 100 },
+  { subject: '협업', score: 70, fullMark: 100 },
+  { subject: '커뮤니케이션', score: 75, fullMark: 100 },
+];
+
+/**
+ * 진로 역량 분석 목데이터 생성
+ * title을 받아서 해당 직업의 competencies 반환
+ */
+export const createMockCareerCompetencies = (
+  title: string
+): CareerCompetenciesResponse => {
+  const competencies = CAREER_COMPETENCIES_MAP[title] || DEFAULT_COMPETENCIES;
+  return {
+    title,
+    competencies,
+  };
 };
 
 // ===================================

@@ -62,20 +62,7 @@ const SubjectNode = ({ data }: { data: any }) => {
 
 const nodeTypes = { subject: SubjectNode };
 
-// --- 2. 기이수 과목 (공통) ---
-const COMPLETED_COURSES_MOCK = [
-  { id: 'c-1', name: '디지털시스템', type: '전필', credits: 3, semester: '2-1' },
-  { id: 'c-2', name: '이산수학및프로그래밍', type: '전선', credits: 3, semester: '2-2' },
-  { id: 'c-3', name: '고급C프로그래밍', type: '전선', credits: 3, semester: '2-2' },
-  { id: 'c-4', name: '컴퓨터구조', type: '전필', credits: 3, semester: '2-2' },
-  { id: 'c-5', name: '컴퓨터네트워크', type: '전필', credits: 3, semester: '2-2' },
-  { id: 'c-6', name: '정보보호개론', type: '전선', credits: 3, semester: '3-1' },
-  { id: 'c-7', name: '웹프로그래밍', type: '전선', credits: 3, semester: '3-1' },
-  { id: 'c-8', name: '생성형인공지능입문', type: '전선', credits: 3, semester: '3-1' },
-  { id: 'c-9', name: 'Capstone디자인', type: '전필', credits: 3, semester: '4-1' },
-];
-
-// --- 3. 진로별 추천 과목 데이터 ---
+// --- 2. 진로별 추천 과목 데이터 ---
 type RecommendedCourse = {
   id: string;
   name: string;
@@ -168,7 +155,7 @@ const getRecommendations = (careerId: string | undefined): CareerRecommendations
 };
 
 export default function RoadmapGeneratePage() {
-  const { selectedCareer, studentInfo } = useCareerStore();
+  const { selectedCareer, studentInfo, completedCourses } = useCareerStore();
   const [loading, setLoading] = useState(true);
   const [showCourseList, setShowCourseList] = useState(false);
   
@@ -178,6 +165,15 @@ export default function RoadmapGeneratePage() {
   // 현재 진로에 맞는 추천 데이터
   const recommendations = getRecommendations(selectedCareer?.id);
 
+  // 기이수 과목을 학기별로 그룹화
+  const completedCoursesForGraph = completedCourses.map((course, index) => ({
+    id: `c-${index}`,
+    name: course.name,
+    type: course.type,
+    credits: course.credits,
+    semester: course.semester || '기타',
+  }));
+
   const generateGraph = useCallback(() => {
     const newNodes: Node[] = [];
     const newEdges: Edge[] = [];
@@ -185,10 +181,17 @@ export default function RoadmapGeneratePage() {
     const X_GAP = 300;
     const Y_GAP = 140;
     const START_X = 50;
-    const semesters = ['2-1', '2-2', '3-1', '4-1', '4-2'];
     
-    semesters.forEach((sem, colIndex) => {
+    // 기이수 과목에서 학기 목록 추출 + 추천 과목 학기 추가
+    const completedSemesters = [...new Set(completedCoursesForGraph.map(c => c.semester))];
+    const recommendedSemesters = [...new Set(recommendations.courses.map(c => c.semester))];
+    const allSemesters = [...new Set([...completedSemesters, ...recommendedSemesters])]
+      .filter(s => s !== '기타')
+      .sort();
+    
+    allSemesters.forEach((sem, colIndex) => {
       const xPos = START_X + colIndex * X_GAP;
+      const isRecommendedSemester = recommendedSemesters.includes(sem);
       
       newNodes.push({
         id: `header-${sem}`,
@@ -197,13 +200,13 @@ export default function RoadmapGeneratePage() {
         position: { x: xPos, y: -60 },
         style: { 
           width: 180, fontWeight: 'bold', border: 'none', background: 'transparent',
-          fontSize: '18px', color: sem === '4-2' ? '#c3002f' : '#64748b'
+          fontSize: '18px', color: isRecommendedSemester ? '#c3002f' : '#64748b'
         },
         draggable: false,
         selectable: false,
       });
 
-      const completed = COMPLETED_COURSES_MOCK.filter(c => c.semester === sem);
+      const completed = completedCoursesForGraph.filter(c => c.semester === sem);
       const recommended = recommendations.courses.filter(c => c.semester === sem);
       const allCourses = [...completed, ...recommended];
 
@@ -223,8 +226,8 @@ export default function RoadmapGeneratePage() {
         });
 
         if (colIndex > 0) {
-          const prevSem = semesters[colIndex - 1];
-          const prevCourses = [...COMPLETED_COURSES_MOCK, ...recommendations.courses].filter(c => c.semester === prevSem);
+          const prevSem = allSemesters[colIndex - 1];
+          const prevCourses = [...completedCoursesForGraph, ...recommendations.courses].filter(c => c.semester === prevSem);
           
           if (prevCourses.length > 0) {
             const targetPrev = prevCourses[idx] || prevCourses[prevCourses.length - 1];
@@ -247,7 +250,7 @@ export default function RoadmapGeneratePage() {
 
     setNodes(newNodes);
     setEdges(newEdges);
-  }, [recommendations.courses, setNodes, setEdges]);
+  }, [completedCoursesForGraph, recommendations.courses, setNodes, setEdges]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -256,6 +259,9 @@ export default function RoadmapGeneratePage() {
     }, 1500);
     return () => clearTimeout(timer);
   }, [generateGraph]);
+
+  // 총 이수 학점 계산
+  const totalCredits = completedCourses.reduce((sum, c) => sum + c.credits, 0);
 
   if (loading) {
     return (
@@ -266,7 +272,12 @@ export default function RoadmapGeneratePage() {
         </h2>
         <div className="flex flex-col gap-2 text-slate-500 text-sm text-center">
           <p className="animate-pulse">학사 정보 시스템 연동 중...</p>
-          <p className="animate-pulse delay-75">기이수 과목 파싱 완료 ({COMPLETED_COURSES_MOCK.length}과목)</p>
+          <p className="animate-pulse delay-75">
+            기이수 과목 파싱 완료 (
+            <span className="font-bold text-slate-700">{completedCourses.length}과목</span>
+            , 총 <span className="font-bold text-slate-700">{totalCredits}학점</span>
+            )
+          </p>
           <p className="animate-pulse delay-150 font-bold text-[#c3002f]">
             &lsquo;{selectedCareer?.title || '선택한 진로'}&rsquo; 맞춤 로드맵 생성 중...
           </p>
@@ -290,7 +301,7 @@ export default function RoadmapGeneratePage() {
             <p className="text-xs text-slate-500">
               목표: <span className="font-bold text-[#c3002f]">{selectedCareer?.title || '미선택'}</span>
               <span className="mx-2">|</span>
-              졸업요건 충족률: <span className="font-bold text-slate-700">82%</span>
+              이수: <span className="font-bold text-slate-700">{completedCourses.length}과목 ({totalCredits}학점)</span>
             </p>
           </div>
         </div>
@@ -365,12 +376,13 @@ export default function RoadmapGeneratePage() {
         </div>
       </div>
 
-      {/* Course List Modal */}
+      {/* Course List Modal - 실제 데이터 사용 */}
       {showCourseList && (
         <div className="absolute inset-y-0 right-0 w-[400px] bg-white shadow-2xl z-30 border-l animate-in slide-in-from-right duration-300 flex flex-col">
           <div className="p-5 border-b flex justify-between items-center bg-slate-50">
-            <h3 className="font-bold text-lg flex items-center gap-2">
-              <ListChecks className="text-[#c3002f]" /> 기이수 과목 목록
+            <h3 className="font-bold text-lg flex items-center gap-2 text-black">
+              <ListChecks className="text-black" /> 
+              기이수 과목 목록 ({completedCourses.length}과목)
             </h3>
             <button 
               onClick={() => setShowCourseList(false)}
@@ -380,22 +392,38 @@ export default function RoadmapGeneratePage() {
             </button>
           </div>
           <div className="flex-1 overflow-y-auto p-5 space-y-3">
-            {COMPLETED_COURSES_MOCK.map((course, idx) => (
-              <div key={idx} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-100">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded text-white ${course.type === '전필' ? 'bg-slate-600' : 'bg-slate-400'}`}>
-                      {course.type}
-                    </span>
-                    <span className="font-bold text-slate-800 text-sm">{course.name}</span>
-                  </div>
-                  <span className="text-xs text-slate-400">{course.semester}학기 수강</span>
-                </div>
-                <span className="font-bold text-slate-600 text-sm">{course.credits}학점</span>
+            {completedCourses.length === 0 ? (
+              <div className="text-center text-slate-400 py-8">
+                <p>기이수 과목 정보가 없습니다.</p>
+                <p className="text-xs mt-2">로그인 시 수강 정보를 불러옵니다.</p>
               </div>
-            ))}
-            <div className="mt-4 pt-4 border-t text-center text-xs text-slate-400">
-              학교 포털 데이터와 동기화된 정보입니다.
+            ) : (
+              completedCourses.map((course, idx) => (
+                <div key={idx} className="flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-100">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded text-white ${
+                        course.type === '전필' ? 'bg-slate-600' : course.type === '전선' ? 'bg-slate-400' : 'bg-blue-400'
+                      }`}>
+                        {course.type}
+                      </span>
+                      <span className="font-bold text-slate-800 text-sm">{course.name}</span>
+                    </div>
+                    <span className="text-xs text-slate-400">
+                      {course.semester ? `${course.semester} 수강` : '학기 정보 없음'}
+                    </span>
+                  </div>
+                  <span className="font-bold text-slate-600 text-sm">{course.credits}학점</span>
+                </div>
+              ))
+            )}
+            <div className="mt-4 pt-4 border-t text-center">
+              <p className="text-xs text-slate-400">
+                총 <span className="font-bold text-slate-600">{totalCredits}학점</span> 이수
+              </p>
+              <p className="text-xs text-slate-400 mt-1">
+                학교 포털 데이터와 동기화된 정보입니다.
+              </p>
             </div>
           </div>
         </div>
