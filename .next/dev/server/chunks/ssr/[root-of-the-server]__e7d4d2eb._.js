@@ -44,13 +44,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$controls$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@reactflow/controls/dist/esm/index.mjs [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$minimap$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@reactflow/minimap/dist/esm/index.mjs [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$core$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@reactflow/core/dist/esm/index.mjs [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2d$upload$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UploadCloud$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cloud-upload.js [app-ssr] (ecmascript) <export default as UploadCloud>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$spreadsheet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileSpreadsheet$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file-spreadsheet.js [app-ssr] (ecmascript) <export default as FileSpreadsheet>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-ssr] (ecmascript) <export default as Loader2>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/book-open.js [app-ssr] (ecmascript) <export default as BookOpen>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$graduation$2d$cap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__GraduationCap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/graduation-cap.js [app-ssr] (ecmascript) <export default as GraduationCap>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-ssr] (ecmascript) <export default as Loader2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2d$checks$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ListChecks$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/list-checks.js [app-ssr] (ecmascript) <export default as ListChecks>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2d$alert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertTriangle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/triangle-alert.js [app-ssr] (ecmascript) <export default as AlertTriangle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$store$2f$useCareerStore$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/store/useCareerStore.ts [app-ssr] (ecmascript)");
-"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */ /* eslint-disable react-hooks/immutability */ "use client";
 ;
 ;
 ;
@@ -58,13 +57,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$store$2f$useCareerSto
 ;
 ;
 // --- 1. Custom Node Components ---
-// 커스텀 노드: 과목 카드
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SubjectNode = ({ data })=>{
     const isCompleted = data.status === 'completed';
     const isRecommended = data.status === 'recommended';
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: `w-[180px] rounded-lg shadow-md border-2 transition-all hover:scale-105 ${isCompleted ? 'bg-slate-50 border-slate-300 opacity-80' : isRecommended ? 'bg-white border-[#c3002f] ring-2 ring-red-50' : 'bg-white border-slate-200'}`,
+        className: `w-[180px] rounded-lg shadow-md border-2 transition-all hover:scale-105 ${isCompleted ? 'bg-slate-50 border-slate-300 opacity-90 grayscale-[0.2]' : isRecommended ? 'bg-white border-[#c3002f] ring-4 ring-red-50 shadow-lg shadow-red-100' : 'bg-white border-slate-200'}`,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$core$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Handle"], {
                 type: "target",
@@ -72,20 +70,20 @@ const SubjectNode = ({ data })=>{
                 className: "!bg-slate-400"
             }, void 0, false, {
                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                lineNumber: 40,
+                lineNumber: 37,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: `px-3 py-2 text-xs font-bold text-white rounded-t-[5px] flex justify-between ${isCompleted ? 'bg-slate-500' : isRecommended ? 'bg-[#c3002f]' : 'bg-slate-700'}`,
+                className: `px-3 py-2 text-xs font-bold text-white rounded-t-[5px] flex justify-between items-center ${isCompleted ? 'bg-slate-500' : isRecommended ? 'bg-[#c3002f]' : 'bg-slate-700'}`,
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                        className: "bg-white/20 px-1.5 py-0.5 rounded",
                         children: data.type
                     }, void 0, false, {
                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                        lineNumber: 45,
+                        lineNumber: 42,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
-                    " ",
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         children: [
                             data.credits,
@@ -93,13 +91,13 @@ const SubjectNode = ({ data })=>{
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                        lineNumber: 46,
+                        lineNumber: 43,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                lineNumber: 42,
+                lineNumber: 39,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -110,21 +108,47 @@ const SubjectNode = ({ data })=>{
                         children: data.label
                     }, void 0, false, {
                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                        lineNumber: 50,
+                        lineNumber: 47,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-[10px] text-slate-500",
-                        children: isCompleted ? '이수 완료' : '추천 과목'
+                        className: "text-[10px] text-slate-500 flex items-center gap-1",
+                        children: isCompleted ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            className: "text-slate-500",
+                            children: "✅ 이수 완료"
+                        }, void 0, false, {
+                            fileName: "[project]/app/roadmap/generate/page.tsx",
+                            lineNumber: 51,
+                            columnNumber: 26
+                        }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            className: "text-[#c3002f] font-bold",
+                            children: "🔥 AI 추천"
+                        }, void 0, false, {
+                            fileName: "[project]/app/roadmap/generate/page.tsx",
+                            lineNumber: 51,
+                            columnNumber: 76
+                        }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                        lineNumber: 53,
+                        lineNumber: 50,
                         columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    isRecommended && data.reason && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "mt-2 text-[10px] bg-red-50 text-[#c3002f] p-1 rounded border border-red-100",
+                        children: [
+                            "”",
+                            data.reason,
+                            "”"
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                        lineNumber: 54,
+                        columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                lineNumber: 49,
+                lineNumber: 46,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$core$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Handle"], {
@@ -133,188 +157,158 @@ const SubjectNode = ({ data })=>{
                 className: "!bg-[#c3002f]"
             }, void 0, false, {
                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                lineNumber: 58,
+                lineNumber: 60,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/app/roadmap/generate/page.tsx",
-        lineNumber: 32,
+        lineNumber: 30,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
 const nodeTypes = {
     subject: SubjectNode
 };
-// --- 2. Mock Data based on User CSV ---
-// 사용자가 업로드한 CSV 파일 내용을 바탕으로 구성
-const PARSED_COURSES = [
+// --- 2. Data Simulation (로그인 시 받아온 데이터라고 가정) ---
+// CSV 파일 내용을 바탕으로 구성한 "기이수 과목"
+const COMPLETED_COURSES_MOCK = [
+    // 2학년 (가정)
     {
-        name: 'C프로그래밍',
-        type: '전필',
-        credits: 3,
-        semester: '1-1'
-    },
-    {
+        id: 'c-1',
         name: '디지털시스템',
-        type: '전필',
-        credits: 3,
-        semester: '1-1'
-    },
-    {
-        name: '이산수학및프로그래밍',
-        type: '전선',
-        credits: 3,
-        semester: '1-2'
-    },
-    {
-        name: '고급C프로그래밍',
-        type: '전선',
-        credits: 3,
-        semester: '1-2'
-    },
-    {
-        name: '자료구조',
         type: '전필',
         credits: 3,
         semester: '2-1'
     },
     {
+        id: 'c-2',
+        name: '이산수학및프로그래밍',
+        type: '전선',
+        credits: 3,
+        semester: '2-2'
+    },
+    {
+        id: 'c-3',
+        name: '고급C프로그래밍',
+        type: '전선',
+        credits: 3,
+        semester: '2-2'
+    },
+    {
+        id: 'c-4',
         name: '컴퓨터구조',
         type: '전필',
         credits: 3,
         semester: '2-2'
     },
     {
+        id: 'c-5',
         name: '컴퓨터네트워크',
         type: '전필',
         credits: 3,
         semester: '2-2'
     },
+    // 3학년 ~ 4학년 1학기 (최신)
     {
-        name: '웹프로그래밍',
-        type: '전선',
-        credits: 3,
-        semester: '3-1'
-    },
-    {
+        id: 'c-6',
         name: '정보보호개론',
         type: '전선',
         credits: 3,
         semester: '3-1'
     },
     {
+        id: 'c-7',
+        name: '웹프로그래밍',
+        type: '전선',
+        credits: 3,
+        semester: '3-1'
+    },
+    {
+        id: 'c-8',
+        name: '생성형인공지능입문',
+        type: '전선',
+        credits: 3,
+        semester: '3-1'
+    },
+    {
+        id: 'c-9',
         name: 'Capstone디자인',
         type: '전필',
         credits: 3,
-        semester: '3-1'
+        semester: '4-1'
     }
 ];
-// 프론트엔드 로드맵 추천 (남은 학기 시뮬레이션)
-const RECOMMENDED_COURSES = [
-    // 3-2학기 추천 (전필2 + 전선2)
+// 프론트엔드 희망자에게 부족한 과목 (4-2학기 추천)
+// * 캡스톤(4-1)을 이미 들었지만, 핵심 CS 전필이 빠져있어 추천함
+const RECOMMENDED_COURSES_MOCK = [
     {
-        id: 'rec-1',
+        id: 'r-1',
         name: '알고리즘',
         type: '전필',
         credits: 3,
-        semester: '3-2',
-        reason: '코딩테스트 필수'
+        semester: '4-2',
+        reason: '코딩테스트 필수 역량'
     },
     {
-        id: 'rec-2',
+        id: 'r-2',
         name: '운영체제',
         type: '전필',
         credits: 3,
-        semester: '3-2',
-        reason: 'CS 기초'
+        semester: '4-2',
+        reason: '프로세스/스레드 이해'
     },
     {
-        id: 'rec-3',
+        id: 'r-3',
         name: 'HCI개론',
         type: '전선',
         credits: 3,
-        semester: '3-2',
-        reason: 'UX/UI 이해'
+        semester: '4-2',
+        reason: 'UX/UI 사용자 경험 설계'
     },
     {
-        id: 'rec-4',
-        name: '데이터베이스',
-        type: '전선',
-        credits: 3,
-        semester: '3-2',
-        reason: '백엔드 데이터 연동'
-    },
-    // 4-1학기 추천
-    {
-        id: 'rec-5',
-        name: '소프트웨어공학',
-        type: '전필',
-        credits: 3,
-        semester: '4-1',
-        reason: '협업 프로세스'
-    },
-    {
-        id: 'rec-6',
-        name: '인공지능',
-        type: '전필',
-        credits: 3,
-        semester: '4-1',
-        reason: '최신 트렌드'
-    },
-    {
-        id: 'rec-7',
+        id: 'r-4',
         name: '모바일프로그래밍',
         type: '전선',
         credits: 3,
-        semester: '4-1',
-        reason: 'React Native 연계'
-    },
-    {
-        id: 'rec-8',
-        name: '멀티미디어',
-        type: '전선',
-        credits: 3,
-        semester: '4-1',
-        reason: '이미지/영상 처리'
+        semester: '4-2',
+        reason: 'App 개발로 스펙 확장'
     }
 ];
 function RoadmapGeneratePage() {
     const { selectedCareer, studentInfo } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$store$2f$useCareerStore$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useCareerStore"])();
-    const [step, setStep] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('upload');
+    const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(true);
+    const [showCourseList, setShowCourseList] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false); // 기이수 목록 모달
     // React Flow States
     const [nodes, setNodes, onNodesChange] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$core$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useNodesState"])([]);
     const [edges, setEdges, onEdgesChange] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$core$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEdgesState"])([]);
-    // --- Functions ---
-    const handleFileUpload = ()=>{
-        // 실제 파일 처리 로직 대신 시뮬레이션
-        setStep('analyzing');
-        setTimeout(()=>{
+    // --- Graph Generation Logic ---
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        // 1.5초 동안 분석하는 척 (로딩 애니메이션)
+        const timer = setTimeout(()=>{
             generateGraph();
-            setStep('result');
-        }, 2000);
-    };
+            setLoading(false);
+        }, 1500);
+        return ()=>clearTimeout(timer);
+    }, []);
     const generateGraph = ()=>{
         const newNodes = [];
         const newEdges = [];
-        let xPos = 0;
-        let yPos = 0;
-        const X_GAP = 250; // 학기 간격
-        const Y_GAP = 120; // 과목 간격
-        // 1. Semester Grouping (Mock Logic)
+        // 배치 설정
+        const X_GAP = 300; // 학기 간격 (가로)
+        const Y_GAP = 140; // 과목 간격 (세로)
+        const START_X = 50;
+        // 학기 리스트 (데이터에 있는 학기만 추출 + 추천 학기)
         const semesters = [
-            '1-1',
-            '1-2',
             '2-1',
             '2-2',
             '3-1',
-            '3-2',
-            '4-1'
+            '4-1',
+            '4-2'
         ];
         semesters.forEach((sem, colIndex)=>{
-            xPos = colIndex * X_GAP;
-            yPos = 0;
-            // Header Node (학기 표시)
+            const xPos = START_X + colIndex * X_GAP;
+            // 1. 학기 헤더 노드
             newNodes.push({
                 id: `header-${sem}`,
                 type: 'default',
@@ -323,510 +317,608 @@ function RoadmapGeneratePage() {
                 },
                 position: {
                     x: xPos,
-                    y: -50
+                    y: -60
                 },
                 style: {
                     width: 180,
                     fontWeight: 'bold',
                     border: 'none',
-                    background: 'transparent'
+                    background: 'transparent',
+                    fontSize: '18px',
+                    color: sem === '4-2' ? '#c3002f' : '#64748b'
                 },
-                draggable: false
+                draggable: false,
+                selectable: false
             });
-            // 1. 기이수 과목 배치
-            const completedInSem = PARSED_COURSES.filter((c)=>c.semester === sem);
-            completedInSem.forEach((course, idx)=>{
+            // 해당 학기 과목들 필터링
+            const completed = COMPLETED_COURSES_MOCK.filter((c)=>c.semester === sem);
+            const recommended = RECOMMENDED_COURSES_MOCK.filter((c)=>c.semester === sem);
+            const allCourses = [
+                ...completed,
+                ...recommended
+            ];
+            allCourses.forEach((course, idx)=>{
+                // 노드 생성
+                const isRec = course.reason !== undefined;
                 newNodes.push({
-                    id: `comp-${course.name}`,
+                    id: course.id,
                     type: 'subject',
                     data: {
                         label: course.name,
                         type: course.type,
                         credits: course.credits,
-                        status: 'completed'
+                        status: isRec ? 'recommended' : 'completed',
+                        reason: course.reason
                     },
                     position: {
                         x: xPos,
-                        y: yPos + idx * Y_GAP
+                        y: idx * Y_GAP
                     }
                 });
-            });
-            // 2. 추천 과목 배치 (3-2, 4-1 학기)
-            const recommendedInSem = RECOMMENDED_COURSES.filter((c)=>c.semester === sem);
-            recommendedInSem.forEach((course, idx)=>{
-                // 기존 과목 아래에 배치하기 위해 offset 계산
-                const offset = completedInSem.length;
-                const nodeId = course.id;
-                newNodes.push({
-                    id: nodeId,
-                    type: 'subject',
-                    data: {
-                        label: course.name,
-                        type: course.type,
-                        credits: course.credits,
-                        status: 'recommended'
-                    },
-                    position: {
-                        x: xPos,
-                        y: yPos + (offset + idx) * Y_GAP
-                    }
-                });
-                // Edge 연결 (단순화를 위해 이전 학기 마지막 노드와 연결하는 시늉)
+                // 엣지(선) 연결 로직 (단순화: 이전 학기 같은 인덱스 or 마지막 노드와 연결)
                 if (colIndex > 0) {
-                    // 실제로는 선수과목 로직이 들어가야 함
-                    // 여기서는 시각적 연결만 보여줌
+                    // 이전 학기의 과목 중 하나와 연결 (그럴싸한 그래프 모양을 위해)
                     const prevSem = semesters[colIndex - 1];
-                    const prevNodeId = `header-${prevSem}`; // 임시 연결
-                    newEdges.push({
-                        id: `e-${prevSem}-${course.name}`,
-                        source: prevNodeId,
-                        target: nodeId,
-                        animated: true,
-                        style: {
-                            stroke: '#c3002f',
-                            strokeWidth: 2,
-                            opacity: 0.5
-                        }
-                    });
+                    const prevCourses = [
+                        ...COMPLETED_COURSES_MOCK,
+                        ...RECOMMENDED_COURSES_MOCK
+                    ].filter((c)=>c.semester === prevSem);
+                    if (prevCourses.length > 0) {
+                        // 인덱스가 맞으면 직렬 연결, 아니면 마지막 놈이랑 연결
+                        const targetPrev = prevCourses[idx] || prevCourses[prevCourses.length - 1];
+                        newEdges.push({
+                            id: `e-${targetPrev.id}-${course.id}`,
+                            source: targetPrev.id,
+                            target: course.id,
+                            type: 'smoothstep',
+                            animated: isRec,
+                            style: {
+                                stroke: isRec ? '#c3002f' : '#cbd5e1',
+                                strokeWidth: isRec ? 2 : 1,
+                                opacity: isRec ? 1 : 0.5
+                            }
+                        });
+                    }
                 }
             });
         });
         setNodes(newNodes);
         setEdges(newEdges);
     };
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-        className: "min-h-screen bg-slate-50 flex flex-col",
-        children: [
-            step === 'upload' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex-1 flex flex-col items-center justify-center p-6 animate-in fade-in slide-in-from-bottom-4",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "max-w-xl w-full bg-white rounded-2xl shadow-xl p-10 text-center border border-slate-100",
+    if (loading) {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "min-h-screen flex flex-col items-center justify-center bg-white",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                    className: "w-16 h-16 text-[#c3002f] animate-spin mb-6"
+                }, void 0, false, {
+                    fileName: "[project]/app/roadmap/generate/page.tsx",
+                    lineNumber: 196,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                    className: "text-2xl font-bold text-slate-900 mb-2",
                     children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "w-16 h-16 bg-red-50 text-[#c3002f] rounded-full flex items-center justify-center mx-auto mb-6",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$spreadsheet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileSpreadsheet$3e$__["FileSpreadsheet"], {
-                                size: 32
-                            }, void 0, false, {
-                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                lineNumber: 194,
-                                columnNumber: 17
-                            }, this)
+                        studentInfo?.name || '김세종',
+                        "님의 데이터를 불러오는 중..."
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/roadmap/generate/page.tsx",
+                    lineNumber: 197,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "flex flex-col gap-2 text-slate-500 text-sm text-center",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "animate-pulse",
+                            children: "학사 정보 시스템 연동 중..."
                         }, void 0, false, {
                             fileName: "[project]/app/roadmap/generate/page.tsx",
-                            lineNumber: 193,
-                            columnNumber: 15
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                            className: "text-2xl font-bold text-slate-900 mb-2",
-                            children: "기이수 성적표를 업로드해주세요"
-                        }, void 0, false, {
-                            fileName: "[project]/app/roadmap/generate/page.tsx",
-                            lineNumber: 196,
-                            columnNumber: 15
+                            lineNumber: 201,
+                            columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-slate-500 mb-8",
-                            children: [
-                                "학교 포털에서 다운로드 받은 엑셀(CSV) 파일을 올려주시면,",
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
-                                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                                    lineNumber: 198,
-                                    columnNumber: 51
-                                }, this),
-                                "현재까지의 이수 현황을 분석하여 ",
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                    children: "맞춤형 로드맵"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                                    lineNumber: 199,
-                                    columnNumber: 35
-                                }, this),
-                                "을 설계합니다."
-                            ]
-                        }, void 0, true, {
+                            className: "animate-pulse delay-75",
+                            children: "기이수 과목 파싱 완료 (9과목)"
+                        }, void 0, false, {
                             fileName: "[project]/app/roadmap/generate/page.tsx",
-                            lineNumber: 197,
-                            columnNumber: 15
+                            lineNumber: 202,
+                            columnNumber: 11
                         }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            onClick: handleFileUpload,
-                            className: "border-2 border-dashed border-slate-300 rounded-xl p-10 cursor-pointer hover:border-[#c3002f] hover:bg-red-50/30 transition-all group",
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "animate-pulse delay-150 font-bold text-[#c3002f]",
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2d$upload$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UploadCloud$3e$__["UploadCloud"], {
-                                    className: "mx-auto h-12 w-12 text-slate-400 group-hover:text-[#c3002f] mb-4 transition-colors"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                                    lineNumber: 207,
-                                    columnNumber: 17
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-sm font-medium text-slate-700",
-                                    children: "클릭하여 파일 선택 또는 여기로 드래그"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                                    lineNumber: 208,
-                                    columnNumber: 17
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "text-xs text-slate-400 mt-2",
-                                    children: "지원 형식: .csv, .xlsx (최대 5MB)"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                                    lineNumber: 211,
-                                    columnNumber: 17
-                                }, this)
+                                "’",
+                                selectedCareer?.title || '프론트엔드 개발자',
+                                "' 맞춤 로드맵 생성 중..."
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/roadmap/generate/page.tsx",
                             lineNumber: 203,
-                            columnNumber: 15
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-8 pt-6 border-t border-slate-100",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                onClick: handleFileUpload,
-                                className: "text-sm text-slate-500 hover:text-[#c3002f] underline decoration-dotted",
-                                children: "(데모용) ’기이수성적조회_20251223.csv’ 자동 적용하기"
-                            }, void 0, false, {
-                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                lineNumber: 218,
-                                columnNumber: 17
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/app/roadmap/generate/page.tsx",
-                            lineNumber: 217,
-                            columnNumber: 15
+                            columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/roadmap/generate/page.tsx",
-                    lineNumber: 192,
-                    columnNumber: 12
+                    lineNumber: 200,
+                    columnNumber: 9
                 }, this)
-            }, void 0, false, {
-                fileName: "[project]/app/roadmap/generate/page.tsx",
-                lineNumber: 191,
-                columnNumber: 9
-            }, this),
-            step === 'analyzing' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex-1 flex flex-col items-center justify-center p-6",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "text-center",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
-                            className: "w-12 h-12 text-[#c3002f] animate-spin mx-auto mb-6"
-                        }, void 0, false, {
-                            fileName: "[project]/app/roadmap/generate/page.tsx",
-                            lineNumber: 233,
-                            columnNumber: 14
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                            className: "text-2xl font-bold text-slate-900 mb-2",
-                            children: "성적 데이터를 분석 중입니다..."
-                        }, void 0, false, {
-                            fileName: "[project]/app/roadmap/generate/page.tsx",
-                            lineNumber: 234,
-                            columnNumber: 14
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "space-y-2 text-slate-500 text-sm",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "animate-pulse",
-                                    children: "📂 파일 파싱 중... (완료)"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                                    lineNumber: 236,
-                                    columnNumber: 17
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "animate-pulse delay-75",
-                                    children: "🔍 전공 필수 요건 대조 중... (진행 중)"
-                                }, void 0, false, {
-                                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                                    lineNumber: 237,
-                                    columnNumber: 17
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: "animate-pulse delay-150",
-                                    children: [
-                                        "🤖 ",
-                                        selectedCareer?.title || '프론트엔드',
-                                        " 역량 기반 로드맵 생성 중..."
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                                    lineNumber: 238,
-                                    columnNumber: 17
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/app/roadmap/generate/page.tsx",
-                            lineNumber: 235,
-                            columnNumber: 14
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/app/roadmap/generate/page.tsx",
-                    lineNumber: 232,
-                    columnNumber: 12
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/app/roadmap/generate/page.tsx",
-                lineNumber: 231,
-                columnNumber: 9
-            }, this),
-            step === 'result' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "h-screen flex flex-col",
+            ]
+        }, void 0, true, {
+            fileName: "[project]/app/roadmap/generate/page.tsx",
+            lineNumber: 195,
+            columnNumber: 7
+        }, this);
+    }
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "h-screen flex flex-col bg-slate-50",
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
+                className: "bg-white border-b px-6 py-4 flex justify-between items-center z-20 shadow-sm relative",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
-                        className: "bg-white border-b px-6 py-4 flex justify-between items-center z-10 shadow-sm",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center gap-4",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex items-center gap-4",
+                                className: "bg-red-50 p-2 rounded-lg",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$graduation$2d$cap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__GraduationCap$3e$__["GraduationCap"], {
+                                    className: "text-[#c3002f] w-6 h-6"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/roadmap/generate/page.tsx",
+                                    lineNumber: 217,
+                                    columnNumber: 14
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 216,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                                        className: "font-bold text-xl text-slate-900 flex items-center gap-2",
+                                        className: "font-bold text-xl text-slate-900 leading-none mb-1",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$graduation$2d$cap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__GraduationCap$3e$__["GraduationCap"], {
-                                                className: "text-[#c3002f]"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 251,
-                                                columnNumber: 18
-                                            }, this),
-                                            "AI 추천 로드맵"
+                                            studentInfo?.name || '김세종',
+                                            "님의 커리어 로드맵"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                                        lineNumber: 250,
-                                        columnNumber: 15
+                                        lineNumber: 220,
+                                        columnNumber: 13
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex gap-2",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-xs text-slate-500",
                                         children: [
+                                            "목표: ",
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold",
-                                                children: [
-                                                    "이수학점: ",
-                                                    PARSED_COURSES.reduce((acc, cur)=>acc + cur.credits, 0),
-                                                    "학점"
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 255,
-                                                columnNumber: 17
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "bg-red-50 text-[#c3002f] px-3 py-1 rounded-full text-xs font-bold border border-red-100",
-                                                children: "졸업까지: +24학점 필요"
+                                                className: "font-bold text-[#c3002f]",
+                                                children: selectedCareer?.title || '프론트엔드 개발자'
                                             }, void 0, false, {
                                                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 258,
-                                                columnNumber: 17
+                                                lineNumber: 224,
+                                                columnNumber: 20
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "mx-2",
+                                                children: "|"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                lineNumber: 225,
+                                                columnNumber: 16
+                                            }, this),
+                                            "졸업요건 충족률: ",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "font-bold text-slate-700",
+                                                children: "82%"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                lineNumber: 226,
+                                                columnNumber: 26
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                                        lineNumber: 254,
-                                        columnNumber: 15
+                                        lineNumber: 223,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                                lineNumber: 249,
+                                lineNumber: 219,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                        lineNumber: 215,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center gap-3",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setShowCourseList(!showCourseList),
+                                className: "flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-bold transition-colors",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2d$checks$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ListChecks$3e$__["ListChecks"], {
+                                        size: 18
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                                        lineNumber: 236,
+                                        columnNumber: 14
+                                    }, this),
+                                    "기이수 목록 확인"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 232,
+                                columnNumber: 12
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                className: "px-5 py-2 bg-[#c3002f] hover:bg-[#a00026] text-white rounded-lg text-sm font-bold shadow-md transition-all",
+                                children: "로드맵 저장하기"
+                            }, void 0, false, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 239,
+                                columnNumber: 12
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                        lineNumber: 231,
+                        columnNumber: 9
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/roadmap/generate/page.tsx",
+                lineNumber: 214,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "flex-1 relative",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$core$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__ReactFlow__as__default$3e$__["default"], {
+                        nodes: nodes,
+                        edges: edges,
+                        onNodesChange: onNodesChange,
+                        onEdgesChange: onEdgesChange,
+                        nodeTypes: nodeTypes,
+                        fitView: true,
+                        minZoom: 0.5,
+                        defaultEdgeOptions: {
+                            type: 'smoothstep'
+                        },
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$background$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Background"], {
+                                color: "#e2e8f0",
+                                gap: 24,
+                                size: 1
+                            }, void 0, false, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 257,
                                 columnNumber: 13
                             }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$controls$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Controls"], {
+                                showInteractive: false
+                            }, void 0, false, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 258,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$minimap$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["MiniMap"], {
+                                nodeColor: (n)=>n.data.status === 'recommended' ? '#c3002f' : '#cbd5e1',
+                                maskColor: "rgba(241, 245, 249, 0.7)",
+                                className: "!bg-white !border-slate-200 !shadow-lg !rounded-lg"
+                            }, void 0, false, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 259,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                        lineNumber: 247,
+                        columnNumber: 10
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "absolute bottom-6 left-6 bg-white/90 backdrop-blur border border-slate-200 p-4 rounded-xl shadow-lg z-10 flex flex-col gap-2",
+                        children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex items-center gap-4 text-sm",
+                                className: "flex items-center gap-2 text-xs font-bold text-slate-600",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center gap-2",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "w-3 h-3 bg-slate-300 rounded-sm"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 266,
-                                                columnNumber: 19
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "text-slate-500",
-                                                children: "기이수"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 267,
-                                                columnNumber: 19
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/roadmap/generate/page.tsx",
-                                        lineNumber: 265,
-                                        columnNumber: 16
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex items-center gap-2",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "w-3 h-3 bg-[#c3002f] rounded-sm"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 270,
-                                                columnNumber: 19
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                className: "font-bold text-[#c3002f]",
-                                                children: "AI 추천"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 271,
-                                                columnNumber: 19
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "w-3 h-3 bg-slate-200 border border-slate-400 rounded"
+                                    }, void 0, false, {
                                         fileName: "[project]/app/roadmap/generate/page.tsx",
                                         lineNumber: 269,
                                         columnNumber: 16
-                                    }, this)
+                                    }, this),
+                                    "기이수 (수강 완료)"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                                lineNumber: 264,
+                                lineNumber: 268,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center gap-2 text-xs font-bold text-[#c3002f]",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "w-3 h-3 bg-white border border-[#c3002f] ring-2 ring-red-50 rounded"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                                        lineNumber: 273,
+                                        columnNumber: 16
+                                    }, this),
+                                    "AI 추천 (수강 필요)"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 272,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                        lineNumber: 248,
-                        columnNumber: 11
+                        lineNumber: 267,
+                        columnNumber: 10
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex-1 bg-slate-50 relative",
+                        className: "absolute top-6 right-6 w-80 bg-white/95 backdrop-blur border border-red-100 p-5 rounded-xl shadow-xl z-10 animate-in slide-in-from-right-10",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$core$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__ReactFlow__as__default$3e$__["default"], {
-                                nodes: nodes,
-                                edges: edges,
-                                onNodesChange: onNodesChange,
-                                onEdgesChange: onEdgesChange,
-                                nodeTypes: nodeTypes,
-                                fitView: true,
-                                attributionPosition: "bottom-right",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center gap-2 mb-3 border-b border-red-50 pb-2",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$background$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Background"], {
-                                        gap: 20,
-                                        size: 1
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2d$alert$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertTriangle$3e$__["AlertTriangle"], {
+                                        className: "w-5 h-5 text-[#c3002f]"
                                     }, void 0, false, {
                                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                                        lineNumber: 287,
-                                        columnNumber: 17
+                                        lineNumber: 281,
+                                        columnNumber: 16
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$controls$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Controls"], {}, void 0, false, {
-                                        fileName: "[project]/app/roadmap/generate/page.tsx",
-                                        lineNumber: 288,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$reactflow$2f$minimap$2f$dist$2f$esm$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["MiniMap"], {
-                                        nodeColor: (n)=>{
-                                            return n.data.status === 'recommended' ? '#c3002f' : '#cbd5e1';
-                                        }
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                        className: "font-bold text-slate-900",
+                                        children: "로드맵 분석 리포트"
                                     }, void 0, false, {
                                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                                        lineNumber: 289,
-                                        columnNumber: 17
+                                        lineNumber: 282,
+                                        columnNumber: 16
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                                lineNumber: 278,
-                                columnNumber: 14
+                                lineNumber: 280,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "absolute top-4 right-4 w-80 bg-white/90 backdrop-blur border border-slate-200 p-5 rounded-xl shadow-lg z-10",
+                                className: "space-y-4",
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                        className: "font-bold text-slate-800 mb-3 flex items-center gap-2",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__["BookOpen"], {
-                                                className: "w-4 h-4 text-[#c3002f]"
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-xs text-slate-400 font-bold mb-1",
+                                                children: "전공 필수 미충족 감지"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 297,
+                                                lineNumber: 286,
                                                 columnNumber: 19
                                             }, this),
-                                            "이번 학기 추천 전략"
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/roadmap/generate/page.tsx",
-                                        lineNumber: 296,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                                        className: "space-y-3",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                className: "text-sm text-slate-600 border-l-2 border-[#c3002f] pl-3",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm text-slate-700 leading-snug",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                        className: "block text-slate-800",
-                                                        children: "전공 필수 우선"
+                                                        className: "text-[#c3002f]",
+                                                        children: "알고리즘, 운영체제"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                        lineNumber: 302,
-                                                        columnNumber: 23
+                                                        lineNumber: 288,
+                                                        columnNumber: 22
                                                     }, this),
-                                                    "’알고리즘’, ’운영체제’는 4학년 캡스톤 이전에 반드시 수강해야 합니다."
+                                                    " 과목 이력이 확인되지 않습니다. 졸업 및 취업을 위해 다음 학기 1순위 수강을 권장합니다."
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 301,
-                                                columnNumber: 20
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                                                className: "text-sm text-slate-600 border-l-2 border-slate-300 pl-3",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
-                                                        className: "block text-slate-800",
-                                                        children: "프론트엔드 역량 강화"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                        lineNumber: 306,
-                                                        columnNumber: 23
-                                                    }, this),
-                                                    "’HCI개론’을 통해 UX 이론을, ’모바일프로그래밍’으로 클라이언트 확장을 추천합니다."
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/app/roadmap/generate/page.tsx",
-                                                lineNumber: 305,
-                                                columnNumber: 20
+                                                lineNumber: 287,
+                                                columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                                        lineNumber: 300,
-                                        columnNumber: 17
+                                        lineNumber: 285,
+                                        columnNumber: 16
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-xs text-slate-400 font-bold mb-1",
+                                                children: "커리어 강화 전략"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                lineNumber: 292,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm text-slate-700 leading-snug",
+                                                children: [
+                                                    "프론트엔드 직무 경쟁력을 위해 ",
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                                        className: "text-slate-900",
+                                                        children: "HCI개론(UX)"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                        lineNumber: 294,
+                                                        columnNumber: 39
+                                                    }, this),
+                                                    "과 ",
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("strong", {
+                                                        className: "text-slate-900",
+                                                        children: "모바일프로그래밍"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                        lineNumber: 294,
+                                                        columnNumber: 94
+                                                    }, this),
+                                                    "을 추가 배치했습니다."
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                lineNumber: 293,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                                        lineNumber: 291,
+                                        columnNumber: 16
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/roadmap/generate/page.tsx",
-                                lineNumber: 295,
-                                columnNumber: 14
+                                lineNumber: 284,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/roadmap/generate/page.tsx",
-                        lineNumber: 277,
-                        columnNumber: 11
+                        lineNumber: 279,
+                        columnNumber: 10
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/roadmap/generate/page.tsx",
                 lineNumber: 246,
+                columnNumber: 7
+            }, this),
+            showCourseList && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "absolute inset-y-0 right-0 w-[400px] bg-white shadow-2xl z-30 border-l animate-in slide-in-from-right duration-300 flex flex-col",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "p-5 border-b flex justify-between items-center bg-slate-50",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                className: "font-bold text-lg flex items-center gap-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2d$checks$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ListChecks$3e$__["ListChecks"], {
+                                        className: "text-[#c3002f]"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                                        lineNumber: 306,
+                                        columnNumber: 15
+                                    }, this),
+                                    " 기이수 과목 목록"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 305,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: ()=>setShowCourseList(false),
+                                className: "text-slate-400 hover:text-slate-600",
+                                children: "닫기"
+                            }, void 0, false, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 308,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                        lineNumber: 304,
+                        columnNumber: 11
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex-1 overflow-y-auto p-5 space-y-3",
+                        children: [
+                            COMPLETED_COURSES_MOCK.map((course, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex justify-between items-center p-3 bg-slate-50 rounded-lg border border-slate-100",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-2 mb-1",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: `text-[10px] px-1.5 py-0.5 rounded text-white ${course.type === '전필' ? 'bg-slate-600' : 'bg-slate-400'}`,
+                                                            children: course.type
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                            lineNumber: 320,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "font-bold text-slate-800 text-sm",
+                                                            children: course.name
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                            lineNumber: 323,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                    lineNumber: 319,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-xs text-slate-400",
+                                                    children: [
+                                                        course.semester,
+                                                        "학기 수강"
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/roadmap/generate/page.tsx",
+                                                    lineNumber: 325,
+                                                    columnNumber: 21
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/roadmap/generate/page.tsx",
+                                            lineNumber: 318,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "font-bold text-slate-600 text-sm",
+                                            children: [
+                                                course.credits,
+                                                "학점"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/roadmap/generate/page.tsx",
+                                            lineNumber: 327,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, idx, true, {
+                                    fileName: "[project]/app/roadmap/generate/page.tsx",
+                                    lineNumber: 317,
+                                    columnNumber: 16
+                                }, this)),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "mt-4 pt-4 border-t text-center text-xs text-slate-400",
+                                children: "학교 포털 데이터와 동기화된 정보입니다."
+                            }, void 0, false, {
+                                fileName: "[project]/app/roadmap/generate/page.tsx",
+                                lineNumber: 330,
+                                columnNumber: 14
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/roadmap/generate/page.tsx",
+                        lineNumber: 315,
+                        columnNumber: 11
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/app/roadmap/generate/page.tsx",
+                lineNumber: 303,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/roadmap/generate/page.tsx",
-        lineNumber: 188,
+        lineNumber: 212,
         columnNumber: 5
     }, this);
 }
