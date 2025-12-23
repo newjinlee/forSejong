@@ -356,7 +356,7 @@ export default function RoadmapGeneratePage() {
       <div className="min-h-screen flex flex-col items-center justify-center bg-white">
         <Loader2 className="w-16 h-16 text-[#c3002f] animate-spin mb-6" />
         <h2 className="text-2xl font-bold text-slate-900 mb-2">
-          {studentInfo?.name || '학생'}님의 데이터를 불러오는 중...
+          데이터를 불러오는 중...
         </h2>
         <div className="flex flex-col gap-2 text-slate-500 text-sm text-center">
           <p className="animate-pulse">학사 정보 시스템 연동 중...</p>
@@ -387,7 +387,7 @@ export default function RoadmapGeneratePage() {
           </div>
           <div>
             <h1 className="font-bold text-xl text-slate-900 leading-none mb-1">
-              {studentInfo?.name || '학생'}님의 커리어 로드맵
+              커리어 로드맵
             </h1>
             <p className="text-xs text-slate-500">
               목표: <span className="font-bold text-[#c3002f]">{selectedCareer?.title || '미선택'}</span>
