@@ -1,18 +1,7 @@
-[00:00:00.979] Server  LOG     ✓ Ready in 706ms
-[00:00:02.949] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:02:41.490] Server  LOG     ✓ Compiled in 35ms
-[00:02:55.167] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:02:55.285] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:03:10.054] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:03:30.585] Server  LOG     ✓ Compiled in 15ms
-[00:03:30.662] Browser ERROR   A component is changing a controlled input to be uncontrolled. This is likely caused by the value changing from a defined to undefined, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://react.dev/link/controlled-components
-[00:04:11.216] Server  LOG     ✓ Compiled in 18ms
-[00:23:28.969] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:23:46.977] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:23:56.614] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:25:11.312] Server  LOG     ✓ Compiled in 25ms
-[00:25:18.239] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:25:31.353] Browser LOG     로그인 정보: {"message":"로그인 성공","user":{"id":"21011578"}}
-[00:27:07.236] Server  LOG     ✓ Compiled in 66ms
-[00:27:15.155] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:27:37.431] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:00.777] Server  LOG     ✓ Ready in 592ms
+[00:00:07.245] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:15:04.908] Server  ERROR   (node:1853) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[00:15:05.124] Server  ERROR   API Error: AxiosError: Request failed with status code 401
+[00:15:13.371] Server  ERROR   API Error: AxiosError: Request failed with status code 401
+[00:21:53.730] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
