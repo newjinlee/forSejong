@@ -22,7 +22,7 @@ import {
 
 export default function RoadmapLandingPage() {
   const SEJONG_RED = "#c3002f";
-  const [activeTab, setActiveTab] = useState<'career' | 'roadmap' | 'schedule'>('roadmap');
+  const [activeTab, setActiveTab] = useState<'career' | 'roadmap' | 'schedule'>('career');
 
   // [추가됨] 부드러운 스크롤 이동 함수 (헤더 높이 고려)
   const scrollToSection = (e: React.MouseEvent, id: string) => {
