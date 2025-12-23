@@ -41,7 +41,7 @@ export default function LoginPage() {
         });
 
         // 진로 선택 페이지로 이동
-        router.push('/career-select');
+        router.push('/career');
       } else {
         // 로그인 실패
         setError(data.message || '로그인에 실패했습니다.');
