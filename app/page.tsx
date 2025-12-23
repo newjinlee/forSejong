@@ -6,10 +6,9 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer
 } from 'recharts';
 import {
-  GitMerge,
+  Database,
   BrainCircuit,
   ArrowRight,
-  Network,
   Search,
   BookOpen,
   CalendarClock,
@@ -17,19 +16,20 @@ import {
   XCircle,
   User,
   Target,
-  Map
+  Map,
+  Globe,
+  Sparkles
 } from 'lucide-react';
 
 export default function RoadmapLandingPage() {
   const SEJONG_RED = "#c3002f";
   const [activeTab, setActiveTab] = useState<'career' | 'roadmap' | 'schedule'>('career');
 
-  // [추가됨] 부드러운 스크롤 이동 함수 (헤더 높이 고려)
   const scrollToSection = (e: React.MouseEvent, id: string) => {
-    e.preventDefault(); // 기본 앵커 이동 방지
+    e.preventDefault();
     const element = document.getElementById(id);
     if (element) {
-      const headerOffset = 80; // 네비게이션 바 높이(64px) + 여유공간
+      const headerOffset = 80;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
@@ -92,7 +92,7 @@ export default function RoadmapLandingPage() {
       <section className="relative pt-20 pb-32 overflow-hidden bg-slate-50">
         <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
           <div className="inline-block mb-10 px-4 py-1.5 rounded-full bg-red-50 border border-red-100 text-[#c3002f] font-bold text-sm animate-pulse">
-            AI & Graph Algorithm Powered
+            LLM + Vector Search Powered
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 leading-[1.2] mb-10">
             &quot;뭐부터 들어야 하지?&quot; 고민 끝.<br />
@@ -103,7 +103,7 @@ export default function RoadmapLandingPage() {
           </h1>
           <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
             &quot;이 수업 들으려면 뭐부터 들어야 하지?&quot; 고민하지 마세요.<br className="hidden md:block" />
-            AI가 진로 역량을 분석하고,<br /><strong>위상정렬(Topological Sort)</strong>로 최적의 수강 순서를 제안합니다.
+            AI가 <strong>채용 트렌드를 분석</strong>하고,<br />진로에 맞는 최적의 수강 로드맵을 제안합니다.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
@@ -145,7 +145,7 @@ export default function RoadmapLandingPage() {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-3">세종대 포털 로그인</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  학번과 비밀번호로 로그인하면 <strong>기이수 과목</strong>을 자동으로 불러옵니다.
+                  학번과 비밀번호로 로그인하면 <strong>기이수 과목을 자동으로 크롤링</strong>합니다.
                   어떤 과목을 들었는지 직접 입력할 필요 없어요.
                 </p>
               </div>
@@ -167,7 +167,7 @@ export default function RoadmapLandingPage() {
                 <h3 className="text-xl font-bold text-slate-900 mb-3">희망 진로 선택</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
                   백엔드, 프론트엔드, AI 연구원 등 <strong>희망 진로</strong>를 선택하세요.
-                  AI가 해당 직무에 필요한 역량을 분석하고 레이더 차트로 보여드립니다.
+                  <strong className="text-[#c3002f]">실제 채용 공고 기반</strong>으로 필요 역량을 분석합니다.
                 </p>
               </div>
               {/* Arrow */}
@@ -187,8 +187,8 @@ export default function RoadmapLandingPage() {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-3">맞춤 로드맵 확인</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  기이수 과목과 진로를 바탕으로 <strong>AI가 추천하는 수강 로드맵</strong>을
-                  인터랙티브 그래프로 확인하세요. 선수과목 관계가 한눈에!
+                  기이수 과목과 진로를 바탕으로 <strong>AI가 학기별 로드맵</strong>을 생성합니다.
+                  2-1부터 4-2까지, 이수 시뮬레이션 결과를 확인하세요.
                 </p>
               </div>
             </div>
@@ -244,16 +244,16 @@ export default function RoadmapLandingPage() {
             {/* After: SEJONG ROADMAP 방식 */}
             <div className="relative rounded-2xl border-2 border-[#c3002f] bg-white p-8 shadow-2xl scale-105 z-10">
               <div className="absolute -top-4 -left-4 bg-[#c3002f] text-white px-4 py-1 rounded-full font-bold text-sm shadow-md">
-                SEJONG ROADMAP (AI + DAG)
+                SEJONG ROADMAP (AI + Vector Search)
               </div>
               <div className="space-y-6">
                 <div className="flex gap-4 items-start">
                   <div className="bg-red-50 p-2 rounded-lg">
-                    <GitMerge color={SEJONG_RED} className="h-6 w-6" />
+                    <Globe color={SEJONG_RED} className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900">DAG 기반 의존성 시각화</h3>
-                    <p className="text-sm text-slate-600 mt-1">과목 간의 연결 고리를 <strong className="text-[#c3002f]">유향 비순환 그래프</strong>로 모델링하여,<br />선후수 관계를 한눈에 파악합니다.</p>
+                    <h3 className="font-bold text-slate-900">취업 트렌드 기반 역량 분석</h3>
+                    <p className="text-sm text-slate-600 mt-1">실제 <strong className="text-[#c3002f]">채용 공고를 크롤링</strong>하여<br />진로별 필요 역량을 실시간으로 반영합니다.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
@@ -261,8 +261,8 @@ export default function RoadmapLandingPage() {
                     <BrainCircuit color={SEJONG_RED} className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900">AI 역량 매핑</h3>
-                    <p className="text-sm text-slate-600 mt-1">원하는 진로를 선택하면 LLM이 필요 역량을 분석하고,<br />가장 적합한 <strong className="text-[#c3002f]">교과목을 추천</strong>합니다.</p>
+                    <h3 className="font-bold text-slate-900">LLM 역량 분석</h3>
+                    <p className="text-sm text-slate-600 mt-1">기이수 과목을 LLM이 분석하여<br /><strong className="text-[#c3002f]">6가지 역량 점수</strong>를 자동으로 도출합니다.</p>
                   </div>
                 </div>
                 <div className="flex gap-4 items-start">
@@ -270,8 +270,8 @@ export default function RoadmapLandingPage() {
                     <CalendarClock color={SEJONG_RED} className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900">위상정렬 스케줄링</h3>
-                    <p className="text-sm text-slate-600 mt-1">학기별 최대 학점(18학점)을 고려하여<br /><strong className="text-[#c3002f]">졸업까지의 최단 경로</strong>를 자동으로 배치합니다.</p>
+                    <h3 className="font-bold text-slate-900">학기별 이수 시뮬레이션</h3>
+                    <p className="text-sm text-slate-600 mt-1">2-1부터 4-2까지 <strong className="text-[#c3002f]">선수과목을 고려</strong>하여<br />학기별 최적 과목을 자동 배치합니다.</p>
                   </div>
                 </div>
               </div>
@@ -287,7 +287,7 @@ export default function RoadmapLandingPage() {
             <h2 className="text-3xl font-bold tracking-tight text-slate-900">
               기술 기반의 맞춤형 설계
             </h2>
-            <p className="mt-2 text-slate-600">React Flow와 알고리즘을 결합한 인터랙티브 경험을 제공합니다.</p>
+            <p className="mt-2 text-slate-600">LLM과 벡터 검색을 결합한 인터랙티브 경험을 제공합니다.</p>
           </div>
 
           <div className="flex justify-center mb-10">
@@ -301,9 +301,9 @@ export default function RoadmapLandingPage() {
                     : 'text-slate-500 hover:text-slate-700'
                     }`}
                 >
-                  {tab === 'career' && '1. AI 진로 분석'}
-                  {tab === 'roadmap' && '2. 인터랙티브 로드맵'}
-                  {tab === 'schedule' && '3. 수강 시뮬레이션'}
+                  {tab === 'career' && '1. 채용 트렌드 분석'}
+                  {tab === 'roadmap' && '2. LLM 역량 분석'}
+                  {tab === 'schedule' && '3. Milvus 과목 추천'}
                 </button>
               ))}
             </div>
@@ -314,17 +314,75 @@ export default function RoadmapLandingPage() {
               <div className="grid md:grid-cols-2 gap-10 items-center animate-in fade-in slide-in-from-bottom-2">
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-slate-900">
-                    &quot;백엔드 개발자가 되고 싶어요&quot;<br />
-                    <span style={{ color: SEJONG_RED }}>필요 역량</span>을 레이더 차트로 확인하세요.
+                    취업 사이트 크롤링으로<br />
+                    <span style={{ color: SEJONG_RED }}>실시간 채용 트렌드</span>를 반영합니다.
                   </h3>
                   <ul className="space-y-4 text-slate-600">
                     <li className="flex gap-3">
                       <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
-                      <span><strong>LLM 기반 분석:</strong> 채용 공고 트렌드를 반영하여 해당 직무에 필요한 핵심 기술셋을 도출합니다.</span>
+                      <span><strong>채용 공고 수집:</strong> 백엔드, 프론트엔드, AI 등 직무별 채용 공고를 크롤링하여 필요 역량을 추출합니다.</span>
                     </li>
                     <li className="flex gap-3">
                       <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
-                      <span><strong>과목 기여도 매핑:</strong> &apos;데이터베이스&apos;, &apos;네트워크&apos; 등 학교 수업이 내 역량 성장에 얼마나 기여하는지 수치화합니다.</span>
+                      <span><strong>역량 DB 구축:</strong> 정적인 진로 목록이 아닌, 실제 시장에서 요구하는 역량을 반영합니다.</span>
+                    </li>
+                  </ul>
+                </div>
+                {/* Mockup: 크롤링 시각화 */}
+                <div className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
+                  <div className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                    <Globe className="w-4 h-4 text-[#c3002f]" />
+                    취업 사이트 크롤링
+                  </div>
+                  <div className="space-y-3">
+                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                      <div className="text-xs text-slate-500 mb-1">사람인 | 백엔드 개발자</div>
+                      <div className="flex flex-wrap gap-1">
+                        <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded">Java</span>
+                        <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded">Spring</span>
+                        <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded">AWS</span>
+                        <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-0.5 rounded">MySQL</span>
+                      </div>
+                    </div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                      <div className="text-xs text-slate-500 mb-1">잡코리아 | 백엔드 개발자</div>
+                      <div className="flex flex-wrap gap-1">
+                        <span className="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded">Python</span>
+                        <span className="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded">Django</span>
+                        <span className="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded">Docker</span>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <ArrowRight className="w-5 h-5 text-[#c3002f] mx-auto rotate-90" />
+                    </div>
+                    <div className="bg-red-50 border border-[#c3002f] rounded-lg p-3">
+                      <div className="text-xs font-bold text-[#c3002f] mb-1">백엔드 개발자 필수 역량</div>
+                      <div className="flex flex-wrap gap-1">
+                        <span className="bg-[#c3002f] text-white text-[10px] px-2 py-0.5 rounded">DB 설계</span>
+                        <span className="bg-[#c3002f] text-white text-[10px] px-2 py-0.5 rounded">API 개발</span>
+                        <span className="bg-[#c3002f] text-white text-[10px] px-2 py-0.5 rounded">클라우드</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'roadmap' && (
+              <div className="grid md:grid-cols-2 gap-10 items-center animate-in fade-in slide-in-from-bottom-2">
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    기이수 과목을 LLM이 분석하여<br />
+                    <span style={{ color: SEJONG_RED }}>6가지 역량 점수</span>를 도출합니다.
+                  </h3>
+                  <ul className="space-y-4 text-slate-600">
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>자동 역량 분석:</strong> &apos;자료구조를 들었다&apos; → &apos;알고리즘 이해도가 있다&apos; → &apos;구현능력 높음&apos; 추론</span>
+                    </li>
+                    <li className="flex gap-3">
+                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
+                      <span><strong>GAP 분석:</strong> 현재 역량과 목표 진로의 필요 역량을 비교하여 보완 포인트를 도출합니다.</span>
                     </li>
                   </ul>
                 </div>
@@ -332,12 +390,12 @@ export default function RoadmapLandingPage() {
                 <div className="bg-white border border-slate-200 rounded-xl p-4 flex justify-center items-center h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart data={[
-                      { subject: 'DB', score: 90, fullMark: 100 },
-                      { subject: '알고리즘', score: 85, fullMark: 100 },
-                      { subject: '네트워크', score: 80, fullMark: 100 },
-                      { subject: 'OS', score: 70, fullMark: 100 },
-                      { subject: '보안', score: 60, fullMark: 100 },
-                      { subject: '협업', score: 75, fullMark: 100 },
+                      { subject: '전공기초', score: 85, fullMark: 100 },
+                      { subject: '설계능력', score: 80, fullMark: 100 },
+                      { subject: '구현능력', score: 90, fullMark: 100 },
+                      { subject: '문제해결', score: 85, fullMark: 100 },
+                      { subject: '협업', score: 70, fullMark: 100 },
+                      { subject: '창의성', score: 75, fullMark: 100 },
                     ]}>
                       <PolarGrid stroke="#e2e8f0" />
                       <PolarAngleAxis
@@ -359,119 +417,64 @@ export default function RoadmapLandingPage() {
               </div>
             )}
 
-            {activeTab === 'roadmap' && (
-              <div className="grid md:grid-cols-2 gap-10 items-center animate-in fade-in slide-in-from-bottom-2">
-                <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-slate-900">
-                    React Flow 기반의<br />
-                    <span style={{ color: SEJONG_RED }}>인터랙티브 그래프</span> UI
-                  </h3>
-                  <ul className="space-y-4 text-slate-600">
-                    <li className="flex gap-3">
-                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
-                      <span><strong>드래그 앤 드롭:</strong> 노드 기반의 UI로 과목 간의 선후수 관계를 직관적으로 파악하고 탐색할 수 있습니다.</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
-                      <span><strong>상태 시각화:</strong> <span className="text-blue-600 font-bold">이수 완료</span>, <span className="text-slate-400">잠김(Locked)</span>, <span className="text-[#c3002f]">수강 예정</span> 상태를 색상으로 구분합니다.</span>
-                    </li>
-                  </ul>
-                </div>
-                {/* Mockup: React Flow Node Graph (Centered & Responsive) */}
-                <div className="bg-white border border-slate-200 rounded-xl p-6 relative h-64 overflow-hidden">
-                  {/* Grid Background */}
-                  <div className="absolute inset-0 grid grid-cols-[20px_20px] bg-[size:20px_20px] bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] opacity-50"></div>
-
-                  {/* SVG Lines (Background Layer) */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    {/* Line 1: Node 1 -> Node 2 */}
-                    <path
-                      d="M 15 25 C 15 35, 50 35, 50 40"
-                      stroke="#3b82f6"
-                      strokeWidth="2"
-                      fill="none"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                    {/* Line 2: Node 2 -> Node 3 */}
-                    <path
-                      d="M 50 55 C 50 65, 85 65, 85 70"
-                      stroke="#cbd5e1"
-                      strokeWidth="2"
-                      fill="none"
-                      strokeDasharray="4"
-                      vectorEffect="non-scaling-stroke"
-                    />
-                  </svg>
-
-                  {/* Node 1: C Programming (Left) */}
-                  <div className="absolute top-10 left-[15%] -translate-x-1/2 bg-blue-100 border-2 border-blue-500 text-blue-800 px-4 py-2 rounded-lg text-xs font-bold shadow-sm z-10 whitespace-nowrap">
-                    C프로그래밍 (완료)
-                    <div className="absolute bottom-[-6px] left-1/2 w-2 h-2 bg-blue-500 rounded-full -translate-x-1/2"></div>
-                  </div>
-
-                  {/* Node 2: Data Structure (Center) */}
-                  <div className="absolute top-26 left-1/2 -translate-x-1/2 bg-white border-2 border-[#c3002f] text-slate-800 px-4 py-2 rounded-lg text-xs font-bold shadow-md z-10 animate-bounce whitespace-nowrap">
-                    자료구조 (추천!)
-                    <div className="absolute top-[-6px] left-1/2 w-2 h-2 bg-[#c3002f] rounded-full -translate-x-1/2"></div>
-                    <div className="absolute bottom-[-6px] left-1/2 w-2 h-2 bg-[#c3002f] rounded-full -translate-x-1/2"></div>
-                  </div>
-
-                  {/* Node 3: Algorithm (Right) */}
-                  <div className="absolute top-44 left-[85%] -translate-x-1/2 bg-slate-100 border-2 border-slate-300 text-slate-400 px-4 py-2 rounded-lg text-xs font-bold z-10 whitespace-nowrap">
-                    알고리즘 (잠김)
-                    <div className="absolute top-[-6px] left-1/2 w-2 h-2 bg-slate-300 rounded-full -translate-x-1/2"></div>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {activeTab === 'schedule' && (
               <div className="grid md:grid-cols-2 gap-10 items-center animate-in fade-in slide-in-from-bottom-2">
                 <div className="space-y-6">
                   <h3 className="text-2xl font-bold text-slate-900">
-                    학기별 학점 제한 고려,<br />
-                    <span style={{ color: SEJONG_RED }}>최적 스케줄링</span> 자동 배치
+                    Milvus 벡터 검색으로<br />
+                    <span style={{ color: SEJONG_RED }}>의미 기반 과목 추천</span>
                   </h3>
                   <ul className="space-y-4 text-slate-600">
                     <li className="flex gap-3">
                       <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
-                      <span><strong>위상정렬(Topological Sort):</strong> 선수과목을 먼저 듣도록 순서를 정렬하여, &apos;수강 신청 반려&apos; 위험을 없앱니다.</span>
+                      <span><strong>벡터 유사도 검색:</strong> &apos;DB 역량 부족&apos; → 데이터베이스, 빅데이터, 정보검색 등 의미적으로 유사한 과목을 모두 검색합니다.</span>
                     </li>
                     <li className="flex gap-3">
                       <CheckCircle2 size={20} className="text-[#c3002f] mt-1 flex-shrink-0" />
-                      <span><strong>학기 밸런싱:</strong> 최대 18학점 내에서 전공과 교양을 적절히 분배하여 무리 없는 시간표를 제안합니다.</span>
+                      <span><strong>학기별 시뮬레이션:</strong> 2-1 → 4-2까지 순차적으로 이수 상황을 반영하여 로드맵을 생성합니다.</span>
                     </li>
                   </ul>
                 </div>
                 <div className="bg-white border border-slate-200 rounded-xl p-6">
                   <div className="space-y-4">
-                    {/* Semester 1 */}
-                    <div className="border border-slate-200 bg-slate-50 rounded-lg p-3">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs font-bold text-slate-500">2024-1학기</span>
-                        <span className="text-xs font-bold text-[#c3002f]">18학점 (Full)</span>
+                    {/* 벡터 검색 시각화 */}
+                    <div className="flex items-center gap-2 text-sm font-bold text-slate-700 mb-2">
+                      <Database className="w-4 h-4 text-[#c3002f]" />
+                      Milvus 벡터 검색
+                    </div>
+                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                      <div className="text-xs text-slate-500 mb-2">보완 필요: DB 역량</div>
+                      <div className="text-center mb-2">
+                        <Sparkles className="w-5 h-5 text-[#c3002f] mx-auto" />
                       </div>
-                      <div className="flex gap-2 flex-wrap">
-                        <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-1 rounded">자료구조(3)</span>
-                        <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-1 rounded">컴퓨터구조(3)</span>
-                        <span className="bg-blue-100 text-blue-700 text-[10px] px-2 py-1 rounded">웹프로그래밍(3)</span>
-                        <span className="bg-slate-100 text-slate-500 text-[10px] px-2 py-1 rounded">+3과목</span>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center bg-white rounded p-2 border border-slate-100">
+                          <span className="text-xs font-medium">데이터베이스</span>
+                          <span className="text-[10px] text-[#c3002f] font-bold">유사도 95%</span>
+                        </div>
+                        <div className="flex justify-between items-center bg-white rounded p-2 border border-slate-100">
+                          <span className="text-xs font-medium">빅데이터처리</span>
+                          <span className="text-[10px] text-[#c3002f] font-bold">유사도 87%</span>
+                        </div>
+                        <div className="flex justify-between items-center bg-white rounded p-2 border border-slate-100">
+                          <span className="text-xs font-medium">정보검색론</span>
+                          <span className="text-[10px] text-[#c3002f] font-bold">유사도 82%</span>
+                        </div>
                       </div>
                     </div>
-                    {/* Arrow */}
+                    {/* 학기 시뮬레이션 */}
                     <div className="text-center">
                       <ArrowRight className="w-5 h-5 text-slate-400 mx-auto rotate-90" />
                     </div>
-                    {/* Semester 2 */}
                     <div className="border border-[#c3002f] bg-red-50/30 rounded-lg p-3">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs font-bold text-[#c3002f]">2024-2학기 (추천)</span>
+                        <span className="text-xs font-bold text-[#c3002f]">2-2학기 추천</span>
                         <span className="text-xs font-bold text-slate-700">15학점</span>
                       </div>
                       <div className="flex gap-2 flex-wrap">
-                        <span className="bg-red-100 text-[#c3002f] text-[10px] px-2 py-1 rounded font-bold">운영체제(3)</span>
-                        <span className="bg-red-100 text-[#c3002f] text-[10px] px-2 py-1 rounded font-bold">알고리즘(3)</span>
-                        <span className="bg-red-100 text-[#c3002f] text-[10px] px-2 py-1 rounded font-bold">데이터베이스(3)</span>
+                        <span className="bg-[#c3002f] text-white text-[10px] px-2 py-1 rounded font-bold">데이터베이스(3)</span>
+                        <span className="bg-[#c3002f] text-white text-[10px] px-2 py-1 rounded font-bold">알고리즘(3)</span>
+                        <span className="bg-[#c3002f] text-white text-[10px] px-2 py-1 rounded font-bold">운영체제(3)</span>
                       </div>
                     </div>
                   </div>
