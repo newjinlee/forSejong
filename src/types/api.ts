@@ -111,10 +111,10 @@ export type CustomCareerCreateResponse = {
 };
 
 // ===================================
-// 5. 커스텀 진로 분석 API (POST /api/careers/analyze)
+// 5. 커스텀 진로 분석 API (POST /api/careers)
 // ===================================
 export type CustomCareerAnalyzeRequest = {
-  title: string;
+  title: string;  // 직접 입력한 진로명
 };
 
 export type CustomCareerAnalyzeResponse = Career & {
@@ -123,15 +123,17 @@ export type CustomCareerAnalyzeResponse = Career & {
 
 // ===================================
 // 6. 역량 분석 API
+// POST /api/competency/analyze
 // ===================================
 export type CompetencyAnalyzeRequest = {
   userId: string;
-  careerId: string;
+  title: string;  // 진로 타이틀 (예: "백엔드 개발자")
 };
 
 export type CompetencyAnalyzeResponse = {
   currentCompetency: Competency[];
-  targetCompetency: Competency[];
+  description?: string;
+  isCustom?: boolean;
 };
 
 // GAP 분석 결과 (프론트엔드 계산)

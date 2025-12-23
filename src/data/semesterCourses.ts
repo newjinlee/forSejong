@@ -511,3 +511,133 @@ export function getRecommendedCourses(
     reason: reasons[idx % reasons.length],
   }));
 }
+
+// ===================================
+// 남은 학기 전체 추천 과목 생성
+// 총 8학기 기준, 현재 학기 이후 모든 학기 추천
+// ===================================
+
+export type SemesterRecommendation = {
+  semester: string;       // "2025-2" 형식
+  grade: number;          // 학년 (1~4)
+  semesterNum: number;    // 학기 (1 or 2)
+  courses: RecommendedCourse[];
+};
+
+/**
+ * 현재 학년/학기부터 졸업까지 남은 모든 학기 추천 과목 생성
+ * @param department 학과
+ * @param currentGrade 현재 학년
+ * @param currentSemesterNum 현재 학기 (1 or 2)
+ * @param currentYear 현재 연도
+ * @param completedCourseNames 기이수 과목명 목록
+ * @returns 학기별 추천 과목 배열
+ */
+export function getAllRemainingRecommendations(
+  department: string,
+  currentGrade: number,
+  currentSemesterNum: number, // 현재 학기 (1 or 2)
+  currentYear: number,
+  completedCourseNames: string[]
+): SemesterRecommendation[] {
+  const result: SemesterRecommendation[] = [];
+  
+  // 누적 이수 과목 (추천 과목도 이수한 것으로 처리)
+  let accumulatedCompleted = [...completedCourseNames];
+  
+  // 현재 상태에서 시작
+  let year = currentYear;
+  let grade = currentGrade;
+  let semNum = currentSemesterNum;
+  
+  // 다음 학기부터 시작
+  if (semNum === 1) {
+    semNum = 2;
+  } else {
+    semNum = 1;
+    year += 1;
+    grade += 1;
+  }
+  
+  // 4학년 2학기까지 반복 (최대 8학기)
+  while (grade <= 4) {
+    // 해당 학기 과목 데이터 선택
+    const semesterData = semNum === 1 ? SEMESTER_1_COURSES : SEMESTER_2_COURSES;
+    const deptData = semesterData[department] || semesterData['컴퓨터공학과'];
+    
+    // 해당 학년 + 근접 학년 과목 수집
+    const gradeKey = String(grade);
+    let courses: CourseData[] = deptData[gradeKey] || [];
+    
+    // 해당 학년 과목 부족하면 인접 학년 포함
+    if (courses.length < 4) {
+      const adjacentGrades = [String(grade - 1), String(grade + 1)];
+      for (const g of adjacentGrades) {
+        if (deptData[g]) {
+          courses = [...courses, ...deptData[g]];
+        }
+      }
+    }
+    
+    // 기이수 + 이전 학기 추천 과목 제외
+    const availableCourses = courses.filter(
+      c => !accumulatedCompleted.includes(c.name)
+    );
+    
+    // 전필/전선 분리
+    const required = availableCourses.filter(c => c.type === '전필');
+    const elective = availableCourses.filter(c => c.type === '전선');
+    
+    // 전필 우선, 전선 보충 (학기당 3~4과목)
+    const maxCourses = 4;
+    const selectedRequired = required.slice(0, Math.min(2, required.length));
+    const selectedElective = elective.slice(0, Math.min(maxCourses - selectedRequired.length, elective.length));
+    const selectedCourses = [...selectedRequired, ...selectedElective];
+    
+    // 추천 이유 생성
+    const getReasonByGrade = (g: number, type: string): string => {
+      if (type === '전필') {
+        return g === 4 ? '졸업요건 필수' : '전공 기초 강화';
+      }
+      if (g === 3 || g === 4) {
+        return '취업 역량 강화';
+      }
+      return '전공 심화 추천';
+    };
+    
+    const semesterStr = `${year}-${semNum}`;
+    
+    const recommendedCourses: RecommendedCourse[] = selectedCourses.map(course => ({
+      ...course,
+      semester: semesterStr,
+      reason: getReasonByGrade(grade, course.type),
+    }));
+    
+    // 결과에 추가 (과목이 있을 때만)
+    if (recommendedCourses.length > 0) {
+      result.push({
+        semester: semesterStr,
+        grade,
+        semesterNum: semNum,
+        courses: recommendedCourses,
+      });
+      
+      // 누적 이수 목록에 추가
+      accumulatedCompleted = [
+        ...accumulatedCompleted,
+        ...recommendedCourses.map(c => c.name)
+      ];
+    }
+    
+    // 다음 학기로
+    if (semNum === 1) {
+      semNum = 2;
+    } else {
+      semNum = 1;
+      year += 1;
+      grade += 1;
+    }
+  }
+  
+  return result;
+}

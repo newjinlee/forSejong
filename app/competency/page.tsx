@@ -1,28 +1,16 @@
-/* eslint-disable react-hooks/purity */
 "use client";
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend
 } from 'recharts';
 import { 
   ArrowRight, User, Target, TrendingUp, AlertTriangle,
-  ArrowLeft
+  ArrowLeft, Loader2
 } from 'lucide-react';
 import { useCareerStore } from '../../src/store/useCareerStore';
-
-// ===================================
-// Mock Data - 현재 역량 (TODO: 기이수 과목 기반 분석 API 연동)
-// ===================================
-const CURRENT_COMPETENCY_MOCK = [
-  { subject: 'Problem Solving', score: 45 },
-  { subject: 'Communication', score: 60 },
-  { subject: 'Teamwork', score: 70 },
-  { subject: 'Time Management', score: 55 },
-  { subject: 'Programming Languages', score: 40 },
-  { subject: 'Debugging', score: 35 },
-];
+import { useCompetencyAnalysis } from '../../src/hooks';
 
 // ===================================
 // 메인 컴포넌트
@@ -30,44 +18,51 @@ const CURRENT_COMPETENCY_MOCK = [
 export default function CompetencyAnalysisPage() {
   const router = useRouter();
   const { studentInfo, selectedCareer } = useCareerStore();
+  
+  // API 훅 사용 (현재 역량 조회)
+  const { isLoading, error, data, analyze } = useCompetencyAnalysis();
 
   // ===================================
-  // 목표 역량: selectedCareer.competencies에서 가져옴 (API 연동 완료!)
+  // API 호출 (페이지 로드 시)
   // ===================================
+  useEffect(() => {
+    if (studentInfo?.id && selectedCareer?.title) {
+      analyze({
+        userId: studentInfo.id,
+        title: selectedCareer.title,
+      });
+    }
+  }, [studentInfo?.id, selectedCareer?.title, analyze]);
+
+  // ===================================
+  // 역량 데이터
+  // - 현재 역량: API 응답 (competency/analyze)
+  // - 목표 역량: store에서 (career-select에서 저장한 값)
+  // ===================================
+  const currentCompetency = data?.currentCompetency || [];
+  
+  // 목표 역량: selectedCareer.competencies (store에서)
   const targetCompetency = useMemo(() => {
     if (!selectedCareer?.competencies) return [];
-    
-    // store의 competencies 형식: { subject, A, fullMark }
-    // 차트용 형식: { subject, score, fullMark }
     return selectedCareer.competencies.map(c => ({
       subject: c.subject,
-      score: c.A, // A가 점수
+      score: c.A,  // store에서는 A가 점수
       fullMark: c.fullMark,
     }));
   }, [selectedCareer]);
 
   // ===================================
-  // 현재 역량: 목표 역량의 subject에 맞춰서 매핑
-  // TODO: 기이수 과목 기반 분석 API 연동 시 교체
-  // ===================================
-  const currentCompetency = useMemo(() => {
-    if (targetCompetency.length === 0) return CURRENT_COMPETENCY_MOCK;
-    
-    // 목표 역량의 subject에 맞춰 현재 역량 생성 (임시 랜덤 값)
-    return targetCompetency.map(target => ({
-      subject: target.subject,
-      score: Math.floor(Math.random() * 40) + 30, // 30~70 사이 랜덤
-      fullMark: 100,
-    }));
-  }, [targetCompetency]);
-
-  // ===================================
-  // 차트용 데이터 변환
+  // 차트용 데이터 변환 (subject 기준으로 매칭)
   // ===================================
   const chartData = useMemo(() => {
-    return targetCompetency.map((target, index) => ({
+    // 현재 역량을 subject로 빠르게 찾기 위한 맵
+    const currentMap = new Map(
+      currentCompetency.map(c => [c.subject, c.score])
+    );
+    
+    return targetCompetency.map(target => ({
       subject: target.subject,
-      current: currentCompetency[index]?.score || 0,
+      current: currentMap.get(target.subject) || 0,
       target: target.score,
       fullMark: 100,
     }));
@@ -77,20 +72,19 @@ export default function CompetencyAnalysisPage() {
   // 달성률 계산: 현재 총합 / 목표 총합 × 100
   // ===================================
   const achievementRate = useMemo(() => {
-    const totalCurrent = currentCompetency.reduce((sum, c) => sum + c.score, 0);
-    const totalTarget = targetCompetency.reduce((sum, c) => sum + c.score, 0);
+    const totalCurrent = chartData.reduce((sum, c) => sum + c.current, 0);
+    const totalTarget = chartData.reduce((sum, c) => sum + c.target, 0);
     if (totalTarget === 0) return 0;
     return Math.round((totalCurrent / totalTarget) * 100);
-  }, [currentCompetency, targetCompetency]);
+  }, [chartData]);
 
   // ===================================
   // 보완 필요 역량: target > current 인 항목
   // ===================================
   const gapAnalysis = useMemo(() => {
-    return targetCompetency
-      .map((target, index) => {
-        const current = currentCompetency[index]?.score || 0;
-        const gap = target.score - current;
+    return chartData
+      .map(item => {
+        const gap = item.target - item.current;
         
         let priority: 'high' | 'medium' | 'low';
         if (gap >= 40) priority = 'high';
@@ -98,16 +92,16 @@ export default function CompetencyAnalysisPage() {
         else priority = 'low';
 
         return {
-          subject: target.subject,
-          current,
-          target: target.score,
+          subject: item.subject,
+          current: item.current,
+          target: item.target,
           gap,
           priority,
         };
       })
       .filter(item => item.gap > 0)
       .sort((a, b) => b.gap - a.gap);
-  }, [currentCompetency, targetCompetency]);
+  }, [chartData]);
 
   const needImprovementCount = gapAnalysis.length;
 
@@ -135,6 +129,43 @@ export default function CompetencyAnalysisPage() {
             className="px-6 py-2 bg-[#c3002f] text-white rounded-lg"
           >
             진로 선택하러 가기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ===================================
+  // 로딩 중
+  // ===================================
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <Loader2 className="w-16 h-16 text-[#c3002f] animate-spin mb-6" />
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">
+          역량 분석 중...
+        </h2>
+        <p className="text-slate-500">
+          {studentInfo.name}님의 기이수 과목을 분석하고 있습니다.
+        </p>
+      </div>
+    );
+  }
+
+  // ===================================
+  // 에러 발생 시
+  // ===================================
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <p className="text-slate-600 mb-4">{error}</p>
+          <button 
+            onClick={() => router.push('/career-select')}
+            className="px-6 py-2 bg-[#c3002f] text-white rounded-lg"
+          >
+            다시 시도
           </button>
         </div>
       </div>

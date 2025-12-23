@@ -1,10 +1,6 @@
 // ===================================
 // SEJONG ROADMAP API 클라이언트
 // ===================================
-// 🔧 API 연결 방법:
-// 1. USE_MOCK_DATA를 false로 변경
-// 2. .env.local에 NEXT_PUBLIC_API_BASE_URL 설정
-// ===================================
 
 import type {
   LoginRequest,
@@ -22,8 +18,6 @@ import type {
 
 import {
   MOCK_LOGIN_RESPONSE,
-  createMockCareerCompetencies,
-  createMockCustomCareerResponse,
   MOCK_COMPETENCY_RESPONSE,
   MOCK_ROADMAP_RESPONSE,
   simulateDelay,
@@ -68,82 +62,83 @@ async function apiRequest<T>(
 
 // ===================================
 // 1. 로그인 API
-// POST /api/login
+// POST /api/auth/login
 // ===================================
 export async function login(data: LoginRequest): Promise<LoginResponse> {
-  // 🔧 목데이터 사용 시
   if (USE_MOCK_DATA) {
     await simulateDelay(1000);
-    // 간단한 검증 시뮬레이션
     if (data.id === 'test' && data.password === 'test') {
       throw new Error('아이디 또는 비밀번호가 일치하지 않습니다.');
     }
     return MOCK_LOGIN_RESPONSE;
   }
 
-  // 🔧 실제 API 호출
-  return apiRequest<LoginResponse>('/login', {
+  return apiRequest<LoginResponse>('/auth/login', {
     method: 'POST',
     body: JSON.stringify(data),
   });
 }
 
 // ===================================
-// 2. 진로 역량 분석 API (NEW!)
+// 2. 진로 역량 분석 API ✅ 백엔드 연동!
 // POST /api/careers
-// - 프론트: { title: "백엔드 개발자" }
-// - 백: { title: "백엔드 개발자", competencies: [...] }
+// Request:  { title: "백엔드 개발자" }
+// Response: { title, competencies: [{ subject, score, fullMark }] }
 // ===================================
 export async function getCareerCompetencies(
   data: CareerCompetenciesRequest
 ): Promise<CareerCompetenciesResponse> {
-  // 🔧 목데이터 사용 시
-  if (USE_MOCK_DATA) {
-    await simulateDelay(800);
-    return createMockCareerCompetencies(data.title);
-  }
-
-  // 🔧 실제 API 호출
-  return apiRequest<CareerCompetenciesResponse>('/careers', {
+  // 백엔드 API 호출 (Next.js 프록시 경유)
+  const response = await apiRequest<{
+    title: string;
+    competencies: Array<{ subject: string; score: number; fullMark: number }>;
+  }>('/careers', {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify({ title: data.title }),
   });
+
+  return {
+    title: response.title || data.title,
+    competencies: response.competencies,
+  };
 }
 
 // ===================================
-// 3. 커스텀 진로 분석 API
-// POST /api/careers/analyze
+// 3. 커스텀 진로 분석 API ✅ 동일한 /careers API 사용!
+// POST /api/careers
 // ===================================
 export async function analyzeCustomCareer(
   data: CustomCareerAnalyzeRequest
 ): Promise<CustomCareerAnalyzeResponse> {
-  // 🔧 목데이터 사용 시
-  if (USE_MOCK_DATA) {
-    await simulateDelay(1500); // AI 분석 시뮬레이션
-    return createMockCustomCareerResponse(data.title);
-  }
-
-  // 🔧 실제 API 호출
-  return apiRequest<CustomCareerAnalyzeResponse>('/careers', {
+  // 동일한 /careers API 호출 (직접 입력도 같은 API)
+  const response = await apiRequest<{
+    title: string;
+    competencies: Array<{ subject: string; score: number; fullMark: number }>;
+  }>('/careers', {
     method: 'POST',
-    body: JSON.stringify(data),
+    body: JSON.stringify({ title: data.title }),
   });
+
+  return {
+    id: `custom-${Date.now()}`,
+    title: data.title,
+    description: `AI가 분석한 ${data.title} 직무입니다.`,
+    tags: ['AI 분석', '커스텀'],
+    competencies: response.competencies,
+    isCustom: true,
+  };
 }
 
 // ===================================
-// 4. 역량 GAP 분석 API
+// 4. 역량 GAP 분석 API ✅ 백엔드 연동!
 // POST /api/competency/analyze
+// Request:  { userId, title }
+// Response: { currentCompetency, targetCompetency }
 // ===================================
 export async function analyzeCompetency(
   data: CompetencyAnalyzeRequest
 ): Promise<CompetencyAnalyzeResponse> {
-  // 🔧 목데이터 사용 시
-  if (USE_MOCK_DATA) {
-    await simulateDelay(800);
-    return MOCK_COMPETENCY_RESPONSE;
-  }
-
-  // 🔧 실제 API 호출
+  // 백엔드 API 호출 (Next.js 프록시 경유)
   return apiRequest<CompetencyAnalyzeResponse>('/competency/analyze', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -157,13 +152,11 @@ export async function analyzeCompetency(
 export async function generateRoadmap(
   data: RoadmapGenerateRequest
 ): Promise<RoadmapResponse> {
-  // 🔧 목데이터 사용 시
   if (USE_MOCK_DATA) {
     await simulateDelay(1200);
     return MOCK_ROADMAP_RESPONSE;
   }
 
-  // 🔧 실제 API 호출
   return apiRequest<RoadmapResponse>('/roadmap/generate', {
     method: 'POST',
     body: JSON.stringify(data),

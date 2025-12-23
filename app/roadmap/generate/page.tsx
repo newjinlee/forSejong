@@ -19,22 +19,32 @@ import {
 } from 'lucide-react';
 import { useCareerStore } from '../../../src/store/useCareerStore';
 import { downloadRoadmapAsExcel } from '../../../src/lib/downloadRoadmap';
-import { getRecommendedCourses, PREREQUISITES, type RecommendedCourse } from '../../../src/data/semesterCourses';
+import { 
+  getAllRemainingRecommendations, 
+  PREREQUISITES, 
+  type RecommendedCourse,
+  type SemesterRecommendation 
+} from '../../../src/data/semesterCourses';
 
 // --- 1. Custom Node Components ---
 const SubjectNode = ({ data }: { data: any }) => {
   const isCompleted = data.status === 'completed';
   const isRecommended = data.status === 'recommended';
+  const hasPrereqConnection = data.hasPrereqConnection;
 
   return (
     <div className={`w-[180px] rounded-lg shadow-md border-2 transition-all hover:scale-105 ${
       isCompleted 
-        ? 'bg-slate-50 border-slate-300 opacity-90 grayscale-[0.2]' 
+        ? 'bg-slate-50 border-slate-300 opacity-90' 
         : isRecommended 
           ? 'bg-white border-[#c3002f] ring-4 ring-red-50 shadow-lg shadow-red-100' 
           : 'bg-white border-slate-200'
     }`}>
-      <Handle type="target" position={Position.Left} className="!bg-slate-400" />
+      <Handle 
+        type="target" 
+        position={Position.Left} 
+        className={`!w-3 !h-3 ${hasPrereqConnection ? '!bg-blue-500' : '!bg-slate-400'}`} 
+      />
       
       <div className={`px-3 py-2 text-xs font-bold text-white rounded-t-[5px] flex justify-between items-center ${
         isCompleted ? 'bg-slate-500' : isRecommended ? 'bg-[#c3002f]' : 'bg-slate-700'
@@ -48,7 +58,11 @@ const SubjectNode = ({ data }: { data: any }) => {
           {data.label}
         </h3>
         <p className="text-[10px] text-slate-500 flex items-center gap-1">
-          {isCompleted ? <span className="text-slate-500">✅ 이수 완료</span> : <span className="text-[#c3002f] font-bold">🔥 AI 추천</span>}
+          {isCompleted ? (
+            <span className="text-slate-500">✅ 이수 완료</span>
+          ) : (
+            <span className="text-[#c3002f] font-bold">🔥 {data.gradeLabel || 'AI 추천'}</span>
+          )}
         </p>
         {isRecommended && data.reason && (
           <div className="mt-2 text-[10px] bg-red-50 text-[#c3002f] p-1 rounded border border-red-100">
@@ -57,7 +71,11 @@ const SubjectNode = ({ data }: { data: any }) => {
         )}
       </div>
 
-      <Handle type="source" position={Position.Right} className="!bg-[#c3002f]" />
+      <Handle 
+        type="source" 
+        position={Position.Right} 
+        className={`!w-3 !h-3 ${hasPrereqConnection ? '!bg-blue-500' : '!bg-[#c3002f]'}`} 
+      />
     </div>
   );
 };
@@ -72,20 +90,26 @@ type Insights = {
   strategyDescription: string;
 };
 
-function generateInsights(recommendedCourses: RecommendedCourse[], careerTitle: string): Insights {
-  const requiredCourses = recommendedCourses.filter(c => c.type === '전필');
-  const electiveCourses = recommendedCourses.filter(c => c.type === '전선');
+function generateInsights(
+  allRecommendations: SemesterRecommendation[], 
+  careerTitle: string
+): Insights {
+  // 모든 추천 과목 평탄화
+  const allCourses = allRecommendations.flatMap(r => r.courses);
+  const requiredCourses = allCourses.filter(c => c.type === '전필');
+  const electiveCourses = allCourses.filter(c => c.type === '전선');
   
-  const missingNames = requiredCourses.map(c => c.name).join(', ') || '없음';
+  const missingNames = requiredCourses.slice(0, 5).map(c => c.name).join(', ') || '없음';
+  const remainingSemesters = allRecommendations.length;
   
   return {
     missing: missingNames,
     missingDescription: requiredCourses.length > 0 
-      ? '해당 과목 이력이 확인되지 않습니다. 졸업 및 취업을 위해 다음 학기 1순위 수강을 권장합니다.'
+      ? `앞으로 ${remainingSemesters}개 학기 동안 ${requiredCourses.length}개의 전공필수 과목을 이수해야 합니다.`
       : '전공필수 과목은 모두 이수하셨습니다. 전공선택 과목으로 역량을 강화하세요.',
     strategy: `${careerTitle} 직무 경쟁력`,
     strategyDescription: electiveCourses.length > 0
-      ? `${electiveCourses.map(c => c.name).join(', ')} 과목을 통해 실무 역량을 강화합니다.`
+      ? `총 ${electiveCourses.length}개의 전공선택 과목으로 실무 역량을 강화합니다.`
       : '추천 과목을 수강하여 전공 역량을 높이세요.',
   };
 }
@@ -99,11 +123,13 @@ export default function RoadmapGeneratePage() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-  // 다음 학기 계산 (1 or 2)
-  const nextSemesterNum = useMemo(() => {
-    if (!studentInfo?.semester) return 1;
-    const [, sem] = studentInfo.semester.split('-').map(Number);
-    return sem === 1 ? 2 : 1;
+  // 현재 학기 정보 파싱
+  const currentSemesterInfo = useMemo(() => {
+    if (!studentInfo?.semester) {
+      return { year: 2025, semNum: 1 };
+    }
+    const [year, sem] = studentInfo.semester.split('-').map(Number);
+    return { year: year || 2025, semNum: sem || 1 };
   }, [studentInfo?.semester]);
 
   // 기이수 과목명 목록
@@ -112,21 +138,28 @@ export default function RoadmapGeneratePage() {
     [completedCourses]
   );
 
-  // 추천 과목 생성 (학과 + 학년 + 학기 기반)
-  const recommendedCourses = useMemo(() => {
+  // 남은 학기 전체 추천 과목 생성
+  const allRecommendations = useMemo(() => {
     if (!studentInfo) return [];
-    return getRecommendedCourses(
+    return getAllRemainingRecommendations(
       studentInfo.department,
       studentInfo.grade,
-      nextSemesterNum,
+      currentSemesterInfo.semNum,
+      currentSemesterInfo.year,
       completedCourseNames
     );
-  }, [studentInfo, nextSemesterNum, completedCourseNames]);
+  }, [studentInfo, currentSemesterInfo, completedCourseNames]);
+
+  // 모든 추천 과목 평탄화 (엑셀 다운로드용)
+  const allRecommendedCourses = useMemo(() => 
+    allRecommendations.flatMap(r => r.courses),
+    [allRecommendations]
+  );
 
   // Insights 생성
   const insights = useMemo(() => 
-    generateInsights(recommendedCourses, selectedCareer?.title || '선택한 진로'),
-    [recommendedCourses, selectedCareer?.title]
+    generateInsights(allRecommendations, selectedCareer?.title || '선택한 진로'),
+    [allRecommendations, selectedCareer?.title]
   );
 
   // 로드맵 엑셀 다운로드 핸들러
@@ -139,7 +172,7 @@ export default function RoadmapGeneratePage() {
       department: studentInfo.department,
       careerTitle: selectedCareer.title,
       completedCourses,
-      recommendedCourses,
+      recommendedCourses: allRecommendedCourses,
       insights,
     });
   };
@@ -153,83 +186,113 @@ export default function RoadmapGeneratePage() {
     semester: course.semester || '기타',
   }));
 
-  // 가장 최근 학기 계산 (추천 과목 학기 결정용)
-  const getNextSemester = (): string => {
-    if (completedCourses.length === 0) return '2025-2';
-    
-    const semesters = completedCourses
-      .map(c => c.semester)
-      .filter(s => s && s.includes('-'))
-      .sort();
-    
-    if (semesters.length === 0) return '2025-2';
-    
-    const latest = semesters[semesters.length - 1];
-    const [year, sem] = latest.split('-').map(Number);
-    
-    if (sem === 1) return `${year}-2`;
-    return `${year + 1}-1`;
-  };
-
-  const nextSemester = getNextSemester();
-
-  // 추천 과목에 실제 학기 적용
-  const recommendedCoursesWithSemester = recommendedCourses.map(course => ({
-    ...course,
-    semester: nextSemester, // 다음 학기로 통일
-  }));
+  // 추천 과목에 ID 부여
+  const recommendedCoursesForGraph = useMemo(() => {
+    let idx = 0;
+    return allRecommendations.flatMap(semRec => 
+      semRec.courses.map(course => ({
+        id: `r-${idx++}`,
+        name: course.name,
+        type: course.type,
+        credits: course.credits,
+        semester: course.semester,
+        reason: course.reason,
+        grade: semRec.grade,
+        semesterNum: semRec.semesterNum,
+      }))
+    );
+  }, [allRecommendations]);
 
   const generateGraph = useCallback(() => {
     const newNodes: Node[] = [];
     const newEdges: Edge[] = [];
     
-    const X_GAP = 300;
-    const Y_GAP = 140;
+    const X_GAP = 280;
+    const Y_GAP = 160;  // 세로 간격 늘림
     const START_X = 50;
     
-    // 기이수 과목에서 학기 목록 추출 + 추천 과목 학기 추가
+    // 학기 목록 추출
     const completedSemesters = [...new Set(completedCoursesForGraph.map(c => c.semester))];
-    const recommendedSemesters = [...new Set(recommendedCoursesWithSemester.map(c => c.semester))];
+    const recommendedSemesters = [...new Set(recommendedCoursesForGraph.map(c => c.semester))];
     const allSemesters = [...new Set([...completedSemesters, ...recommendedSemesters])]
       .filter(s => s !== '기타')
       .sort((a, b) => {
-        // "2021-1", "2023-2" 형식 정렬
         const [yearA, semA] = a.split('-').map(Number);
         const [yearB, semB] = b.split('-').map(Number);
         if (yearA !== yearB) return yearA - yearB;
         return semA - semB;
       });
     
-    // 모든 과목 (노드 ID → 과목명 매핑)
-    const allCoursesFlat = [...completedCoursesForGraph, ...recommendedCoursesWithSemester];
+    // 모든 과목
+    const allCoursesFlat = [
+      ...completedCoursesForGraph, 
+      ...recommendedCoursesForGraph
+    ];
     const courseNameToId: Record<string, string> = {};
     allCoursesFlat.forEach(c => {
       courseNameToId[c.name] = c.id;
     });
 
+    // 선이수 연결이 있는 과목 ID 집합
+    const hasPrereqConnectionIds = new Set<string>();
+    allCoursesFlat.forEach(course => {
+      const prereqs = PREREQUISITES[course.name];
+      if (prereqs && prereqs.length > 0) {
+        prereqs.forEach(prereqName => {
+          const prereqId = courseNameToId[prereqName];
+          if (prereqId) {
+            hasPrereqConnectionIds.add(course.id);
+            hasPrereqConnectionIds.add(prereqId);
+          }
+        });
+      }
+    });
+
+    // 학기별 학년 정보 매핑
+    const semesterToGrade: Record<string, number> = {};
+    recommendedCoursesForGraph.forEach(c => {
+      semesterToGrade[c.semester] = c.grade;
+    });
+
+    // 학기별 노드 생성
     allSemesters.forEach((sem, colIndex) => {
       const xPos = START_X + colIndex * X_GAP;
       const isRecommendedSemester = recommendedSemesters.includes(sem);
+      const gradeInfo = semesterToGrade[sem];
+      
+      // 학기 헤더 (학년 정보 포함)
+      const headerLabel = gradeInfo 
+        ? `${sem} (${gradeInfo}학년)` 
+        : sem;
       
       newNodes.push({
         id: `header-${sem}`,
         type: 'default',
-        data: { label: sem },
+        data: { label: headerLabel },
         position: { x: xPos, y: -60 },
         style: { 
-          width: 180, fontWeight: 'bold', border: 'none', background: 'transparent',
-          fontSize: '18px', color: isRecommendedSemester ? '#c3002f' : '#64748b'
+          width: 200, 
+          fontWeight: 'bold', 
+          border: 'none', 
+          background: 'transparent',
+          fontSize: '16px', 
+          color: isRecommendedSemester ? '#c3002f' : '#64748b'
         },
         draggable: false,
         selectable: false,
       });
 
       const completed = completedCoursesForGraph.filter(c => c.semester === sem);
-      const recommended = recommendedCoursesWithSemester.filter(c => c.semester === sem);
+      const recommended = recommendedCoursesForGraph.filter(c => c.semester === sem);
       const allCourses = [...completed, ...recommended];
 
       allCourses.forEach((course, idx) => {
         const isRec = 'reason' in course;
+        const hasConnection = hasPrereqConnectionIds.has(course.id);
+        const gradeLabel = isRec && 'grade' in course 
+          ? `${(course as any).grade}학년 추천` 
+          : undefined;
+        
         newNodes.push({
           id: course.id,
           type: 'subject',
@@ -238,21 +301,22 @@ export default function RoadmapGeneratePage() {
             type: course.type, 
             credits: course.credits, 
             status: isRec ? 'recommended' : 'completed',
-            reason: isRec ? (course as RecommendedCourse).reason : undefined
+            reason: isRec ? (course as any).reason : undefined,
+            hasPrereqConnection: hasConnection,
+            gradeLabel,
           },
           position: { x: xPos, y: idx * Y_GAP },
         });
       });
     });
 
-    // 선이수 관계 기반 엣지 생성
+    // 선이수 관계 엣지 생성
     allCoursesFlat.forEach(course => {
       const prereqs = PREREQUISITES[course.name];
       if (prereqs && prereqs.length > 0) {
         prereqs.forEach(prereqName => {
           const prereqId = courseNameToId[prereqName];
           if (prereqId) {
-            // 선이수 과목이 그래프에 있을 때만 연결
             const isRecommended = 'reason' in course;
             newEdges.push({
               id: `prereq-${prereqId}-${course.id}`,
@@ -261,13 +325,10 @@ export default function RoadmapGeneratePage() {
               type: 'smoothstep',
               animated: isRecommended,
               style: { 
-                stroke: isRecommended ? '#c3002f' : '#94a3b8',
-                strokeWidth: isRecommended ? 2 : 1.5,
-                opacity: isRecommended ? 1 : 0.7,
+                stroke: isRecommended ? '#c3002f' : '#3b82f6',
+                strokeWidth: 3,
+                strokeDasharray: isRecommended ? '0' : '8 4',
               },
-              label: isRecommended ? '' : '선이수',
-              labelStyle: { fontSize: 10, fill: '#94a3b8' },
-              labelBgStyle: { fill: 'white', fillOpacity: 0.8 },
             });
           }
         });
@@ -276,7 +337,7 @@ export default function RoadmapGeneratePage() {
 
     setNodes(newNodes);
     setEdges(newEdges);
-  }, [completedCoursesForGraph, recommendedCoursesWithSemester, setNodes, setEdges]);
+  }, [completedCoursesForGraph, recommendedCoursesForGraph, setNodes, setEdges]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -288,6 +349,7 @@ export default function RoadmapGeneratePage() {
 
   // 총 이수 학점 계산
   const totalCredits = completedCourses.reduce((sum, c) => sum + c.credits, 0);
+  const totalRecommendedCredits = allRecommendedCourses.reduce((sum, c) => sum + c.credits, 0);
 
   if (loading) {
     return (
@@ -306,6 +368,9 @@ export default function RoadmapGeneratePage() {
           </p>
           <p className="animate-pulse delay-150 font-bold text-[#c3002f]">
             &lsquo;{selectedCareer?.title || '선택한 진로'}&rsquo; 맞춤 로드맵 생성 중...
+          </p>
+          <p className="animate-pulse delay-200 text-slate-400">
+            졸업까지 {allRecommendations.length}개 학기 로드맵 구성 중...
           </p>
         </div>
       </div>
@@ -328,6 +393,8 @@ export default function RoadmapGeneratePage() {
               목표: <span className="font-bold text-[#c3002f]">{selectedCareer?.title || '미선택'}</span>
               <span className="mx-2">|</span>
               이수: <span className="font-bold text-slate-700">{completedCourses.length}과목 ({totalCredits}학점)</span>
+              <span className="mx-2">|</span>
+              추천: <span className="font-bold text-[#c3002f]">{allRecommendedCourses.length}과목 ({totalRecommendedCredits}학점)</span>
             </p>
           </div>
         </div>
@@ -370,31 +437,50 @@ export default function RoadmapGeneratePage() {
           onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypes}
           fitView
-          minZoom={0.5}
+          minZoom={0.2}
+          maxZoom={1.5}
           defaultEdgeOptions={{ type: 'smoothstep' }}
         >
           <Background color="#e2e8f0" gap={24} size={1} />
           <Controls showInteractive={false} />
           <MiniMap 
-            nodeColor={(n) => n.data.status === 'recommended' ? '#c3002f' : '#cbd5e1'} 
+            nodeColor={(n) => n.data?.status === 'recommended' ? '#c3002f' : '#cbd5e1'} 
             maskColor="rgba(241, 245, 249, 0.7)"
             className="!bg-white !border-slate-200 !shadow-lg !rounded-lg"
           />
         </ReactFlow>
 
         {/* Floating Legend */}
-        <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur border border-slate-200 p-4 rounded-xl shadow-lg z-10 flex flex-col gap-2">
-          <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
-            <span className="w-3 h-3 bg-slate-200 border border-slate-400 rounded"></span>
+        <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur border border-slate-200 p-4 rounded-xl shadow-lg z-10 flex flex-col gap-3">
+          <p className="text-xs font-bold text-slate-700 border-b pb-2">범례</p>
+          <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
+            <span className="w-4 h-4 bg-slate-100 border-2 border-slate-400 rounded"></span>
             기이수 (수강 완료)
           </div>
-          <div className="flex items-center gap-2 text-xs font-bold text-[#c3002f]">
-            <span className="w-3 h-3 bg-white border border-[#c3002f] ring-2 ring-red-50 rounded"></span>
+          <div className="flex items-center gap-2 text-xs font-medium text-[#c3002f]">
+            <span className="w-4 h-4 bg-white border-2 border-[#c3002f] ring-2 ring-red-100 rounded"></span>
             AI 추천 (수강 필요)
+          </div>
+          <div className="border-t pt-3 mt-1 space-y-2">
+            <div className="flex items-center gap-2 text-xs text-blue-600">
+              <svg width="32" height="8">
+                <line x1="0" y1="4" x2="32" y2="4" stroke="#3b82f6" strokeWidth="3" strokeDasharray="8 4"/>
+              </svg>
+              <span>선이수 관계</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-[#c3002f]">
+              <svg width="32" height="8">
+                <line x1="0" y1="4" x2="32" y2="4" stroke="#c3002f" strokeWidth="3"/>
+              </svg>
+              <span>추천 연결</span>
+            </div>
+          </div>
+          <div className="border-t pt-3 mt-1 text-xs text-slate-500">
+            <p>📅 총 {allRecommendations.length}개 학기 로드맵</p>
           </div>
         </div>
 
-        {/* Recommendation Insight Panel - 토글 가능 */}
+        {/* Recommendation Insight Panel */}
         {showInsightPanel && (
           <div className="absolute top-6 right-6 w-80 bg-white/95 backdrop-blur border border-red-100 p-5 rounded-xl shadow-xl z-10 animate-in slide-in-from-right-10">
             <div className="flex items-center justify-between mb-3 border-b border-red-50 pb-2">
@@ -411,13 +497,21 @@ export default function RoadmapGeneratePage() {
             </div>
             <div className="space-y-4">
               <div>
-                <p className="text-xs text-slate-400 font-bold mb-1">전공 필수 미충족 감지</p>
+                <p className="text-xs text-slate-400 font-bold mb-1">📚 남은 학기</p>
                 <p className="text-sm text-slate-700 leading-snug">
-                  <strong className="text-[#c3002f]">{insights.missing}</strong> {insights.missingDescription}
+                  <strong className="text-[#c3002f]">{allRecommendations.length}개 학기</strong> 동안{' '}
+                  <strong>{allRecommendedCourses.length}개 과목</strong>({totalRecommendedCredits}학점) 추천
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-400 font-bold mb-1">{insights.strategy}</p>
+                <p className="text-xs text-slate-400 font-bold mb-1">⚠️ 전공 필수 미이수</p>
+                <p className="text-sm text-slate-700 leading-snug">
+                  <strong className="text-[#c3002f]">{insights.missing}</strong>
+                </p>
+                <p className="text-xs text-slate-500 mt-1">{insights.missingDescription}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-400 font-bold mb-1">🎯 {insights.strategy}</p>
                 <p className="text-sm text-slate-700 leading-snug">
                   {insights.strategyDescription}
                 </p>
@@ -427,7 +521,7 @@ export default function RoadmapGeneratePage() {
         )}
       </div>
 
-      {/* Course List Modal - 실제 데이터 사용 */}
+      {/* Course List Modal */}
       {showCourseList && (
         <div className="absolute inset-y-0 right-0 w-[400px] bg-white shadow-2xl z-30 border-l animate-in slide-in-from-right duration-300 flex flex-col">
           <div className="p-5 border-b flex justify-between items-center bg-slate-50">
