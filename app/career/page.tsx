@@ -245,7 +245,7 @@ export default function CareerSelectPage() {
               <div className="flex flex-col items-center justify-center h-full space-y-4 animate-in fade-in">
                 <RefreshCw className="w-10 h-10 text-[#c3002f] animate-spin" />
                 <div className="text-center">
-                  <p className="text-lg font-bold text-slate-700">AI가 &rsquo;{customInput}&rsquo; 직무를 분석 중입니다...</p>
+                  <p className="text-lg font-bold text-slate-700">AI가 &lsquo;{customInput}&rsquo; 직무를 분석 중입니다...</p>
                   <p className="text-sm text-slate-400 mt-1">채용 공고 데이터 스캐닝 중... (1/3)</p>
                 </div>
               </div>
