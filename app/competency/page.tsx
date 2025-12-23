@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 
 import React, { useMemo } from 'react';
@@ -10,27 +11,17 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { useCareerStore } from '../../src/store/useCareerStore';
-import type { Competency } from '../../src/types/api';
 
 // ===================================
-// Mock Data (나중에 API로 교체)
+// Mock Data - 현재 역량 (TODO: 기이수 과목 기반 분석 API 연동)
 // ===================================
-const CURRENT_COMPETENCY_MOCK: Competency[] = [
-  { subject: 'DB', score: 45, fullMark: 100 },
-  { subject: '알고리즘', score: 30, fullMark: 100 },
-  { subject: '네트워크', score: 70, fullMark: 100 },
-  { subject: 'OS', score: 25, fullMark: 100 },
-  { subject: '보안', score: 55, fullMark: 100 },
-  { subject: '협업', score: 60, fullMark: 100 },
-];
-
-const TARGET_COMPETENCY_MOCK: Competency[] = [
-  { subject: 'DB', score: 90, fullMark: 100 },
-  { subject: '알고리즘', score: 85, fullMark: 100 },
-  { subject: '네트워크', score: 80, fullMark: 100 },
-  { subject: 'OS', score: 70, fullMark: 100 },
-  { subject: '보안', score: 60, fullMark: 100 },
-  { subject: '협업', score: 75, fullMark: 100 },
+const CURRENT_COMPETENCY_MOCK = [
+  { subject: 'Problem Solving', score: 45 },
+  { subject: 'Communication', score: 60 },
+  { subject: 'Teamwork', score: 70 },
+  { subject: 'Time Management', score: 55 },
+  { subject: 'Programming Languages', score: 40 },
+  { subject: 'Debugging', score: 35 },
 ];
 
 // ===================================
@@ -41,18 +32,34 @@ export default function CompetencyAnalysisPage() {
   const { studentInfo, selectedCareer } = useCareerStore();
 
   // ===================================
-  // 역량 데이터 (TODO: API 연동 시 교체)
+  // 목표 역량: selectedCareer.competencies에서 가져옴 (API 연동 완료!)
   // ===================================
-  const { currentCompetency, targetCompetency } = useMemo(() => {
-    // TODO: API 연동 시 이 부분을 useQuery 또는 fetch로 교체
-    // const { data } = useCompetencyAnalysis(studentInfo?.id, selectedCareer?.id);
-    // return { currentCompetency: data.currentCompetency, targetCompetency: data.targetCompetency };
+  const targetCompetency = useMemo(() => {
+    if (!selectedCareer?.competencies) return [];
     
-    return {
-      currentCompetency: CURRENT_COMPETENCY_MOCK,
-      targetCompetency: TARGET_COMPETENCY_MOCK,
-    };
-  }, []);
+    // store의 competencies 형식: { subject, A, fullMark }
+    // 차트용 형식: { subject, score, fullMark }
+    return selectedCareer.competencies.map(c => ({
+      subject: c.subject,
+      score: c.A, // A가 점수
+      fullMark: c.fullMark,
+    }));
+  }, [selectedCareer]);
+
+  // ===================================
+  // 현재 역량: 목표 역량의 subject에 맞춰서 매핑
+  // TODO: 기이수 과목 기반 분석 API 연동 시 교체
+  // ===================================
+  const currentCompetency = useMemo(() => {
+    if (targetCompetency.length === 0) return CURRENT_COMPETENCY_MOCK;
+    
+    // 목표 역량의 subject에 맞춰 현재 역량 생성 (임시 랜덤 값)
+    return targetCompetency.map(target => ({
+      subject: target.subject,
+      score: Math.floor(Math.random() * 40) + 30, // 30~70 사이 랜덤
+      fullMark: 100,
+    }));
+  }, [targetCompetency]);
 
   // ===================================
   // 차트용 데이터 변환
@@ -98,13 +105,11 @@ export default function CompetencyAnalysisPage() {
           priority,
         };
       })
-      .filter(item => item.gap > 0) // 부족한 것만
-      .sort((a, b) => b.gap - a.gap); // gap 큰 순으로 정렬
+      .filter(item => item.gap > 0)
+      .sort((a, b) => b.gap - a.gap);
   }, [currentCompetency, targetCompetency]);
 
-  // 보완 필요 역량 수
   const needImprovementCount = gapAnalysis.length;
-  const highPriorityCount = gapAnalysis.filter(g => g.priority === 'high').length;
 
   // ===================================
   // 네비게이션
@@ -180,7 +185,7 @@ export default function CompetencyAnalysisPage() {
               <span className="text-sm font-medium text-slate-500">목표 진로</span>
             </div>
             <p className="text-2xl font-bold text-slate-900">{selectedCareer.title}</p>
-            <p className="text-xs text-slate-400 mt-1">{selectedCareer.tags.join(', ')}</p>
+            <p className="text-xs text-slate-400 mt-1">{selectedCareer.tags?.join(', ') || 'AI 분석'}</p>
           </div>
 
           {/* 보완 필요 역량 */}
@@ -219,7 +224,7 @@ export default function CompetencyAnalysisPage() {
                   <PolarGrid stroke="#e2e8f0" />
                   <PolarAngleAxis 
                     dataKey="subject" 
-                    tick={{ fill: '#64748b', fontSize: 12, fontWeight: 'bold' }} 
+                    tick={{ fill: '#64748b', fontSize: 11, fontWeight: 'bold' }} 
                   />
                   <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                   <Radar
@@ -235,7 +240,7 @@ export default function CompetencyAnalysisPage() {
             </div>
           </div>
 
-          {/* 목표 역량 차트 */}
+          {/* 목표 역량 차트 - API 데이터 사용! */}
           <div className="bg-white rounded-2xl p-6 border border-[#c3002f] shadow-sm ring-1 ring-red-100">
             <div className="flex items-center gap-3 mb-4">
               <div className="bg-red-100 p-2 rounded-lg">
@@ -243,7 +248,7 @@ export default function CompetencyAnalysisPage() {
               </div>
               <div>
                 <h2 className="font-bold text-lg text-slate-900">목표 역량 모델</h2>
-                <p className="text-xs text-slate-500">{selectedCareer.title} 필요 역량</p>
+                <p className="text-xs text-slate-500">{selectedCareer.title} 필요 역량 (API)</p>
               </div>
             </div>
             <div className="h-[300px]">
@@ -252,7 +257,7 @@ export default function CompetencyAnalysisPage() {
                   <PolarGrid stroke="#e2e8f0" />
                   <PolarAngleAxis 
                     dataKey="subject" 
-                    tick={{ fill: '#64748b', fontSize: 12, fontWeight: 'bold' }} 
+                    tick={{ fill: '#64748b', fontSize: 11, fontWeight: 'bold' }} 
                   />
                   <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                   <Radar
@@ -286,7 +291,7 @@ export default function CompetencyAnalysisPage() {
                 <PolarGrid stroke="#e2e8f0" />
                 <PolarAngleAxis 
                   dataKey="subject" 
-                  tick={{ fill: '#64748b', fontSize: 12, fontWeight: 'bold' }} 
+                  tick={{ fill: '#64748b', fontSize: 11, fontWeight: 'bold' }} 
                 />
                 <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
                 <Radar

@@ -34,7 +34,7 @@ import {
 // ===================================
 
 // 🔧 목데이터 사용 여부 - API 연결 시 false로 변경
-const USE_MOCK_DATA = true;
+const USE_MOCK_DATA = false;
 
 // API 기본 URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '/api';
