@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { GraduationCap, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { GraduationCap, Loader2, AlertCircle, Eye, EyeOff, Icon } from 'lucide-react';
 import { useCareerStore } from '../store/useCareerStore';
 
 export default function LoginPage() {
@@ -68,9 +68,9 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* 로고 & 타이틀 */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#c3002f] rounded-2xl mb-4 shadow-lg shadow-red-200">
-            <GraduationCap className="w-8 h-8 text-white" />
+        <div className="text-center mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl mb-4 shadow-md border border-red-200">
+            <img src="/icon.svg" alt="Logo" className="w-12 h-12 ml-1" />
           </div>
         </div>
 
