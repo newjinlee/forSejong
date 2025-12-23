@@ -3,16 +3,20 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+// 만약 로그인 시 받아온 유저 정보를 스토어에 저장하고 싶다면 아래 주석을 해제하고 사용하세요.
+// import { useCareerStore } from '@/store/useCareerStore'; 
 
 export default function LoginPage() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  
+  // const { setStudentInfo } = useCareerStore(); // 스토어 연동 시 사용
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true); // 로딩 시작
+    setIsLoading(true);
 
     try {
       const res = await fetch('/api/login', {
@@ -26,13 +30,23 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // 성공 시
-        router.push('/'); 
+        // 성공 시 로직
+        
+        // [Tip] 실제 백엔드에서 유저 정보를 준다면 여기서 스토어에 저장하면 좋습니다.
+        // setStudentInfo({
+        //   name: data.name,
+        //   department: data.department,
+        //   grade: data.grade,
+        //   semester: data.semester
+        // });
+
+        // 진로 선택 페이지로 이동
+        router.push('/career'); 
         router.refresh();
       } else {
         // 실패 시
         alert(data.message || '로그인에 실패했습니다.');
-        setIsLoading(false); // 실패 시 로딩 종료
+        setIsLoading(false);
       }
     } catch (error) {
       console.error(error);
