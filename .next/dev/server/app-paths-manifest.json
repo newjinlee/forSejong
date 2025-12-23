@@ -1,8 +1,0 @@
-{
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/login/route": "app/api/login/route.js",
-  "/career/page": "app/career/page.js",
-  "/login/page": "app/login/page.js",
-  "/page": "app/page.js",
-  "/roadmap/generate/page": "app/roadmap/generate/page.js"
-}
