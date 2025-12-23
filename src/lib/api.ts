@@ -120,11 +120,11 @@ export async function analyzeCustomCareer(
   // 🔧 목데이터 사용 시
   if (USE_MOCK_DATA) {
     await simulateDelay(1500); // AI 분석 시뮬레이션
-    return createMockCustomCareerResponse(data.customCareerTitle);
+    return createMockCustomCareerResponse(data.title);
   }
 
   // 🔧 실제 API 호출
-  return apiRequest<CustomCareerAnalyzeResponse>('/careers/analyze', {
+  return apiRequest<CustomCareerAnalyzeResponse>('/careers', {
     method: 'POST',
     body: JSON.stringify(data),
   });

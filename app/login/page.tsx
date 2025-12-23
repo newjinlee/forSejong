@@ -288,17 +288,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* 데모 로그인 버튼 (개발용) */}
-          {process.env.NODE_ENV === 'development' && (
-            <button
-              type="button"
-              onClick={handleDemoLogin}
-              className="w-full mt-3 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-medium transition-all"
-            >
-              🧪 데모 로그인 (개발용)
-            </button>
-          )}
         </div>
 
         {/* 하단 안내 */}

@@ -120,7 +120,7 @@ export function useCustomCareerAnalysis(): UseCustomCareerAnalysisReturn {
     setError(null);
 
     try {
-      const response = await analyzeCustomCareer({ customCareerTitle: title });
+      const response = await analyzeCustomCareer({ title: title });
       setAnalyzedCareer(response);
       return response;
     } catch (err) {

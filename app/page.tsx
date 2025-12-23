@@ -520,7 +520,7 @@ export default function RoadmapLandingPage() {
             Frontend: 이유진 | Backend: 구은서 | AI: 김소희 | PM: 임영빈
           </p>
           <p className="text-xs text-slate-400 mt-8">
-            © {new Date().getFullYear()} Sejong Capstone Project. All rights reserved.
+            © {new Date().getFullYear()} Sejong HACKERTHON Project. All rights reserved.
           </p>
         </div>
       </footer>

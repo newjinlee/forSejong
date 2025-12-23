@@ -114,7 +114,7 @@ export type CustomCareerCreateResponse = {
 // 5. 커스텀 진로 분석 API (POST /api/careers/analyze)
 // ===================================
 export type CustomCareerAnalyzeRequest = {
-  customCareerTitle: string;
+  title: string;
 };
 
 export type CustomCareerAnalyzeResponse = Career & {
