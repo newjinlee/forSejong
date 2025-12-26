@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import ReactFlow, { 
   Background, 
   Controls, 
@@ -15,7 +16,7 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { 
-  GraduationCap, Loader2, ListChecks, AlertTriangle 
+  GraduationCap, Loader2, ListChecks, AlertTriangle, ArrowLeft, Target 
 } from 'lucide-react';
 import { useCareerStore } from '../../../src/store/useCareerStore';
 import { downloadRoadmapAsExcel } from '../../../src/lib/downloadRoadmap';
@@ -24,6 +25,7 @@ import {
   PREREQUISITES, 
   type SemesterRecommendation 
 } from '../../../src/data/semesterCourses';
+import CourseDetailModal from './CourseDetailModal';
 
 // --- 1. Custom Node Components ---
 const SubjectNode = ({ data }: { data: any }) => {
@@ -32,13 +34,25 @@ const SubjectNode = ({ data }: { data: any }) => {
   const hasPrereqConnection = data.hasPrereqConnection;
 
   return (
-    <div className={`w-[180px] rounded-lg shadow-md border-2 transition-all hover:scale-105 ${
-      isCompleted 
-        ? 'bg-slate-50 border-slate-300 opacity-90' 
-        : isRecommended 
-          ? 'bg-white border-[#c3002f] ring-4 ring-red-50 shadow-lg shadow-red-100' 
-          : 'bg-white border-slate-200'
-    }`}>
+    <div 
+      className={`w-[180px] rounded-lg shadow-md border-2 transition-all hover:scale-105 ${
+        isCompleted 
+          ? 'bg-slate-50 border-slate-300 opacity-90' 
+          : isRecommended 
+            ? 'bg-white border-[#c3002f] ring-4 ring-red-50 shadow-lg shadow-red-100 cursor-pointer' 
+            : 'bg-white border-slate-200'
+      }`}
+      onClick={() => {
+        // 추천 과목만 클릭 가능
+        if (isRecommended && data.onCourseClick) {
+          data.onCourseClick({
+            name: data.label,
+            type: data.type,
+            credits: data.credits,
+          });
+        }
+      }}
+    >
       <Handle 
         type="target" 
         position={Position.Left} 
@@ -114,10 +128,18 @@ function generateInsights(
 }
 
 export default function RoadmapGeneratePage() {
+  const router = useRouter();
   const { selectedCareer, studentInfo, completedCourses } = useCareerStore();
   const [loading, setLoading] = useState(true);
   const [showCourseList, setShowCourseList] = useState(false);
   const [showInsightPanel, setShowInsightPanel] = useState(true);
+  
+  // 과목 상세 모달 상태
+  const [selectedCourse, setSelectedCourse] = useState<{
+    name: string;
+    type?: '전필' | '전선' | '교양';
+    credits?: number;
+  } | null>(null);
   
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -143,7 +165,7 @@ export default function RoadmapGeneratePage() {
     [completedCourses]
   );
 
-  // 남은 학기 전체 추천 과목 생성 (학기 정보도 전달!)
+  // 남은 학기 전체 추천 과목 생성 (학기 정보 + 진로 정보 전달!)
   const allRecommendations = useMemo(() => {
     if (!studentInfo) return [];
     return getAllRemainingRecommendations(
@@ -152,9 +174,10 @@ export default function RoadmapGeneratePage() {
       currentSemesterInfo.semNum,
       currentSemesterInfo.year,
       completedCourseNames,
-      completedCourseSemesters  // 학기 정보 추가!
+      completedCourseSemesters,
+      selectedCareer?.title  // 진로 정보 추가!
     );
-  }, [studentInfo, currentSemesterInfo, completedCourseNames, completedCourseSemesters]);
+  }, [studentInfo, currentSemesterInfo, completedCourseNames, completedCourseSemesters, selectedCareer?.title]);
 
   // 모든 추천 과목 평탄화 (엑셀 다운로드용)
   const allRecommendedCourses = useMemo(() => 
@@ -310,6 +333,14 @@ export default function RoadmapGeneratePage() {
             reason: isRec ? (course as any).reason : undefined,
             hasPrereqConnection: hasConnection,
             gradeLabel,
+            // 추천 과목 클릭 시 모달 열기
+            onCourseClick: isRec ? (courseInfo: { name: string; type: string; credits: number }) => {
+              setSelectedCourse({
+                name: courseInfo.name,
+                type: courseInfo.type as '전필' | '전선' | '교양',
+                credits: courseInfo.credits,
+              });
+            } : undefined,
           },
           position: { x: xPos, y: idx * Y_GAP },
         });
@@ -388,6 +419,15 @@ export default function RoadmapGeneratePage() {
       {/* Top Header */}
       <header className="bg-white border-b px-6 py-4 flex justify-between items-center z-20 shadow-sm relative">
         <div className="flex items-center gap-4">
+          {/* 뒤로가기 버튼 */}
+          <button
+            onClick={() => router.push('/competency')}
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+            title="역량 분석으로 돌아가기"
+          >
+            <ArrowLeft className="w-5 h-5 text-slate-600" />
+          </button>
+          
           <div className="bg-red-50 p-2 rounded-lg">
             <GraduationCap className="text-[#c3002f] w-6 h-6" />
           </div>
@@ -406,6 +446,15 @@ export default function RoadmapGeneratePage() {
         </div>
         
         <div className="flex items-center gap-3">
+          {/* 진로 변경 버튼 추가 */}
+          <button 
+            onClick={() => router.push('/career-select')}
+            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-bold transition-colors"
+            title="다른 진로로 변경하기"
+          >
+            <Target size={18} />
+            진로 변경
+          </button>
           <button 
             onClick={() => setShowInsightPanel(!showInsightPanel)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${
@@ -579,6 +628,15 @@ export default function RoadmapGeneratePage() {
           </div>
         </div>
       )}
+
+      {/* 과목 상세 정보 모달 */}
+      <CourseDetailModal
+        courseName={selectedCourse?.name || ''}
+        courseType={selectedCourse?.type}
+        credits={selectedCourse?.credits}
+        isOpen={!!selectedCourse}
+        onClose={() => setSelectedCourse(null)}
+      />
     </div>
   );
 }

@@ -8,6 +8,7 @@ export type CourseData = {
   name: string;
   type: '전필' | '전선';
   credits: number;
+  department?: string; // 어느 학과 과목인지 (타과 추천용)
 };
 
 export type SemesterCourses = {
@@ -15,6 +16,258 @@ export type SemesterCourses = {
     [grade: string]: CourseData[];
   };
 };
+
+// ===================================
+// 진로별 관련 과목 매핑
+// priority: 우선 추천 과목 (정확히 일치)
+// keywords: 과목명에 포함되면 추천 (부분 일치)
+// ===================================
+export const CAREER_COURSE_MAPPING: Record<string, {
+  priority: string[];
+  keywords: string[];
+}> = {
+  // 개발 직군
+  "백엔드 개발자": {
+    priority: ["데이터베이스", "운영체제", "컴퓨터네트워크", "알고리즘및실습", "소프트웨어공학", "자료구조및실습", "리눅스프로그래밍및실습"],
+    keywords: ["서버", "DB", "데이터베이스", "네트워크", "시스템", "운영체제", "알고리즘", "자료구조", "리눅스"]
+  },
+  "프론트엔드 개발자": {
+    priority: ["웹프로그래밍", "컴퓨터그래픽스", "Human-AI Interaction", "멀티미디어프로그래밍"],
+    keywords: ["웹", "UI", "UX", "인터페이스", "그래픽", "멀티미디어", "HCI", "Interaction"]
+  },
+  "풀스택 개발자": {
+    priority: ["웹프로그래밍", "데이터베이스", "소프트웨어공학", "컴퓨터네트워크", "알고리즘및실습"],
+    keywords: ["웹", "데이터베이스", "서버", "네트워크", "소프트웨어", "프로그래밍"]
+  },
+  "모바일 앱 개발자": {
+    priority: ["웹프로그래밍", "멀티미디어프로그래밍", "소프트웨어공학", "Human-AI Interaction"],
+    keywords: ["모바일", "앱", "UI", "프로그래밍", "인터페이스"]
+  },
+  "DevOps 엔지니어": {
+    priority: ["운영체제", "컴퓨터네트워크", "소프트웨어공학", "리눅스프로그래밍및실습", "오픈소스SW개론"],
+    keywords: ["운영체제", "네트워크", "리눅스", "시스템", "오픈소스", "서버"]
+  },
+  "클라우드 엔지니어": {
+    priority: ["운영체제", "컴퓨터네트워크", "데이터베이스", "리눅스프로그래밍및실습", "소프트웨어공학"],
+    keywords: ["클라우드", "네트워크", "시스템", "분산", "서버", "운영체제"]
+  },
+
+  // AI/ML 직군
+  "AI 엔지니어": {
+    priority: ["인공지능", "기계학습", "딥러닝", "딥러닝개론", "자연어처리", "영상처리", "강화학습"],
+    keywords: ["AI", "인공지능", "머신러닝", "기계학습", "딥러닝", "신경망", "학습"]
+  },
+  "머신러닝 엔지니어": {
+    priority: ["기계학습", "기계학습개론", "딥러닝", "인공지능", "확률및통계", "선형대수"],
+    keywords: ["기계학습", "머신러닝", "딥러닝", "학습", "통계", "확률"]
+  },
+  "데이터 사이언티스트": {
+    priority: ["기계학습", "데이터베이스", "확률및통계", "데이터시각화", "인공지능", "빅데이터"],
+    keywords: ["데이터", "분석", "통계", "시각화", "기계학습", "빅데이터"]
+  },
+  "데이터 엔지니어": {
+    priority: ["데이터베이스", "대용량데이터처리", "운영체제", "알고리즘및실습", "소프트웨어공학"],
+    keywords: ["데이터", "데이터베이스", "빅데이터", "분산", "처리", "파이프라인"]
+  },
+  "컴퓨터 비전 엔지니어": {
+    priority: ["영상처리", "컴퓨터그래픽스", "딥러닝", "인공지능", "패턴인식"],
+    keywords: ["영상", "이미지", "비전", "그래픽", "처리", "인식"]
+  },
+  "자연어처리 엔지니어": {
+    priority: ["자연어처리", "인공지능", "딥러닝", "기계학습"],
+    keywords: ["자연어", "NLP", "텍스트", "언어", "처리"]
+  },
+
+  // 보안 직군
+  "보안 엔지니어": {
+    priority: ["정보보호개론", "정보보호와보안의기초", "컴퓨터네트워크", "운영체제", "암호학"],
+    keywords: ["보안", "암호", "해킹", "정보보호", "네트워크"]
+  },
+  "정보보안 전문가": {
+    priority: ["정보보호개론", "공개키암호론", "대칭키암호론", "시스템해킹과보안", "디지털포렌식"],
+    keywords: ["보안", "암호", "정보보호", "해킹", "포렌식"]
+  },
+  "모의해킹 전문가": {
+    priority: ["시스템해킹과보안", "네트워킹해킹과보안", "정보보호개론", "운영체제및보안"],
+    keywords: ["해킹", "보안", "침투", "취약점"]
+  },
+  "악성코드 분석가": {
+    priority: ["AI기반악성코드분석", "어셈블리어", "운영체제", "시스템해킹과보안"],
+    keywords: ["악성코드", "분석", "어셈블리", "시스템", "보안"]
+  },
+  "디지털 포렌식 전문가": {
+    priority: ["디지털포렌식", "정보보호개론", "운영체제", "컴퓨터네트워크"],
+    keywords: ["포렌식", "분석", "조사", "디지털"]
+  },
+
+  // 게임/그래픽 직군
+  "게임 개발자": {
+    priority: ["게임프로그래밍", "컴퓨터그래픽스", "가상현실", "멀티미디어프로그래밍", "인공지능"],
+    keywords: ["게임", "그래픽", "3D", "VR", "가상현실", "엔진"]
+  },
+  "그래픽스 프로그래머": {
+    priority: ["컴퓨터그래픽스", "영상처리", "가상현실", "증강현실"],
+    keywords: ["그래픽", "3D", "렌더링", "영상", "시각화"]
+  },
+  "VR/AR 개발자": {
+    priority: ["가상현실", "증강현실", "AR/VR/MR", "컴퓨터그래픽스", "Human-AI Interaction"],
+    keywords: ["VR", "AR", "가상현실", "증강현실", "XR", "메타버스"]
+  },
+  
+  // 디자인 직군 (타과 과목 필요)
+  "그래픽 디자이너": {
+    priority: ["컴퓨터그래픽스", "멀티미디어프로그래밍", "데이터시각화", "Human-AI Interaction"],
+    keywords: ["그래픽", "디자인", "시각", "UI", "UX", "멀티미디어", "영상", "이미지"]
+  },
+  "UI/UX 디자이너": {
+    priority: ["Human-AI Interaction", "웹프로그래밍", "멀티미디어프로그래밍", "컴퓨터그래픽스"],
+    keywords: ["UI", "UX", "인터페이스", "디자인", "사용자", "경험", "인터랙션", "웹"]
+  },
+
+  // 시스템/임베디드 직군
+  "시스템 프로그래머": {
+    priority: ["운영체제", "컴퓨터구조", "어셈블리어", "시스템프로그래밍", "리눅스프로그래밍및실습"],
+    keywords: ["시스템", "운영체제", "커널", "리눅스", "어셈블리"]
+  },
+  "임베디드 개발자": {
+    priority: ["임베디드시스템", "컴퓨터구조", "디지털시스템", "운영체제", "메카트로닉스"],
+    keywords: ["임베디드", "하드웨어", "마이크로", "펌웨어", "IoT"]
+  },
+  "로봇 엔지니어": {
+    priority: ["AI로봇프로그래밍", "메카트로닉스", "자동제어", "인공지능", "기계학습"],
+    keywords: ["로봇", "제어", "자동화", "메카", "동역학"]
+  },
+
+  // 네트워크/통신 직군
+  "네트워크 엔지니어": {
+    priority: ["컴퓨터네트워크", "데이터통신", "통신시스템", "무선통신", "통신이론"],
+    keywords: ["네트워크", "통신", "프로토콜", "라우팅", "무선"]
+  },
+  "통신 시스템 엔지니어": {
+    priority: ["통신이론", "통신시스템", "디지털신호처리", "무선통신공학", "광통신공학"],
+    keywords: ["통신", "신호", "무선", "광통신", "시스템"]
+  },
+
+  // 반도체/하드웨어 직군
+  "반도체 설계 엔지니어": {
+    priority: ["디지털시스템", "컴퓨터구조", "반도체공학", "전자회로1", "기초반도체"],
+    keywords: ["반도체", "회로", "설계", "디지털", "VLSI"]
+  },
+  "하드웨어 엔지니어": {
+    priority: ["디지털시스템", "전자회로1", "컴퓨터구조", "디지털논리회로"],
+    keywords: ["하드웨어", "회로", "디지털", "전자"]
+  },
+
+  // 연구/학술 직군
+  "AI 연구원": {
+    priority: ["딥러닝", "인공지능", "기계학습", "강화학습", "자연어처리", "영상처리"],
+    keywords: ["연구", "AI", "딥러닝", "학습", "논문"]
+  },
+  "소프트웨어 연구원": {
+    priority: ["알고리즘및실습", "소프트웨어공학", "프로그래밍언어의개념", "운영체제"],
+    keywords: ["연구", "알고리즘", "소프트웨어", "이론"]
+  },
+
+  // 기타 IT 직군
+  "IT 컨설턴트": {
+    priority: ["소프트웨어공학", "데이터베이스", "컴퓨터네트워크", "정보보호개론"],
+    keywords: ["시스템", "설계", "분석", "프로젝트"]
+  },
+  "QA 엔지니어": {
+    priority: ["소프트웨어공학", "알고리즘및실습", "운영체제"],
+    keywords: ["테스트", "품질", "소프트웨어", "검증"]
+  },
+  "기술 PM": {
+    priority: ["소프트웨어공학", "Capstone디자인(산학협력프로젝트)", "공학설계기초(산학프로젝트입문)"],
+    keywords: ["프로젝트", "설계", "관리", "협업"]
+  },
+
+  // 기본값 (매칭 안되면)
+  "default": {
+    priority: ["알고리즘및실습", "자료구조및실습", "운영체제", "데이터베이스", "소프트웨어공학"],
+    keywords: ["프로그래밍", "알고리즘", "시스템"]
+  }
+};
+
+/**
+ * 진로에 맞는 과목 매핑 가져오기
+ */
+export function getCareerCourseMapping(careerTitle: string): { priority: string[]; keywords: string[] } {
+  // 정확히 일치하는 진로 찾기
+  if (CAREER_COURSE_MAPPING[careerTitle]) {
+    return CAREER_COURSE_MAPPING[careerTitle];
+  }
+  
+  // 부분 일치로 찾기
+  const lowerTitle = careerTitle.toLowerCase();
+  for (const [career, mapping] of Object.entries(CAREER_COURSE_MAPPING)) {
+    if (lowerTitle.includes(career.toLowerCase()) || career.toLowerCase().includes(lowerTitle)) {
+      return mapping;
+    }
+  }
+  
+  // 키워드로 매칭
+  if (lowerTitle.includes('백엔드') || lowerTitle.includes('서버') || lowerTitle.includes('backend')) {
+    return CAREER_COURSE_MAPPING["백엔드 개발자"];
+  }
+  if (lowerTitle.includes('프론트') || lowerTitle.includes('frontend') || lowerTitle.includes('ui')) {
+    return CAREER_COURSE_MAPPING["프론트엔드 개발자"];
+  }
+  if (lowerTitle.includes('ai') || lowerTitle.includes('인공지능') || lowerTitle.includes('머신러닝')) {
+    return CAREER_COURSE_MAPPING["AI 엔지니어"];
+  }
+  if (lowerTitle.includes('데이터') || lowerTitle.includes('data')) {
+    return CAREER_COURSE_MAPPING["데이터 사이언티스트"];
+  }
+  if (lowerTitle.includes('보안') || lowerTitle.includes('security')) {
+    return CAREER_COURSE_MAPPING["보안 엔지니어"];
+  }
+  if (lowerTitle.includes('게임') || lowerTitle.includes('game')) {
+    return CAREER_COURSE_MAPPING["게임 개발자"];
+  }
+  if (lowerTitle.includes('임베디드') || lowerTitle.includes('embedded') || lowerTitle.includes('iot')) {
+    return CAREER_COURSE_MAPPING["임베디드 개발자"];
+  }
+  if (lowerTitle.includes('네트워크') || lowerTitle.includes('network')) {
+    return CAREER_COURSE_MAPPING["네트워크 엔지니어"];
+  }
+  if (lowerTitle.includes('그래픽') || lowerTitle.includes('디자인') || lowerTitle.includes('design')) {
+    return CAREER_COURSE_MAPPING["그래픽 디자이너"];
+  }
+  if (lowerTitle.includes('ux') || lowerTitle.includes('ui')) {
+    return CAREER_COURSE_MAPPING["UI/UX 디자이너"];
+  }
+  
+  return CAREER_COURSE_MAPPING["default"];
+}
+
+/**
+ * 과목의 진로 관련 점수 계산 (0~100)
+ */
+export function calculateCareerRelevanceScore(
+  courseName: string, 
+  careerTitle: string
+): number {
+  const mapping = getCareerCourseMapping(careerTitle);
+  
+  // 우선순위 과목에 정확히 일치하면 높은 점수
+  const priorityIndex = mapping.priority.findIndex(p => courseName === p);
+  if (priorityIndex !== -1) {
+    // 우선순위가 높을수록 높은 점수 (100, 90, 80, ...)
+    return Math.max(100 - priorityIndex * 10, 60);
+  }
+  
+  // 키워드가 과목명에 포함되면 중간 점수
+  const lowerCourseName = courseName.toLowerCase();
+  for (const keyword of mapping.keywords) {
+    if (lowerCourseName.includes(keyword.toLowerCase())) {
+      return 50;
+    }
+  }
+  
+  // 관련 없으면 기본 점수
+  return 10;
+}
 
 // ===================================
 // 1학기 개설 과목
@@ -339,31 +592,14 @@ export const SEMESTER_2_COURSES: SemesterCourses = {
 };
 
 // ===================================
-// 추천 과목 선정 유틸리티
-// ===================================
-
-export type RecommendedCourse = {
-  id: string;
-  name: string;
-  type: '전필' | '전선';
-  credits: number;
-  semester: string;
-  reason: string;
-};
-
-// ===================================
 // 선이수 관계 데이터
-// A → B: A를 먼저 들어야 B를 들을 수 있음
 // ===================================
 export const PREREQUISITES: Record<string, string[]> = {
-  // 전자정보통신공학과 / 반도체시스템공학과 공통
-  "물리전자공학": ["미적분학", "기초물리전자공학"], // 둘 중 하나만 있어도 연결됨
+  "물리전자공학": ["미적분학", "기초물리전자공학"],
   "디지털신호처리": ["신호및시스템"],
   "통신이론": ["신호및시스템"],
   "전자회로2": ["전자회로1"],
   "전자기2": ["전자기1"],
-  
-  // 반도체시스템공학과
   "인공지능과빅데이터": ["고급프로그래밍활용"],
   "고급C프로그래밍및실습": ["C프로그래밍및실습"],
   "전기회로2": ["전기회로1"],
@@ -386,153 +622,117 @@ export const PREREQUISITES: Record<string, string[]> = {
   "반도체특화연구및실험1": ["연구실인턴"],
   "반도체종합설계A": ["반도체특화연구및실험2"],
   "반도체종합설계B": ["반도체특화연구및실험2"],
-  
-  // 컴퓨터공학과
   "자료구조및실습": ["C프로그래밍및실습"],
   "알고리즘및실습": ["C프로그래밍및실습", "자료구조및실습"],
   "Capstone디자인(산학협력프로젝트)": ["선형대수", "이산수학및프로그래밍"],
-  
-  // 소프트웨어학과
   "객체지향프로그래밍C++": ["고급C프로그래밍및실습"],
   "디지털이미지프로그래밍": ["C프로그래밍및실습"],
   "컴퓨터애니메이션": ["실시간컴퓨터그래픽스"],
-  
-  // 정보보호학과
   "공개키암호론": ["미적분학1"],
   "대칭키암호론": ["이산수학및프로그래밍"],
   "네트워킹해킹과보안": ["컴퓨터네트워크"],
   "시스템해킹과보안": ["운영체제및보안"],
   "디지털포렌식": ["어셈블리어"],
   "AI기반악성코드분석": ["어셈블리어"],
-  
-  // 데이터사이언스학과
   "데이터분석개론": ["고급C프로그래밍및실습"],
   "기계학습개론": ["통계학개론"],
-  
-  // AI로봇학과
   "인공지능": ["확률및통계"],
   "기계학습": ["창의SW기초설계", "선형대수"],
 };
 
-/**
- * 과목의 선이수 과목 목록 반환
- */
 export function getPrerequisites(courseName: string): string[] {
   return PREREQUISITES[courseName] || [];
 }
 
-/**
- * 이수한 과목 기반으로 수강 가능한 과목인지 확인
- */
 export function canTakeCourse(courseName: string, completedCourseNames: string[]): boolean {
   const prereqs = getPrerequisites(courseName);
   if (prereqs.length === 0) return true;
   return prereqs.every(prereq => completedCourseNames.includes(prereq));
 }
 
-/**
- * 랜덤으로 배열에서 n개 선택
- */
-function pickRandom<T>(arr: T[], n: number): T[] {
-  const shuffled = [...arr].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, n);
-}
+// ===================================
+// 전체 학과에서 전선 과목 수집 (핵심 추가 함수)
+// ===================================
 
 /**
- * 사용자 학과, 학년, 학기에 맞는 추천 과목 생성
- * - 전필 2개 + 전선 2개
- * - 기이수 과목 제외 (과목명 기준)
+ * 모든 학과의 전선 과목을 수집하고 학과 정보를 추가
  */
-export function getRecommendedCourses(
-  department: string,
-  grade: number,
-  semesterNum: number, // 1 or 2
-  completedCourseNames: string[]
-): RecommendedCourse[] {
-  // 1학기 또는 2학기 데이터 선택
-  const semesterData = semesterNum === 1 ? SEMESTER_1_COURSES : SEMESTER_2_COURSES;
+export function getAllElectiveCourses(
+  semesterData: SemesterCourses,
+  excludeCompleted: string[]
+): (CourseData & { department: string })[] {
+  const allElectives: (CourseData & { department: string })[] = [];
+  const seenCourses = new Set<string>(); // 중복 제거용
   
-  // 해당 학과 데이터
-  const deptData = semesterData[department];
-  if (!deptData) {
-    // 학과가 없으면 컴퓨터공학과로 fallback
-    return getRecommendedCourses('컴퓨터공학과', grade, semesterNum, completedCourseNames);
-  }
-  
-  // 해당 학년 과목
-  const gradeKey = String(grade);
-  let courses = deptData[gradeKey] || [];
-  
-  // 해당 학년 과목이 부족하면 이전/다음 학년도 포함
-  if (courses.length < 4) {
-    const allGrades = Object.keys(deptData).sort();
-    for (const g of allGrades) {
-      if (g !== gradeKey) {
-        courses = [...courses, ...deptData[g]];
+  for (const [dept, gradeData] of Object.entries(semesterData)) {
+    for (const [grade, courses] of Object.entries(gradeData)) {
+      for (const course of courses) {
+        // 전선만, 이미 이수한 과목 제외, 중복 제거
+        if (
+          course.type === '전선' &&
+          !excludeCompleted.includes(course.name) &&
+          !seenCourses.has(course.name)
+        ) {
+          seenCourses.add(course.name);
+          allElectives.push({
+            ...course,
+            department: dept
+          });
+        }
       }
     }
   }
   
-  // 기이수 과목 제외 (과목명 기준)
-  const availableCourses = courses.filter(
-    c => !completedCourseNames.includes(c.name)
-  );
-  
-  // 전필/전선 분리
-  const required = availableCourses.filter(c => c.type === '전필');
-  const elective = availableCourses.filter(c => c.type === '전선');
-  
-  // 전필 2개, 전선 2개 선택 (부족하면 있는 만큼)
-  const selectedRequired = pickRandom(required, Math.min(2, required.length));
-  const selectedElective = pickRandom(elective, Math.min(2, elective.length));
-  
-  // 부족하면 다른 타입에서 채움
-  const total = [...selectedRequired, ...selectedElective];
-  if (total.length < 4) {
-    const remaining = availableCourses.filter(c => !total.includes(c));
-    const additional = pickRandom(remaining, 4 - total.length);
-    total.push(...additional);
-  }
-  
-  // 추천 이유 생성
-  const reasons = [
-    '다음 학기 수강 추천',
-    '전공 역량 강화에 필수',
-    '취업 경쟁력 향상',
-    '졸업요건 충족 필요',
-  ];
-  
-  // 결과 생성
-  const semesterStr = `${new Date().getFullYear()}-${semesterNum}`;
-  
-  return total.slice(0, 4).map((course, idx) => ({
-    ...course,
-    semester: semesterStr,
-    reason: reasons[idx % reasons.length],
-  }));
+  return allElectives;
+}
+
+/**
+ * 진로 관련도 기준으로 전선 과목 정렬
+ */
+export function sortElectivesByCareerRelevance(
+  electives: (CourseData & { department: string })[],
+  careerTitle: string
+): (CourseData & { department: string; relevanceScore: number })[] {
+  return electives
+    .map(course => ({
+      ...course,
+      relevanceScore: calculateCareerRelevanceScore(course.name, careerTitle)
+    }))
+    .sort((a, b) => b.relevanceScore - a.relevanceScore);
 }
 
 // ===================================
-// 남은 학기 전체 추천 과목 생성
-// 총 8학기 기준, 현재 학기 이후 모든 학기 추천
+// 추천 과목 타입
 // ===================================
 
+export type RecommendedCourse = {
+  id: string;
+  name: string;
+  type: '전필' | '전선';
+  credits: number;
+  semester: string;
+  reason: string;
+  department?: string;        // 타과 과목이면 학과명 표시
+  relevanceScore?: number;    // 진로 관련도 점수
+};
+
 export type SemesterRecommendation = {
-  semester: string;       // "2025-2" 형식
-  grade: number;          // 학년 (1~4)
-  semesterNum: number;    // 학기 (1 or 2)
+  semester: string;
+  grade: number;
+  semesterNum: number;
   courses: RecommendedCourse[];
 };
 
+// ===================================
+// 메인 추천 함수 (수정됨)
+// ===================================
+
 /**
  * 현재 학년/학기부터 졸업까지 남은 모든 학기 추천 과목 생성
- * @param department 학과
- * @param currentGrade 현재 학년 (참고용)
- * @param currentSemesterNum 현재 학기 (1 or 2) (참고용)
- * @param currentYear 현재 연도
- * @param completedCourseNames 기이수 과목명 목록
- * @param completedCourseSemesters 기이수 과목의 학기 정보 배열 (예: ["2022-1", "2023-2", ...])
- * @returns 학기별 추천 과목 배열
+ * 
+ * ✨ 변경사항:
+ * - 전필: 본인 학과에서만 선택 (졸업요건)
+ * - 전선: 전체 학과에서 진로 관련도 기준으로 선택
  */
 export function getAllRemainingRecommendations(
   department: string,
@@ -540,28 +740,31 @@ export function getAllRemainingRecommendations(
   currentSemesterNum: number,
   currentYear: number,
   completedCourseNames: string[],
-  completedCourseSemesters?: string[]
+  completedCourseSemesters?: string[],
+  careerTitle?: string
 ): SemesterRecommendation[] {
   const result: SemesterRecommendation[] = [];
   
   // 누적 이수 과목 (추천 과목도 이수한 것으로 처리)
   let accumulatedCompleted = [...completedCourseNames];
   
-  // ===================================
-  // 실제 이수 학기 수 계산 (유니크한 학기 개수)
-  // ===================================
+  // 진로 매핑
+  const careerMapping = careerTitle ? getCareerCourseMapping(careerTitle) : null;
+  
+  console.log('🎯 진로 기반 추천:', careerTitle || '미선택');
+  console.log('📚 전선 과목: 전체 학과에서 검색');
+  
+  // 이수 학기 계산
   let completedSemesters: number;
   let lastCompletedYear = currentYear;
   let lastCompletedSemNum = currentSemesterNum;
   
   if (completedCourseSemesters && completedCourseSemesters.length > 0) {
-    // 유니크한 학기 추출 (여름/겨울학기 제외)
     const uniqueSemesters = [...new Set(
       completedCourseSemesters.filter(s => s && s.includes('-') && !s.includes('여름') && !s.includes('겨울'))
     )];
     completedSemesters = uniqueSemesters.length;
     
-    // 가장 최근 학기 찾기
     const sortedSemesters = uniqueSemesters
       .map(s => {
         const [year, sem] = s.split('-').map(Number);
@@ -576,27 +779,11 @@ export function getAllRemainingRecommendations(
       lastCompletedYear = sortedSemesters[0].year;
       lastCompletedSemNum = sortedSemesters[0].sem;
     }
-    
-    console.log('📊 이수 학기 목록:', uniqueSemesters.sort());
   } else {
-    // 학기 정보 없으면 과목 수로 추정
     completedSemesters = Math.ceil(completedCourseNames.length / 7) || 1;
   }
   
-  // 이수 학기로 현재 학년 계산
-  // 5학기 이수 → 3학년 1학기까지 완료
   const calculatedGrade = Math.min(4, Math.ceil(completedSemesters / 2));
-  const lastSemNumByCount = completedSemesters % 2 === 1 ? 1 : 2;
-  
-  console.log('📊 로드맵 생성 정보:', {
-    department,
-    inputGrade: currentGrade,
-    currentYear,
-    completedCount: completedCourseNames.length,
-    completedSemesters,
-    calculatedGrade,
-    lastCompletedSemester: `${lastCompletedYear}-${lastCompletedSemNum}`
-  });
   
   // 다음 학기 계산
   let year = lastCompletedYear;
@@ -604,87 +791,121 @@ export function getAllRemainingRecommendations(
   let grade: number;
   
   if (lastCompletedSemNum === 1) {
-    // 1학기까지 이수 → 다음은 같은 해 2학기
     semNum = 2;
     grade = calculatedGrade;
   } else {
-    // 2학기까지 이수 → 다음은 다음 해 1학기
     semNum = 1;
     year += 1;
     grade = Math.min(4, calculatedGrade + 1);
   }
   
-  // 남은 학기 수 계산 (8학기 - 이수 학기)
   const remainingSemesters = Math.max(0, 8 - completedSemesters);
   
-  console.log('📅 추천 시작 학기:', { 
-    year, 
-    grade, 
-    semNum, 
-    remainingSemesters,
-    message: `${completedSemesters}학기 이수 완료 → ${remainingSemesters}개 학기 남음`
-  });
+  console.log('📅 추천 시작:', { year, grade, semNum, remainingSemesters });
   
-  // 4학년 2학기까지 반복
+  // 학기별 반복
   let loopCount = 0;
   while (grade <= 4 && loopCount < remainingSemesters + 1) {
     loopCount++;
     
-    // 해당 학기 과목 데이터 선택
     const semesterData = semNum === 1 ? SEMESTER_1_COURSES : SEMESTER_2_COURSES;
-    const deptData = semesterData[department] || semesterData['컴퓨터공학과'];
     
-    // 해당 학년 + 근접 학년 과목 수집
+    // ===================================
+    // 1. 전필: 본인 학과에서만 선택
+    // ===================================
+    const myDeptData = semesterData[department] || semesterData['컴퓨터공학과'];
     const gradeKey = String(grade);
-    let courses: CourseData[] = deptData[gradeKey] || [];
+    let myDeptCourses: CourseData[] = myDeptData[gradeKey] || [];
     
-    // 해당 학년 과목 부족하면 인접 학년 포함
-    if (courses.length < 4) {
+    // 인접 학년 전필도 포함
+    if (myDeptCourses.filter(c => c.type === '전필').length < 2) {
       const adjacentGrades = [String(grade - 1), String(grade + 1)];
       for (const g of adjacentGrades) {
-        if (deptData[g]) {
-          courses = [...courses, ...deptData[g]];
+        if (myDeptData[g]) {
+          myDeptCourses = [...myDeptCourses, ...myDeptData[g]];
         }
       }
     }
     
-    // 기이수 + 이전 학기 추천 과목 제외
-    const availableCourses = courses.filter(
-      c => !accumulatedCompleted.includes(c.name)
-    );
+    const requiredCourses = myDeptCourses
+      .filter(c => c.type === '전필' && !accumulatedCompleted.includes(c.name));
     
-    // 전필/전선 분리
-    const required = availableCourses.filter(c => c.type === '전필');
-    const elective = availableCourses.filter(c => c.type === '전선');
+    // ===================================
+    // 2. 전선: 전체 학과에서 진로 관련도 기준 선택
+    // ===================================
+    const allElectives = getAllElectiveCourses(semesterData, accumulatedCompleted);
     
-    // 전필 우선, 전선 보충 (학기당 3~4과목)
+    let sortedElectives: (CourseData & { department: string; relevanceScore?: number })[];
+    if (careerTitle) {
+      sortedElectives = sortElectivesByCareerRelevance(allElectives, careerTitle);
+      console.log(`   🔍 ${careerTitle} 관련 Top 5:`, 
+        sortedElectives.slice(0, 5).map(c => `${c.name}(${c.department}, ${c.relevanceScore}점)`)
+      );
+    } else {
+      sortedElectives = allElectives.map(c => ({ ...c, relevanceScore: 0 }));
+    }
+    
+    // ===================================
+    // 3. 과목 선택: 전필 2개 + 전선 2개
+    // ===================================
     const maxCourses = 4;
-    const selectedRequired = required.slice(0, Math.min(2, required.length));
-    const selectedElective = elective.slice(0, Math.min(maxCourses - selectedRequired.length, elective.length));
-    const selectedCourses = [...selectedRequired, ...selectedElective];
+    const selectedRequired = requiredCourses.slice(0, Math.min(2, requiredCourses.length));
+    const selectedElective = sortedElectives.slice(0, Math.min(maxCourses - selectedRequired.length, 3));
     
     // 추천 이유 생성
-    const getReasonByGrade = (g: number, type: string): string => {
-      if (type === '전필') {
-        return g === 4 ? '졸업요건 필수' : '전공 기초 강화';
+    const getReasonByCareer = (
+      courseName: string, 
+      courseType: string,
+      courseDept?: string,
+      score?: number
+    ): string => {
+      if (courseType === '전필') {
+        return grade === 4 ? '졸업요건 필수' : '전공 기초 강화';
       }
-      if (g === 3 || g === 4) {
-        return '취업 역량 강화';
+      
+      // 타과 과목이면 학과 표시
+      const deptLabel = courseDept && courseDept !== department ? ` (${courseDept})` : '';
+      
+      if (careerTitle && score) {
+        if (score >= 80) {
+          return `${careerTitle} 핵심 역량${deptLabel}`;
+        }
+        if (score >= 50) {
+          return `${careerTitle} 관련${deptLabel}`;
+        }
       }
-      return '전공 심화 추천';
+      
+      return `진로 확장 추천${deptLabel}`;
     };
     
     const semesterStr = `${year}-${semNum}`;
     
-    const recommendedCourses: RecommendedCourse[] = selectedCourses.map(course => ({
-      ...course,
-      semester: semesterStr,
-      reason: getReasonByGrade(grade, course.type),
-    }));
+    const recommendedCourses: RecommendedCourse[] = [
+      // 전필
+      ...selectedRequired.map(course => ({
+        ...course,
+        semester: semesterStr,
+        reason: getReasonByCareer(course.name, course.type),
+      })),
+      // 전선 (전체 학과에서 선택됨)
+      ...selectedElective.map(course => ({
+        id: course.id,
+        name: course.name,
+        type: course.type,
+        credits: course.credits,
+        semester: semesterStr,
+        reason: getReasonByCareer(course.name, course.type, course.department, course.relevanceScore),
+        department: course.department !== department ? course.department : undefined,
+        relevanceScore: course.relevanceScore,
+      }))
+    ];
     
-    console.log(`📚 ${semesterStr} (${grade}학년 ${semNum}학기): ${recommendedCourses.length}개 추천`);
+    console.log(`📚 ${semesterStr}: ${recommendedCourses.length}개 추천`);
+    recommendedCourses.forEach(c => {
+      const deptTag = c.department ? ` [${c.department}]` : '';
+      console.log(`   - ${c.name}${deptTag}: ${c.reason}`);
+    });
     
-    // 결과에 추가 (과목이 있을 때만)
     if (recommendedCourses.length > 0) {
       result.push({
         semester: semesterStr,
@@ -693,7 +914,6 @@ export function getAllRemainingRecommendations(
         courses: recommendedCourses,
       });
       
-      // 누적 이수 목록에 추가
       accumulatedCompleted = [
         ...accumulatedCompleted,
         ...recommendedCourses.map(c => c.name)
@@ -713,4 +933,71 @@ export function getAllRemainingRecommendations(
   console.log('✅ 총 추천 학기 수:', result.length);
   
   return result;
+}
+
+// ===================================
+// 단일 학기 추천 (기존 호환)
+// ===================================
+
+function pickRandom<T>(arr: T[], n: number): T[] {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, n);
+}
+
+export function getRecommendedCourses(
+  department: string,
+  grade: number,
+  semesterNum: number,
+  completedCourseNames: string[]
+): RecommendedCourse[] {
+  const semesterData = semesterNum === 1 ? SEMESTER_1_COURSES : SEMESTER_2_COURSES;
+  
+  const deptData = semesterData[department];
+  if (!deptData) {
+    return getRecommendedCourses('컴퓨터공학과', grade, semesterNum, completedCourseNames);
+  }
+  
+  const gradeKey = String(grade);
+  let courses = deptData[gradeKey] || [];
+  
+  if (courses.length < 4) {
+    const allGrades = Object.keys(deptData).sort();
+    for (const g of allGrades) {
+      if (g !== gradeKey) {
+        courses = [...courses, ...deptData[g]];
+      }
+    }
+  }
+  
+  const availableCourses = courses.filter(
+    c => !completedCourseNames.includes(c.name)
+  );
+  
+  const required = availableCourses.filter(c => c.type === '전필');
+  const elective = availableCourses.filter(c => c.type === '전선');
+  
+  const selectedRequired = pickRandom(required, Math.min(2, required.length));
+  const selectedElective = pickRandom(elective, Math.min(2, elective.length));
+  
+  const total = [...selectedRequired, ...selectedElective];
+  if (total.length < 4) {
+    const remaining = availableCourses.filter(c => !total.includes(c));
+    const additional = pickRandom(remaining, 4 - total.length);
+    total.push(...additional);
+  }
+  
+  const reasons = [
+    '다음 학기 수강 추천',
+    '전공 역량 강화에 필수',
+    '취업 경쟁력 향상',
+    '졸업요건 충족 필요',
+  ];
+  
+  const semesterStr = `${new Date().getFullYear()}-${semesterNum}`;
+  
+  return total.slice(0, 4).map((course, idx) => ({
+    ...course,
+    semester: semesterStr,
+    reason: reasons[idx % reasons.length],
+  }));
 }

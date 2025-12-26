@@ -355,7 +355,7 @@ export default function CareerSelectPage() {
                     }
                   </p>
                   <p className="text-sm text-slate-400 mt-1">
-                    {isAnalyzing ? '채용 공고 데이터 스캐닝 중... (1/3)' : '잠시만 기다려주세요...'}
+                    {isAnalyzing ? '직무 역량 키워드 분석 중... (1/3)' : '잠시만 기다려주세요...'}
                   </p>
                 </div>
               </div>

@@ -146,7 +146,7 @@ export default function CompetencyAnalysisPage() {
           역량 분석 중...
         </h2>
         <p className="text-slate-500">
-          {studentInfo.name}님의 기이수 과목을 분석하고 있습니다.
+          기이수 과목을 분석하고 있습니다.
         </p>
       </div>
     );
